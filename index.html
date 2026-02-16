@@ -164,11 +164,19 @@ footer{
 // ⚡ هنا تضيف الحسابات الجديدة بكل سهولة
 // كل حساب: {name, description, price, image}
 const products = [
-  // مثال فارغ: تقدر تزيد حسابك هنا
-  // {name:"حساب 200-300", description:"وصف الحساب", price:"200-300 درهم", image:"https://via.placeholder.com/250x150"}
+  {
+    name:"حساب فئة 200-300",
+    description:"حساب مميز جاهز",
+    price:"250 درهم",
+    image:"https://via.placeholder.com/300x200"
+  },
+  {
+    name:"حساب فئة 400-500",
+    description:"حساب قوي مع مميزات",
+    price:"450 درهم",
+    image:"https://via.placeholder.com/300x200"
+  }
 ];
-
-// عرض الحسابات
 const container = document.getElementById('productContainer');
 products.forEach((prod,index)=>{
   const card = document.createElement('div');
@@ -211,7 +219,7 @@ function sendToWhatsApp(){
     alert("من فضلك املأ جميع المعلومات");
     return;
   }
-  var yourNumber = "2126XXXXXXXX"; // ضع رقمك هنا
+  var yourNumber = "212644404084"; // ضع رقمك هنا
   var message = "طلب جديد من الموقع:%0A"
               + "الحساب: " + selectedItem.name + "%0A"
               + "الوصف: " + selectedItem.description + "%0A"
