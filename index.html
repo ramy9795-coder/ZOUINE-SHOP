@@ -1,235 +1,120 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ZOUINE SHOP</title>
+
 <style>
 body{
-  margin:0;
-  font-family:Arial;
-  background: linear-gradient(to right,#0f2027,#203a43,#2c5364);
-  color:white;
-  text-align:center;
+font-family: Arial;
+background: linear-gradient(45deg,#1a0033,#2a0066,#000);
+color:white;
+text-align:center;
+margin:0;
 }
 
-header{
-  padding:40px 20px;
-}
-
-header h1{
-  font-size:32px;
-}
-
-header p{
-  font-size:18px;
-}
-
-.section-title{
-  margin-top:40px;
-  font-size:24px;
+h1{
+padding:20px;
+font-size:32px;
 }
 
 .products{
-  display:flex;
-  flex-wrap:wrap;
-  justify-content:center;
+display:flex;
+flex-wrap:wrap;
+justify-content:center;
+gap:20px;
+padding:20px;
 }
 
 .card{
-  background: rgba(255,255,255,0.9);
-  color:black;
-  width:260px;
-  margin:15px;
-  border-radius:15px;
-  overflow:hidden;
-  box-shadow:0 5px 15px rgba(0,0,0,0.3);
-  backdrop-filter: blur(8px);
+background:#1c1c3c;
+width:220px;
+border-radius:15px;
+padding:15px;
+box-shadow:0 0 15px #000;
 }
 
 .card img{
-  width:100%;
-  height:160px;
-  object-fit:cover;
+width:100%;
+border-radius:10px;
 }
 
-.card h3{
-  margin:10px;
+.price{
+color:#00ffcc;
+font-weight:bold;
+margin:10px 0;
 }
 
-.card p{
-  margin:0 10px 10px 10px;
+button{
+background:#25D366;
+border:none;
+padding:10px 15px;
+border-radius:10px;
+color:white;
+font-weight:bold;
+cursor:pointer;
 }
 
-.card button{
-  background:#007bff;
-  color:white;
-  border:none;
-  padding:10px;
-  margin:10px;
-  border-radius:8px;
-  cursor:pointer;
-}
-
-.card button:hover{
-  background:#0056b3;
-}
-
-.order-box{
-  background: rgba(255,255,255,0.95);
-  color:black;
-  width:320px;
-  margin:30px auto;
-  padding:20px;
-  border-radius:15px;
-  display:none;
-  backdrop-filter: blur(10px);
-}
-
-input{
-  width:90%;
-  padding:10px;
-  margin:10px 0;
-  border-radius:5px;
-  border:1px solid #ccc;
-}
-
-.send-btn{
-  background:#28a745;
-  color:white;
-  border:none;
-  padding:10px;
-  width:100%;
-  border-radius:8px;
-  cursor:pointer;
-}
-
-.send-btn:hover{
-  background:#218838;
-}
-
-.delete-btn{
-  background:#dc3545;
-  color:white;
-  border:none;
-  padding:5px 10px;
-  border-radius:5px;
-  cursor:pointer;
-  margin-top:10px;
-}
-
-footer{
-  margin-top:40px;
-  padding:20px;
-  font-size:14px;
-  background:#111;
-}
-
-@media(max-width:600px){
-  .products{
-    flex-direction:column;
-    align-items:center;
-  }
+button:hover{
+opacity:0.8;
 }
 </style>
 </head>
+
 <body>
 
-<header>
-<h1>متجر الحسابات المميزة</h1>
-<p>اختر الحساب المناسب لك واطلبه بسهولة</p>
-</header>
+<h1>ZOUINE SHOP</h1>
 
-<h2 class="section-title">الحسابات المتاحة</h2>
-
-<div class="products" id="productContainer">
-  <!-- الحسابات غادي تظهر هنا من JS -->
-</div>
-
-<div class="order-box" id="orderBox">
-  <h2>إتمام الطلب</h2>
-  <p id="selectedProduct"></p>
-  <img id="selectedImage" src="" alt="" style="width:100%;border-radius:10px;margin-bottom:10px;">
-  <input type="text" id="fullname" placeholder="الاسم والنسب">
-  <input type="tel" id="phone" placeholder="رقم الهاتف">
-  <button class="send-btn" onclick="sendToWhatsApp()">إرسال الطلب عبر واتساب</button>
-  <button class="delete-btn" onclick="clearCart()">حذف السلة</button>
-</div>
-
-<footer>
-حقوق الموقع محفوظة © 2026
-</footer>
+<div class="products" id="products"></div>
 
 <script>
-// ⚡ هنا تضيف الحسابات الجديدة بكل سهولة
-// كل حساب: {name, description, price, image}
-const products = [
-  {
-    name:"حساب فئة 200-300",
-    description:"حساب مميز جاهز",
-    price:"250 درهم",
-    image:"https://via.placeholder.com/300x200"
-  },
-  {
-    name:"حساب فئة 400-500",
-    description:"حساب قوي مع مميزات",
-    price:"450 درهم",
-    image:"https://via.placeholder.com/300x200"
-  }
+
+let phone = "212644404084";
+
+let products = [
+{
+name:"Instagram Account 1K",
+price:"300 DH",
+image:"https://via.placeholder.com/200"
+},
+{
+name:"TikTok Account 5K",
+price:"500 DH",
+image:"https://via.placeholder.com/200"
+}
 ];
-const container = document.getElementById('productContainer');
-products.forEach((prod,index)=>{
-  const card = document.createElement('div');
-  card.className = 'card';
-  card.innerHTML = `
-    <img src="${prod.image}" alt="${prod.name}">
-    <h3>${prod.name}</h3>
-    <p>${prod.description} - ${prod.price}</p>
-    <button onclick="addToCart(${index})">إضافة للسلة</button>
-  `;
-  container.appendChild(card);
+
+let container = document.getElementById("products");
+
+products.forEach(product => {
+
+let card = document.createElement("div");
+card.className="card";
+
+card.innerHTML = `
+<img src="${product.image}">
+<h3>${product.name}</h3>
+<p class="price">${product.price}</p>
+<button onclick="order('${product.name}','${product.price}')">اشري دابا</button>
+`;
+
+container.appendChild(card);
+
 });
 
-// إدارة السلة
-let selectedItem = null;
+function order(name,price){
 
-function addToCart(index){
-  if(selectedItem !== null){
-    alert("يمكنك طلب حساب واحد فقط");
-    return;
-  }
-  selectedItem = products[index];
-  document.getElementById("orderBox").style.display = "block";
-  document.getElementById("selectedProduct").innerText = "المنتج المختار: " + selectedItem.name + " - " + selectedItem.price;
-  document.getElementById("selectedImage").src = selectedItem.image;
+let message = `سلام ZOUINE SHOP 👋
+بغيت نشري:
+المنتج: ${name}
+الثمن: ${price}`;
+
+let url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+
+window.open(url,"_blank");
 }
 
-function clearCart(){
-  selectedItem = null;
-  document.getElementById("orderBox").style.display = "none";
-  document.getElementById("fullname").value = "";
-  document.getElementById("phone").value = "";
-}
-
-function sendToWhatsApp(){
-  if(!selectedItem) return;
-  var name = document.getElementById("fullname").value;
-  var phone = document.getElementById("phone").value;
-  if(name=="" || phone==""){
-    alert("من فضلك املأ جميع المعلومات");
-    return;
-  }
-  var yourNumber = "212644404084"; // ضع رقمك هنا
-  var message = "طلب جديد من الموقع:%0A"
-              + "الحساب: " + selectedItem.name + "%0A"
-              + "الوصف: " + selectedItem.description + "%0A"
-              + "الثمن: " + selectedItem.price + "%0A"
-              + "الاسم: " + name + "%0A"
-              + "رقم الهاتف: " + phone + "%0A"
-              + "صورة الحساب: " + selectedItem.image;
-  var url = "https://wa.me/" + yourNumber + "?text=" + message;
-  window.open(url,"_blank");
-}
 </script>
 
 </body>
