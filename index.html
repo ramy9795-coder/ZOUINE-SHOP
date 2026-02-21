@@ -1,135 +1,125 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZOUINE SHOP</title>
-
+    <title>ZOUINE SHOP | الاحترافي</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
+        :root {
+            --primary-color: #00ffcc;
+            --secondary-color: #25D366;
+            --bg-dark: #0f0f1b;
+            --card-bg: #1a1a2e;
+            --text-white: #ffffff;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            background: linear-gradient(45deg, #1a0033, #000000);
-            color: white;
-            text-align: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-white);
             margin: 0;
-            padding-bottom: 50px;
+            padding: 0;
+            line-height: 1.6;
         }
 
-        h1 {
-            padding: 20px;
-            font-size: 32px;
-        }
-
-        .products {
+        /* الهيدر والقائمة */
+        header {
+            background: rgba(26, 26, 46, 0.95);
+            padding: 15px 5%;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
             display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 20px;
-            padding: 20px;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
         }
 
-        .card {
-            background: #1c1c3c;
-            width: 220px;
-            border-radius: 15px;
-            padding: 15px;
-            box-shadow: 0 0 15px #000;
-            transition: transform 0.3s;
+        .logo { font-size: 24px; font-weight: bold; color: var(--primary-color); }
+
+        .nav-icons { display: flex; gap: 20px; }
+        .nav-icons i { font-size: 22px; cursor: pointer; position: relative; }
+        .cart-count {
+            position: absolute; top: -10px; right: -10px;
+            background: red; color: white; font-size: 12px;
+            padding: 2px 6px; border-radius: 50%;
         }
 
-        .card:hover {
-            transform: translateY(-5px);
+        /* الأقسام (الفئات) */
+        .categories {
+            display: flex; justify-content: center; gap: 10px;
+            padding: 20px; flex-wrap: wrap;
+        }
+        .cat-btn {
+            background: var(--card-bg); border: 1px solid var(--primary-color);
+            color: white; padding: 8px 15px; border-radius: 20px;
+            cursor: pointer; transition: 0.3s;
+        }
+        .cat-btn.active, .cat-btn:hover {
+            background: var(--primary-color); color: var(--bg-dark);
         }
 
-        .card img {
-            width: 100%;
-            height: 150px;
-            object-fit: cover;
-            border-radius: 10px;
+        /* شبكة المنتجات */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px; padding: 20px 5%;
         }
 
-        .price {
-            color: #00ffcc;
-            font-weight: bold;
-            margin: 10px 0;
+        .product-card {
+            background: var(--card-bg); border-radius: 15px;
+            overflow: hidden; transition: 0.4s;
+            border: 1px solid rgba(255,255,255,0.05);
         }
+        .product-card:hover { transform: translateY(-10px); box-shadow: 0 10px 20px rgba(0,255,204,0.2); }
+        
+        .product-card img { width: 100%; height: 200px; object-fit: cover; }
+        
+        .product-info { padding: 15px; text-align: right; }
+        .product-info h3 { margin: 0 0 10px; font-size: 18px; }
+        .product-price { color: var(--primary-color); font-weight: bold; font-size: 20px; }
 
-        button {
-            background: #25D366; /* لون واتساب */
-            border: none;
-            padding: 10px 15px;
-            border-radius: 10px;
-            color: white;
-            font-weight: bold;
-            cursor: pointer;
-            width: 100%;
-        }
+        .actions { display: flex; gap: 10px; margin-top: 15px; }
+        .btn-add { background: #333; color: white; border: none; flex: 1; padding: 10px; border-radius: 8px; cursor: pointer; }
+        .btn-buy { background: var(--secondary-color); color: white; border: none; flex: 2; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: bold; }
 
-        button:hover {
-            opacity: 0.8;
+        /* سلة المشتريات (Drawer) */
+        #cart-sidebar {
+            position: fixed; left: -100%; top: 0; width: 300px; height: 100%;
+            background: var(--card-bg); transition: 0.4s; z-index: 2000;
+            padding: 20px; box-shadow: 2px 0 10px rgba(0,0,0,0.8);
         }
+        #cart-sidebar.active { left: 0; }
+        .cart-item { display: flex; justify-content: space-between; margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 10px; }
     </style>
 </head>
 <body>
 
-    <h1>ZOUINE SHOP</h1>
+<header>
+    <div class="logo">ZOUINE SHOP</div>
+    <div class="nav-icons">
+        <i class="fas fa-ticket-alt" title="قسائم"></i>
+        <div onclick="toggleCart()">
+            <i class="fas fa-shopping-basket"></i>
+            <span class="cart-count" id="cart-count">0</span>
+        </div>
+    </div>
+</header>
 
-    <div class="products" id="products"></div>
+<div class="categories">
+    <button class="cat-btn active" onclick="filterProducts('all')">الكل</button>
+    <button class="cat-btn" onclick="filterProducts('300-500')">300 DH - 500 DH</button>
+    <button class="cat-btn" onclick="filterProducts('500-1000')">500 DH - 1000 DH</button>
+    <button class="cat-btn" onclick="filterProducts('1000+')">1000 DH فما فوق</button>
+</div>
 
-    <script>
-        // رقم الهاتف الخاص بك
-        let phone = "212644404084";
+<div class="products-grid" id="products-grid">
+    </div>
 
-        // قائمة المنتجات
-        let products = [
-            {
-                name: "🔥compte 9dime🔥",
-                price: "300 DH",
-                image: "https://via.placeholder.com/220x150?text=No+Image" // ضع رابط الصورة هنا
-            },
-            {
-                name: "compte dyal t9sar💯",
-                price: "500 DH",
-                image: "https://i.postimg.cc/KcrQ7mYB/IMG-..." // تأكد من الرابط الكامل
-            }
-        ];
-
-        // عرض المنتجات في الصفحة
-        let container = document.getElementById("products");
-
-        products.forEach(product => {
-            let card = document.createElement("div");
-            card.className = "card";
-            card.innerHTML = `
-                <img src="${product.image}" alt="${product.name}">
-                <h3>${product.name}</h3>
-                <p class="price">${product.price}</p>
-                <button onclick="sendOrder('${product.name}')">طلب عبر واتساب</button>
-            `;
-            container.appendChild(card);
-        });
-
-        // وظيفة إرسال الرسالة
-        function sendOrder(productName) {
-            let message = "مرحباً ZOUINE SHOP، أريد شراء المنتج التالي: " + productName;
-            let whatsappUrl = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
-            window.open(whatsappUrl, '_blank');
-        }
-
-        // تنفيذ تعديلات النصوص والحذف عند تحميل الصفحة
-        document.addEventListener("DOMContentLoaded", () => {
-            // حذف أي عنصر يحتوي نص "اتصل بنا" إذا تكرر (حسب طلبك في الكود السابق)
-            let allElements = document.querySelectorAll('div, button, a');
-            let contactElements = [];
-            allElements.forEach(el => {
-                if (el.textContent.trim() === "اتصل بنا") {
-                    contactElements.push(el);
-                }
-            });
-            if (contactElements.length > 1) {
-                contactElements[1].remove();
-            }
-        });
-    </script>
-</body>
-</html>
+<div id="cart-sidebar">
+    <h3>سلة المشتريات</h3>
+    <div id="cart-items"></div>
+    <hr>
+    <button
+        
