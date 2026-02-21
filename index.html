@@ -119,3 +119,29 @@ window.open(url,"_blank");
 
 </body>
 </html>
+</body><script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  // 1️⃣ تغيير كلمة FORTNITE إلى PUBG • FREE FIRE
+  document.querySelectorAll("*").forEach(el => {
+    if (el.innerText && el.innerText.trim() === "FORTNITE") {
+      el.innerText = "PUBG • FREE FIRE";
+    }
+  });
+
+  // 2️⃣ حذف الخانة المكررة (اتصل بنا تحت ابحث هنا)
+  const buttons = document.querySelectorAll("button, div, a");
+
+  buttons.forEach(el => {
+    if (el.innerText && el.innerText.includes("اتصل بنا")) {
+      // احذف الثانية فقط
+      if (el.dataset.removed !== "true") {
+        el.dataset.removed = "true";
+      } else {
+        el.remove();
+      }
+    }
+  });
+
+});
+</script>
