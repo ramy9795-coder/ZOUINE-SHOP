@@ -1,114 +1,135 @@
 <!DOCTYPE html>
 <html lang="ar">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ZOUINE SHOP</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZOUINE SHOP</title>
 
-<style>
-body{
-font-family: Arial;
-background: linear-gradient(45deg,#1a0033,#2a0066,#000);
-color:white;
-text-align:center;
-margin:0;
-}
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(45deg, #1a0033, #000000);
+            color: white;
+            text-align: center;
+            margin: 0;
+            padding-bottom: 50px;
+        }
 
-h1{
-padding:20px;
-font-size:32px;
-}
+        h1 {
+            padding: 20px;
+            font-size: 32px;
+        }
 
-.products{
-display:flex;
-flex-wrap:wrap;
-justify-content:center;
-gap:20px;
-padding:20px;
-}
+        .products {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
+        }
 
-.card{
-background:#1c1c3c;
-width:220px;
-border-radius:15px;
-padding:15px;
-box-shadow:0 0 15px #000;
-}
+        .card {
+            background: #1c1c3c;
+            width: 220px;
+            border-radius: 15px;
+            padding: 15px;
+            box-shadow: 0 0 15px #000;
+            transition: transform 0.3s;
+        }
 
-.card img{
-width:100%;
-border-radius:10px;
-}
+        .card:hover {
+            transform: translateY(-5px);
+        }
 
-.price{
-color:#00ffcc;
-font-weight:bold;
-margin:10px 0;
-}
+        .card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
 
-button{
-background:#25D366;
-border:none;
-padding:10px 15px;
-border-radius:10px;
-color:white;
-font-weight:bold;
-cursor:pointer;
-}
+        .price {
+            color: #00ffcc;
+            font-weight: bold;
+            margin: 10px 0;
+        }
 
-button:hover{
-opacity:0.8;
-}
-</style>
+        button {
+            background: #25D366; /* لون واتساب */
+            border: none;
+            padding: 10px 15px;
+            border-radius: 10px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button:hover {
+            opacity: 0.8;
+        }
+    </style>
 </head>
-
 <body>
 
-<h1>ZOUINE SHOP</h1>
+    <h1>ZOUINE SHOP</h1>
 
-<div class="products" id="products"></div>
+    <div class="products" id="products"></div>
 
-<script>
+    <script>
+        // رقم الهاتف الخاص بك
+        let phone = "212644404084";
 
-let phone = "212644404084";
+        // قائمة المنتجات
+        let products = [
+            {
+                name: "🔥compte 9dime🔥",
+                price: "300 DH",
+                image: "https://via.placeholder.com/220x150?text=No+Image" // ضع رابط الصورة هنا
+            },
+            {
+                name: "compte dyal t9sar💯",
+                price: "500 DH",
+                image: "https://i.postimg.cc/KcrQ7mYB/IMG-..." // تأكد من الرابط الكامل
+            }
+        ];
 
-let products = [
-{
-name:"🔥compte 9dime🔥",
-price:"300 DH",
-image:""
-},
-{
-name:"vompte dyal t9sar💯",
-price:"500 DH",
-image:"https://i.postimg.cc/KcrQ7mYB/IMG-20260221-WA0055.jpg"
-}
-];
+        // عرض المنتجات في الصفحة
+        let container = document.getElementById("products");
 
-let container = document.getElementById("products");
+        products.forEach(product => {
+            let card = document.createElement("div");
+            card.className = "card";
+            card.innerHTML = `
+                <img src="${product.image}" alt="${product.name}">
+                <h3>${product.name}</h3>
+                <p class="price">${product.price}</p>
+                <button onclick="sendOrder('${product.name}')">طلب عبر واتساب</button>
+            `;
+            container.appendChild(card);
+        });
 
-products.forEach(product => {
+        // وظيفة إرسال الرسالة
+        function sendOrder(productName) {
+            let message = "مرحباً ZOUINE SHOP، أريد شراء المنتج التالي: " + productName;
+            let whatsappUrl = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
+        }
 
-ص
-  <script>
-document.addEventListener("DOMContentLoaded", function () {
-
-  // ✅ تغيير FORTNITE إلى PUBG • FREE FIRE
-  document.body.innerHTML = document.body.innerHTML.replace(/FORTNITE/g, "PUBG • FREE FIRE");
-
-  // ✅ حذف الخانة الثانية التي تحتوي على "اتصل بنا"
-  let contactElements = [];
-
-  document.querySelectorAll("divhttps://i.postimg.cc/2SJxj6H6/Screenshot-2026-02-21-21-02-08-480-com-whatsapp.jpg, a, button, li").forEach(el => {
-    if (el.textContent.trim() === "اتصل بنا") {
-      contactElements.push(el);
-    }
-  });
-
-  // نحذف الثانية فقط
-  if (contactElements.length > 1) {
-    contactElements[1].remove();
-  }
-
-});
-</script>
+        // تنفيذ تعديلات النصوص والحذف عند تحميل الصفحة
+        document.addEventListener("DOMContentLoaded", () => {
+            // حذف أي عنصر يحتوي نص "اتصل بنا" إذا تكرر (حسب طلبك في الكود السابق)
+            let allElements = document.querySelectorAll('div, button, a');
+            let contactElements = [];
+            allElements.forEach(el => {
+                if (el.textContent.trim() === "اتصل بنا") {
+                    contactElements.push(el);
+                }
+            });
+            if (contactElements.length > 1) {
+                contactElements[1].remove();
+            }
+        });
+    </script>
+</body>
+</html>
