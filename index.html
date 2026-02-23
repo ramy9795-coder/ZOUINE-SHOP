@@ -1,56 +1,134 @@
 <!DOCTYPE html>
 <html lang="ar">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZOUINE SHOP</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #1a0033;
-            color: white;
-            text-align: center;
-            margin: 0;
-        }
-        .products {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 20px;
-            padding: 20px;
-        }
-        .card {
-            background: #1c1c3c;
-            width: 220px;
-            border-radius: 15px;
-            padding: 15px;
-            box-shadow: 0 0 15px #000;
-        }
-        .card img {
-            width: 100%;
-            border-radius: 10px;
-        }
-        .price {
-            color: #00ffcc;
-            font-weight: bold;
-        }
-        button {
-            background: #25D366;
-            border: none;
-            padding: 10px;
-            border-radius: 10px;
-            color: white;
-            cursor: pointer;
-            width: 100%;
-            font-weight: bold;
-        }
-    </style>
+<meta charset="UTF-8">
+<title>ZOUINE SHOP</title>
+
+<style>
+body {
+    font-family: Arial;
+    background: #1a0033;
+    color: white;
+    text-align: center;
+    margin: 0;
+}
+.products {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+}
+.card {
+    background: #1c1c3c;
+    width: 220px;
+    border-radius: 15px;
+    padding: 15px;
+    box-shadow: 0 0 15px #000;
+}
+.price {
+    color: #00ffcc;
+    font-weight: bold;
+}
+button {
+    background: #25D366;
+    border: none;
+    padding: 10px;
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
+    width: 100%;
+    font-weight: bold;
+    margin-top: 5px;
+}
+.cart-box {
+    background: #111133;
+    border-radius: 15px;
+    padding: 15px;
+    width: 90%;
+    max-width: 500px;
+    margin: auto;
+}
+</style>
 </head>
+
 <body>
 
-    <h1>ZOUINE SHOP</h1>
+<h1>ZOUINE SHOP</h1>
 
-    <div class="products">
-        <div class="card">
-            <img src="https://i.postimg.cc/KcrQ7mYB/IMG-
-                
+<h2>🛍 المنتجات</h2>
+<div class="products">
+
+<div class="card">
+    <h3>حساب تيك توك</h3>
+    <p class="price">300 درهم</p>
+    <button onclick="addToCart('حساب تيك توك',300)">أضف إلى السلة</button>
+</div>
+
+<div class="card">
+    <h3>حساب إنستغرام</h3>
+    <p class="price">250 درهم</p>
+    <button onclick="addToCart('حساب إنستغرام',250)">أضف إلى السلة</button>
+</div>
+
+<div class="card">
+    <h3>حساب Free Fire</h3>
+    <p class="price">500 درهم</p>
+    <button onclick="addToCart('حساب Free Fire',500)">أضف إلى السلة</button>
+</div>
+
+</div>
+
+<h2>🛒 سلة المشتريات</h2>
+
+<div class="cart-box">
+    <div id="cartItems"></div>
+    <h3 id="totalPrice">المجموع: 0 درهم</h3>
+    <button onclick="checkout()">إتمام الشراء عبر واتساب</button>
+</div>
+
+<script>
+let cart = [];
+
+function addToCart(product, price) {
+    cart.push({product, price});
+    displayCart();
+}
+
+function displayCart() {
+    let cartDiv = document.getElementById("cartItems");
+    let total = 0;
+    cartDiv.innerHTML = "";
+
+    cart.forEach((item, index) => {
+        cartDiv.innerHTML += `<p>${index+1}- ${item.product} - ${item.price} درهم</p>`;
+        total += item.price;
+    });
+
+    document.getElementById("totalPrice").innerText = "المجموع: " + total + " درهم";
+}
+
+function checkout() {
+    if(cart.length === 0){
+        alert("السلة فارغة!");
+        return;
+    }
+
+    let phone = "212644404084";
+
+    let message = "مرحبا 👋 أريد شراء:\n";
+
+    cart.forEach((item, index) => {
+        message += (index+1) + "- " + item.product + " - " + item.price + " درهم\n";
+    });
+
+    let total = cart.reduce((sum, item) => sum + item.price, 0);
+    message += "\nالمجموع: " + total + " درهم";
+
+    let url = "https://wa.me/" + phone + "?text=" + encodeURIComponent(message);
+    window.open(url, "_blank");
+}
+</script>
+
+</body>
+</html>
