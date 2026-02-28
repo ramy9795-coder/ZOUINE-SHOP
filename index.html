@@ -2,65 +2,322 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<title>ZOUINE SHOP</title>
+<title>ZOUINE CHOP</title>
 <style>
-/* ====== العام ====== */
 body{
     margin:0;
-    font-family:'Arial', sans-serif;
-    background:#f0f8ff;
+    font-family:'Arial',sans-serif;
+    background:linear-gradient(135deg,#f0f8ff,#e0f0ff);
     color:#222;
     display:flex;
     flex-direction:column;
     align-items:center;
 }
-
-/* ====== Sidebar ====== */
+/* Sidebar */
 #sidebar{
     width:100%;
-    background:#ffd700;
+    background:#1A73E8;
     display:flex;
     overflow-x:auto;
     padding:10px 0;
-    box-shadow:0 2px 10px rgba(0,0,0,0.1);
 }
 #sidebar button{
-    background:#4caf50;
+    background:#ffffffaa;
     border:none;
-    padding:8px 12px;
+    padding:12px 16px;
     margin:0 5px;
-    border-radius:8px;
-    color:white;
+    border-radius:10px;
+    color:#1A73E8;
     font-weight:bold;
     cursor:pointer;
     white-space:nowrap;
-    transition:0.3s;
+    font-size:16px;
 }
-#sidebar button:hover{background:#43a047;}
+#sidebar button:hover{background:#ffffff;}
 
-/* ====== البانر ====== */
+/* البانر */
 header{
-    background:#4da6ff url("https://i.ibb.co/xSfvYGKq") center/cover no-repeat;
-    height:150px;
+    background:linear-gradient(135deg,#ffffff,#1A73E8) url("https://i.ibb.co/xSfvYGKq") center/cover no-repeat;
+    height:180px;
     width:90%;
     border-radius:15px;
     margin:10px 0;
     display:flex;
     justify-content:center;
     align-items:center;
+    position:relative;
 }
 header h1{
-    background:rgba(255,255,0,0.7);
-    padding:8px 15px;
-    border-radius:12px;
-    font-size:24px;
-    color:#222;
-    font-family:'Comic Sans MS', cursive;
-    text-shadow:1px 1px #fff;
+    font-size:32px;
+    font-style:italic;
+    font-weight:bold;
+}
+header h1 span:first-child{color:white;}
+header h1 span:last-child{color:#1A73E8;}
+
+/* منطقة نقر الأدمن */
+#adminClickArea{
+    position:absolute;
+    bottom:10px; right:10px;
+    width:50px; height:50px;
+    cursor:pointer;
 }
 
-/* ====== المنتجات ====== */
+/* المنتجات */
 .products{
     display:flex;
     flex-wrap:wrap;
-    gap:12px;
+    gap:15px;
+    justify-content:center;
+    width:95%;
+}
+.card{
+    background:linear-gradient(135deg,#ffffff,#1A73E8);
+    width:180px;
+    border-radius:15px;
+    padding:12px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.2);
+    transition:0.3s;
+    text-align:center;
+    cursor:pointer;
+}
+.card img{
+    width:100%;
+    border-radius:12px;
+}
+.card h3{
+    margin:8px 0 4px 0;
+    font-size:16px;
+    color:#222;
+}
+.price{
+    font-weight:bold;
+    color:#ff5722;
+    font-size:16px;
+}
+.card:hover{
+    transform:scale(1.05);
+    box-shadow:0 8px 20px rgba(0,0,0,0.35);
+}
+
+/* الأزرار داخل الكرت */
+.card button{
+    background:#4CAF50;
+    border:none;
+    padding:10px;
+    border-radius:10px;
+    color:white;
+    cursor:pointer;
+    font-weight:bold;
+    width:100%;
+}
+.card button:hover{
+    background:linear-gradient(135deg,#6fb1fc,#1A73E8);
+    transform:scale(1.05);
+    transition:0.3s;
+}
+
+/* السلة */
+#cart{
+    background:#ffffffaa;
+    padding:15px;
+    border-radius:15px;
+    margin:15px 0 30px 0;
+    box-shadow:0 0 10px rgba(0,0,0,0.2);
+    width:95%;
+}
+#cartItems p{margin:5px 0;}
+#cart button:hover{
+    background:linear-gradient(135deg,#6fb1fc,#1A73E8);
+    transform:scale(1.03);
+    transition:0.3s;
+}
+
+/* بانل الأدمن */
+#adminPanel{
+    display:none;
+    position:fixed;
+    top:0; left:0;
+    width:100%; height:100%;
+    background:rgba(0,0,0,0.85);
+    overflow:auto;
+}
+.admin-box{
+    background:#e0f0ff;
+    border-radius:12px;
+    padding:20px;
+    max-width:350px;
+    margin:80px auto;
+    box-shadow:0 0 15px rgba(0,0,0,0.5);
+}
+.admin-box input{
+    width:90%;
+    padding:10px;
+    margin:10px 0;
+    border-radius:8px;
+    border:none;
+}
+.admin-box button{
+    width:90%;
+    margin-top:8px;
+}
+</style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<div id="sidebar">
+<button onclick="showCategory('300-500')">300-500</button>
+<button onclick="showCategory('500-1000')">500-1000</button>
+<button onclick="showCategory('1000+')">1000+</button>
+<button onclick="scrollToCart()">السلة</button>
+</div>
+
+<!-- البانر -->
+<header>
+<h1><span>ZOUINE</span> <span>CHOP</span></h1>
+<div id="adminClickArea"></div>
+</header>
+
+<!-- المنتجات -->
+<div class="products" id="productList"></div>
+
+<!-- سلة المشتريات -->
+<div id="cart">
+<h3>🛒 سلة المشتريات</h3>
+<div id="cartItems"></div>
+<h3 id="totalPrice">المجموع: 0 درهم</h3>
+<button onclick="checkout()">إتمام الطلب عبر واتساب</button>
+</div>
+
+<!-- بانل الأدمن -->
+<div id="adminPanel">
+<div class="admin-box" id="loginBox">
+<h3>🔐 أدخل الرمز السري</h3>
+<input type="password" id="adminPass" placeholder="الرمز السري">
+<button onclick="checkPassword()">دخول</button>
+</div>
+
+<div class="admin-box" id="addProductBox" style="display:none;">
+<h3>➕ إضافة حساب</h3>
+<input type="text" id="imgURL" placeholder="رابط صورة الحساب"><br>
+<input type="text" id="nameInput" placeholder="اسم الحساب"><br>
+<input type="number" id="priceInput" placeholder="السعر بالدرهم"><br>
+<button onclick="addNewProduct()">إضافة المنتج</button>
+<button onclick="closeAdmin()">إغلاق</button>
+</div>
+</div>
+
+<script>
+// إعدادات أساسية
+let cart=[];
+let adminClickCounter=0;
+const adminPassword="12345";
+
+// منتجات تجريبية
+let products=[
+{img:"https://via.placeholder.com/180x120.png?text=FreeFire1", name:"حساب FF 1", price:400, category:"300-500"},
+{img:"https://via.placeholder.com/180x120.png?text=FreeFire2", name:"حساب FF 2", price:600, category:"500-1000"},
+{img:"https://via.placeholder.com/180x120.png?text=FreeFire3", name:"حساب FF 3", price:1200, category:"1000+"},
+{img:"https://via.placeholder.com/180x120.png?text=FreeFire4", name:"حساب FF 4", price:350, category:"300-500"},
+{img:"https://via.placeholder.com/180x120.png?text=FreeFire5", name:"حساب FF 5", price:900, category:"500-1000"}
+];
+
+// بانل الأدمن بعد 10 ضغطات
+document.getElementById("adminClickArea").addEventListener("click", ()=>{
+adminClickCounter++;
+if(adminClickCounter===10){
+document.getElementById("adminPanel").style.display="block";
+adminClickCounter=0;
+renderProducts();
+}
+});
+
+// بانل الأدمن
+function checkPassword(){
+let pass=document.getElementById("adminPass").value;
+if(pass===adminPassword){
+document.getElementById("loginBox").style.display="none";
+document.getElementById("addProductBox").style.display="block";
+}else{alert("رمز خاطئ ❌");}
+}
+function closeAdmin(){
+document.getElementById("adminPanel").style.display="none";
+document.getElementById("loginBox").style.display="block";
+document.getElementById("addProductBox").style.display="none";
+}
+
+// إضافة منتجات من بانل الأدمن
+function addNewProduct(){
+let img=document.getElementById("imgURL").value;
+let name=document.getElementById("nameInput").value;
+let price=document.getElementById("priceInput").value;
+if(!img||!name||!price){alert("املأ جميع الحقول");return;}
+let category="";
+if(price>=300 && price<=500) category="300-500";
+else if(price>500 && price<=1000) category="500-1000";
+else category="1000+";
+products.push({img,name,price,category});
+renderProducts();
+alert("تمت إضافة الحساب ✅");
+}
+
+// عرض المنتجات حسب القسم
+function renderProducts(filterCategory=""){
+let list=document.getElementById("productList");
+list.innerHTML="";
+products.filter(p=>!filterCategory||p.category===filterCategory)
+.forEach(p=>{
+    list.innerHTML+=`
+    <div class="card" onclick="addToCart('${p.name}',${p.price})">
+    <img src="${p.img}">
+    <h3>${p.name}</h3>
+    <p class="price">${p.price} درهم</p>
+    </div>`;
+});
+}
+
+// Sidebar
+function showCategory(cat){renderProducts(cat);}
+function scrollToCart(){document.getElementById("cart").scrollIntoView({behavior:"smooth"});}
+
+// سلة المشتريات
+function addToCart(product,price){
+if(cart.find(i=>i.product===product)){alert("هذا المنتج تمت إضافته مسبقاً ❌");return;}
+cart.push({product,price});
+displayCart();
+}
+function displayCart(){
+let div=document.getElementById("cartItems");
+let total=0;
+div.innerHTML="";
+cart.forEach((i,n)=>{
+div.innerHTML+=`<p>${n+1}- ${i.product} - ${i.price} درهم <button onclick="removeFromCart(${n})">❌</button></p>`;
+total+=i.price;
+});
+document.getElementById("totalPrice").innerText="المجموع: "+total+" درهم";
+}
+function removeFromCart(index){
+cart.splice(index,1);
+displayCart();
+}
+
+// Checkout واتساب
+function checkout(){
+if(cart.length===0){alert("السلة فارغة");return;}
+let phone="212644404084";
+let msg="السلام عليكم 👋 أريد شراء:\n";
+let total=0;
+cart.forEach((i,n)=>{
+msg+=(n+1)+"- "+i.product+" - "+i.price+" درهم\n";
+total+=i.price;
+});
+msg+="\nالمجموع: "+total+" درهم";
+window.open("https://wa.me/"+phone+"?text="+encodeURIComponent(msg));
+}
+
+// تحميل الصفحة الأولى
+renderProducts();
+</script>
+</body>
+</html>
