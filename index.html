@@ -1,132 +1,247 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <title>ZOUINE SHOP</title>
 
 <style>
-body {
-    font-family: Arial;
-    background: #1a0033;
-    color: white;
-    text-align: center;
-    margin: 0;
+body{
+margin:0;
+font-family:Arial;
+background:linear-gradient(135deg,#0a1a4f,#1a0033);
+color:white;
+text-align:center;
 }
-.products {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
-    padding: 20px;
+
+/* Banner */
+header{
+background:url("https://files.fm/down.php?i=h2ht2vqbbx") center/cover no-repeat;
+padding:50px 10px;
+box-shadow:0 4px 15px black;
 }
-.card {
-    background: #1c1c3c;
-    width: 220px;
-    border-radius: 15px;
-    padding: 15px;
-    box-shadow: 0 0 15px #000;
+header h1{
+color:#4da6ff;
+font-size:38px;
+text-shadow:0 0 10px #000;
+background:rgba(0,0,0,0.6);
+display:inline-block;
+padding:10px 25px;
+border-radius:15px;
 }
-.price {
-    color: #00ffcc;
-    font-weight: bold;
+
+/* Sections */
+.section{padding:20px;}
+.products{
+display:flex;
+flex-wrap:wrap;
+justify-content:center;
+gap:20px;
 }
-button {
-    background: #25D366;
-    border: none;
-    padding: 10px;
-    border-radius: 10px;
-    color: white;
-    cursor: pointer;
-    width: 100%;
-    font-weight: bold;
-    margin-top: 5px;
+
+/* Card */
+.card{
+background:#141b3d;
+width:220px;
+border-radius:15px;
+padding:12px;
+box-shadow:0 0 12px #000;
+transition:0.3s;
 }
-.cart-box {
-    background: #111133;
-    border-radius: 15px;
-    padding: 15px;
-    width: 90%;
-    max-width: 500px;
-    margin: auto;
+.card:hover{transform:scale(1.03);}
+.card img{
+width:100%;
+border-radius:12px;
+}
+.price{
+color:#00ffcc;
+font-weight:bold;
+}
+
+/* Buttons */
+button{
+background:#2ecc71;
+border:none;
+padding:10px;
+border-radius:10px;
+color:white;
+cursor:pointer;
+width:100%;
+font-weight:bold;
+margin-top:5px;
+}
+button:hover{background:#27ae60;}
+
+/* Cart */
+.cart-box{
+background:#0d1433;
+border-radius:15px;
+padding:15px;
+width:90%;
+max-width:500px;
+margin:20px auto;
+box-shadow:0 0 15px black;
+}
+
+/* Admin Panel */
+#adminPanel{
+display:none;
+background:rgba(0,0,0,0.85);
+position:fixed;
+top:0;left:0;
+width:100%;
+height:100%;
+}
+.admin-box{
+background:#141b3d;
+border-radius:15px;
+padding:20px;
+max-width:400px;
+margin:80px auto;
+box-shadow:0 0 15px black;
+}
+.admin-box input{
+width:90%;
+padding:8px;
+margin:6px;
+border-radius:8px;
+border:none;
 }
 </style>
 </head>
 
 <body>
 
+<header>
 <h1>ZOUINE SHOP</h1>
+</header>
 
+<p>متجر حسابات Free Fire</p>
+
+<div class="section">
 <h2>🛍 المنتجات</h2>
-<div class="products">
-
-<div class="card">
-    <h3>حساب تيك توك</h3>
-    <p class="price">300 درهم</p>
-    <button onclick="addToCart('حساب تيك توك',300)">أضف إلى السلة</button>
-</div>
-
-<div class="card">
-    <h3>حساب إنستغرام</h3>
-    <p class="price">250 درهم</p>
-    <button onclick="addToCart('حساب إنستغرام',250)">أضف إلى السلة</button>
-</div>
-
-<div class="card">
-    <h3>حساب Free Fire</h3>
-    <p class="price">500 درهم</p>
-    <button onclick="addToCart('حساب Free Fire',500)">أضف إلى السلة</button>
-</div>
-
+<div class="products" id="productList"></div>
 </div>
 
 <h2>🛒 سلة المشتريات</h2>
-
 <div class="cart-box">
-    <div id="cartItems"></div>
-    <h3 id="totalPrice">المجموع: 0 درهم</h3>
-    <button onclick="checkout()">إتمام الشراء عبر واتساب</button>
+<div id="cartItems"></div>
+<h3 id="totalPrice">المجموع: 0 درهم</h3>
+<button onclick="checkout()">إتمام الطلب عبر واتساب</button>
+</div>
+
+<!-- Admin Panel -->
+<div id="adminPanel">
+<div class="admin-box" id="loginBox">
+<h3>🔐 أدخل الرمز السري</h3>
+<input type="password" id="adminPass" placeholder="الرمز السري">
+<button onclick="checkPassword()">دخول</button>
+</div>
+
+<div class="admin-box" id="addProductBox" style="display:none;">
+<h3>➕ إضافة حساب</h3>
+<input type="file" id="imgInput"><br>
+<input type="text" id="nameInput" placeholder="اسم الحساب"><br>
+<input type="number" id="priceInput" placeholder="السعر بالدرهم"><br>
+<button onclick="addNewProduct()">إضافة المنتج</button>
+<button onclick="closeAdmin()">إغلاق</button>
+</div>
 </div>
 
 <script>
-let cart = [];
+let cart=[];
+let clickCount=0;
+const adminPassword="12345"; // غير الرمز هنا
+let products=[];
 
-function addToCart(product, price) {
-    cart.push({product, price});
-    displayCart();
+/* فتح بانل الأدمن بعد 5 ضغطات */
+document.body.addEventListener("click",()=>{
+clickCount++;
+if(clickCount===5){
+document.getElementById("adminPanel").style.display="block";
+clickCount=0;
+}
+});
+
+function checkPassword(){
+let pass=document.getElementById("adminPass").value;
+if(pass===adminPassword){
+document.getElementById("loginBox").style.display="none";
+document.getElementById("addProductBox").style.display="block";
+}else{
+alert("رمز خاطئ ❌");
+}
 }
 
-function displayCart() {
-    let cartDiv = document.getElementById("cartItems");
-    let total = 0;
-    cartDiv.innerHTML = "";
-
-    cart.forEach((item, index) => {
-        cartDiv.innerHTML += `<p>${index+1}- ${item.product} - ${item.price} درهم</p>`;
-        total += item.price;
-    });
-
-    document.getElementById("totalPrice").innerText = "المجموع: " + total + " درهم";
+function closeAdmin(){
+document.getElementById("adminPanel").style.display="none";
+document.getElementById("loginBox").style.display="block";
+document.getElementById("addProductBox").style.display="none";
 }
 
-function checkout() {
-    if(cart.length === 0){
-        alert("السلة فارغة!");
-        return;
-    }
+function addNewProduct(){
+let imgFile=document.getElementById("imgInput").files[0];
+let name=document.getElementById("nameInput").value;
+let price=document.getElementById("priceInput").value;
 
-    let phone = "212644404084";
+if(!imgFile||!name||!price){
+alert("املأ جميع الحقول");
+return;
+}
 
-    let message = "مرحبا 👋 أريد شراء:\n";
+let reader=new FileReader();
+reader.onload=function(){
+products.push({name,price,img:reader.result});
+renderProducts();
+alert("تمت إضافة الحساب ✅");
+};
+reader.readAsDataURL(imgFile);
+}
 
-    cart.forEach((item, index) => {
-        message += (index+1) + "- " + item.product + " - " + item.price + " درهم\n";
-    });
+function renderProducts(){
+let list=document.getElementById("productList");
+list.innerHTML="";
+products.forEach(p=>{
+list.innerHTML+=`
+<div class="card">
+<img src="${p.img}">
+<h3>${p.name}</h3>
+<p class="price">${p.price} درهم</p>
+<button onclick="addToCart('${p.name}',${p.price})">أضف إلى السلة</button>
+</div>`;
+});
+}
 
-    let total = cart.reduce((sum, item) => sum + item.price, 0);
-    message += "\nالمجموع: " + total + " درهم";
+function addToCart(product,price){
+if(cart.find(i=>i.product===product)){
+alert("هذا المنتج تمت إضافته مسبقاً ❌");
+return;
+}
+cart.push({product,price});
+displayCart();
+}
 
-    let url = "https://wa.me/" + phone + "?text=" + encodeURIComponent(message);
-    window.open(url, "_blank");
+function displayCart(){
+let div=document.getElementById("cartItems");
+let total=0;
+div.innerHTML="";
+cart.forEach((i,n)=>{
+div.innerHTML+=`<p>${n+1}- ${i.product} - ${i.price} درهم</p>`;
+total+=i.price;
+});
+document.getElementById("totalPrice").innerText="المجموع: "+total+" درهم";
+}
+
+function checkout(){
+if(cart.length===0){alert("السلة فارغة");return;}
+let phone="212644404084";
+let msg="السلام عليكم 👋 أريد شراء:\n";
+let total=0;
+cart.forEach((i,n)=>{
+msg+=(n+1)+"- "+i.product+" - "+i.price+" درهم\n";
+total+=i.price;
+});
+msg+="\nالمجموع: "+total+" درهم";
+window.open("https://wa.me/"+phone+"?text="+encodeURIComponent(msg));
 }
 </script>
 
