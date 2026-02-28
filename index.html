@@ -3,7 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <title>ZOUINE CHOP</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
+/* ---------------- Body ---------------- */
 body{
     margin:0;
     font-family:'Arial',sans-serif;
@@ -14,12 +16,12 @@ body{
     align-items:center;
 }
 
-/* Sidebar الأقسام */
+/* ---------------- Sidebar الأقسام ---------------- */
 #sidebar{
     width:100%;
-    background:#1A73E8; /* الأزرق العصري */
     display:flex;
     overflow-x:auto;
+    background:#1A73E8; /* الأزرق العصري */
     padding:12px 0;
 }
 #sidebar button{
@@ -35,12 +37,15 @@ body{
     font-size:16px;
     transition:0.3s;
 }
-#sidebar button:hover{background:#ffffff; transform:scale(1.05);}
+#sidebar button:hover{
+    background:#ffffff;
+    transform:scale(1.05);
+}
 
-/* البانر */
+/* ---------------- البانر ---------------- */
 header{
     background:linear-gradient(135deg,#ffffff,#1A73E8) url("https://i.ibb.co/xSfvYGKq") center/cover no-repeat;
-    height:200px;
+    height:220px;
     width:95%;
     border-radius:15px;
     margin:15px 0;
@@ -57,8 +62,6 @@ header h1{
 }
 header h1 span:first-child{color:white;}
 header h1 span:last-child{color:#1A73E8;}
-
-/* منطقة نقر الأدمن */
 #adminClickArea{
     position:absolute;
     bottom:12px; right:12px;
@@ -66,23 +69,22 @@ header h1 span:last-child{color:#1A73E8;}
     cursor:pointer;
 }
 
-/* المنتجات */
+/* ---------------- المنتجات ---------------- */
 .products{
-    display:flex;
-    flex-wrap:wrap;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
     gap:18px;
-    justify-content:center;
+    justify-items:center;
     width:95%;
 }
 .card{
     background:linear-gradient(135deg,#ffffff,#cce0ff);
-    width:200px;
     border-radius:15px;
     padding:12px;
     box-shadow:0 5px 18px rgba(0,0,0,0.25);
     transition:0.3s;
     text-align:center;
-    cursor:pointer;
+    width:180px;
 }
 .card img{
     width:100%;
@@ -119,7 +121,7 @@ header h1 span:last-child{color:#1A73E8;}
     transform:scale(1.05);
 }
 
-/* السلة */
+/* ---------------- سلة المشتريات ---------------- */
 #cart{
     background:#ffffffaa;
     padding:18px;
@@ -148,7 +150,7 @@ header h1 span:last-child{color:#1A73E8;}
     background:linear-gradient(135deg,#6fb1fc,#1A73E8);
 }
 
-/* بانل الأدمن */
+/* ---------------- بانل الأدمن ---------------- */
 #adminPanel{
     display:none;
     position:fixed;
@@ -227,7 +229,7 @@ header h1 span:last-child{color:#1A73E8;}
 </div>
 
 <script>
-// الإعدادات الأساسية
+// ---------------- الإعدادات الأساسية ----------------
 let cart=[];
 let adminClickCounter=0;
 const adminPassword="12345";
@@ -241,101 +243,102 @@ let products=[
 {img:"https://via.placeholder.com/200x120.png?text=FreeFire5", name:"حساب FF 5", price:900, category:"500-1000"}
 ];
 
-// بانل الأدمن بعد 10 ضغطات
+// ---------------- بانل الأدمن بعد 10 ضغطات ----------------
 document.getElementById("adminClickArea").addEventListener("click", ()=>{
-adminClickCounter++;
-if(adminClickCounter===10){
-document.getElementById("adminPanel").style.display="block";
-adminClickCounter=0;
-renderProducts();
-}
+    adminClickCounter++;
+    if(adminClickCounter===10){
+        document.getElementById("adminPanel").style.display="block";
+        adminClickCounter=0;
+        renderProducts();
+    }
 });
 
-// بانل الأدمن
+// ---------------- بانل الأدمن ----------------
 function checkPassword(){
-let pass=document.getElementById("adminPass").value;
-if(pass===adminPassword){
-document.getElementById("loginBox").style.display="none";
-document.getElementById("addProductBox").style.display="block";
-}else{alert("رمز خاطئ ❌");}
+    let pass=document.getElementById("adminPass").value;
+    if(pass===adminPassword){
+        document.getElementById("loginBox").style.display="none";
+        document.getElementById("addProductBox").style.display="block";
+    }else{alert("رمز خاطئ ❌");}
 }
 function closeAdmin(){
-document.getElementById("adminPanel").style.display="none";
-document.getElementById("loginBox").style.display="block";
-document.getElementById("addProductBox").style.display="none";
+    document.getElementById("adminPanel").style.display="none";
+    document.getElementById("loginBox").style.display="block";
+    document.getElementById("addProductBox").style.display="none";
 }
 
-// إضافة منتجات من بانل الأدمن
+// ---------------- إضافة منتجات من بانل الأدمن ----------------
 function addNewProduct(){
-let img=document.getElementById("imgURL").value;
-let name=document.getElementById("nameInput").value;
-let price=document.getElementById("priceInput").value;
-if(!img||!name||!price){alert("املأ جميع الحقول");return;}
-let category="";
-if(price>=300 && price<=500) category="300-500";
-else if(price>500 && price<=1000) category="500-1000";
-else category="1000+";
-products.push({img,name,price,category});
-renderProducts();
-alert("تمت إضافة الحساب ✅");
+    let img=document.getElementById("imgURL").value;
+    let name=document.getElementById("nameInput").value;
+    let price=document.getElementById("priceInput").value;
+    if(!img||!name||!price){alert("املأ جميع الحقول");return;}
+    let category="";
+    if(price>=300 && price<=500) category="300-500";
+    else if(price>500 && price<=1000) category="500-1000";
+    else category="1000+";
+    products.push({img,name,price,category});
+    renderProducts();
+    alert("تمت إضافة الحساب ✅");
 }
 
-// عرض المنتجات حسب القسم
+// ---------------- عرض المنتجات حسب القسم ----------------
 function renderProducts(filterCategory=""){
-let list=document.getElementById("productList");
-list.innerHTML="";
-products.filter(p=>!filterCategory||p.category===filterCategory)
-.forEach(p=>{
-    list.innerHTML+=`
-    <div class="card" onclick="addToCart('${p.name}',${p.price})">
-    <img src="${p.img}">
-    <h3>${p.name}</h3>
-    <p class="price">${p.price} درهم</p>
-    </div>`;
-});
+    let list=document.getElementById("productList");
+    list.innerHTML="";
+    products.filter(p=>!filterCategory||p.category===filterCategory)
+    .forEach(p=>{
+        list.innerHTML+=`
+        <div class="card" onclick="addToCart('${p.name}',${p.price})">
+        <img src="${p.img}">
+        <h3>${p.name}</h3>
+        <p class="price">${p.price} درهم</p>
+        </div>`;
+    });
 }
 
-// Sidebar
+// ---------------- Sidebar ----------------
 function showCategory(cat){renderProducts(cat);}
 function scrollToCart(){document.getElementById("cart").scrollIntoView({behavior:"smooth"});}
 
-// سلة المشتريات
+// ---------------- سلة المشتريات ----------------
 function addToCart(product,price){
-if(cart.find(i=>i.product===product)){alert("هذا المنتج تمت إضافته مسبقاً ❌");return;}
-cart.push({product,price});
-displayCart();
+    if(cart.find(i=>i.product===product)){alert("هذا المنتج تمت إضافته مسبقاً ❌");return;}
+    cart.push({product,price});
+    displayCart();
 }
 function displayCart(){
-let div=document.getElementById("cartItems");
-let total=0;
-div.innerHTML="";
-cart.forEach((i,n)=>{
-div.innerHTML+=`<p>${n+1}- ${i.product} - ${i.price} درهم <button onclick="removeFromCart(${n})">❌</button></p>`;
-total+=i.price;
-});
-document.getElementById("totalPrice").innerText="المجموع: "+total+" درهم";
+    let div=document.getElementById("cartItems");
+    let total=0;
+    div.innerHTML="";
+    cart.forEach((i,n)=>{
+        div.innerHTML+=`<p>${n+1}- ${i.product} - ${i.price} درهم <button onclick="removeFromCart(${n})">❌</button></p>`;
+        total+=i.price;
+    });
+    document.getElementById("totalPrice").innerText="المجموع: "+total+" درهم";
 }
 function removeFromCart(index){
-cart.splice(index,1);
-displayCart();
+    cart.splice(index,1);
+    displayCart();
 }
 
-// Checkout واتساب
+// ---------------- Checkout واتساب ----------------
 function checkout(){
-if(cart.length===0){alert("السلة فارغة");return;}
-let phone="212644404084";
-let msg="السلام عليكم 👋 أريد شراء:\n";
-let total=0;
-cart.forEach((i,n)=>{
-msg+=(n+1)+"- "+i.product+" - "+i.price+" درهم\n";
-total+=i.price;
-});
-msg+="\nالمجموع: "+total+" درهم";
-window.open("https://wa.me/"+phone+"?text="+encodeURIComponent(msg));
+    if(cart.length===0){alert("السلة فارغة");return;}
+    let phone="212644404084";
+    let msg="السلام عليكم 👋 أريد شراء:\n";
+    let total=0;
+    cart.forEach((i,n)=>{
+        msg+=(n+1)+"- "+i.product+" - "+i.price+" درهم\n";
+        total+=i.price;
+    });
+    msg+="\nالمجموع: "+total+" درهم";
+    window.open("https://wa.me/"+phone+"?text="+encodeURIComponent(msg));
 }
 
-// تحميل الصفحة الأولى
+// ---------------- تحميل الصفحة الأولى ----------------
 renderProducts();
 </script>
+
 </body>
 </html>
