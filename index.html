@@ -1,341 +1,50 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ZOUINE CHOP</title>
-<style>
-/* ---------- Body ---------- */
-body{
-    margin:0;
-    font-family:'Arial',sans-serif;
-    background:#f0f5ff;
-    color:#222;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-}
-
-/* ---------- Sidebar الأقسام ---------- */
-#sidebar{
-    width:100%;
-    display:flex;
-    overflow-x:auto;
-    background:#0052cc; /* أزرق عصري */
-    padding:12px 0;
-}
-#sidebar button{
-    background:#ffffffcc;
-    border:none;
-    padding:14px 20px;
-    margin:0 6px;
-    border-radius:12px;
-    color:#0052cc;
-    font-weight:bold;
-    cursor:pointer;
-    white-space:nowrap;
-    font-size:16px;
-    transition:0.3s;
-}
-#sidebar button:hover{
-    background:#ffffff;
-    transform:scale(1.05);
-}
-
-/* ---------- البانر ---------- */
-header{
-    background:linear-gradient(135deg,#ffffff,#0052cc) url("https://i.ibb.co/xSfvYGKq") center/cover no-repeat;
-    height:220px;
-    width:95%;
-    border-radius:15px;
-    margin:15px 0;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    position:relative;
-    box-shadow:0 6px 20px rgba(0,0,0,0.25);
-}
-header h1{
-    font-size:36px;
-    font-style:italic;
-    font-weight:bold;
-}
-header h1 span:first-child{color:white;}
-header h1 span:last-child{color:#0052cc;}
-#adminClickArea{
-    position:absolute;
-    bottom:12px; right:12px;
-    width:50px; height:50px;
-    cursor:pointer;
-}
-
-/* ---------- المنتجات ---------- */
-.products{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-    gap:18px;
-    justify-items:center;
-    width:95%;
-    margin-top:10px;
-}
-.card{
-    background:linear-gradient(135deg,#e0f2ff,#ffffff);
-    border-radius:15px;
-    padding:12px;
-    box-shadow:0 5px 18px rgba(0,0,0,0.25);
-    transition:0.3s;
-    text-align:center;
-    width:180px;
-    cursor:pointer;
-}
-.card img{
-    width:100%;
-    border-radius:12px;
-}
-.card h3{
-    margin:8px 0 4px 0;
-    font-size:16px;
-    color:#222;
-}
-.price{
-    font-weight:bold;
-    color:#0052cc;
-    font-size:16px;
-}
-.card:hover{
-    transform:scale(1.05);
-    box-shadow:0 8px 25px rgba(0,0,0,0.35);
-}
-.card button{
-    background:#28a745;
-    border:none;
-    padding:10px;
-    border-radius:12px;
-    color:white;
-    cursor:pointer;
-    font-weight:bold;
-    width:100%;
-    margin-top:6px;
-    transition:0.3s;
-}
-.card button:hover{
-    background:linear-gradient(135deg,#3dd15f,#28a745);
-    transform:scale(1.05);
-}
-
-/* ---------- سلة المشتريات ---------- */
-#cart{
-    display:none;
-    background:#ffffffcc;
-    padding:18px;
-    border-radius:15px;
-    margin:20px 0 30px 0;
-    box-shadow:0 0 15px rgba(0,0,0,0.25);
-    width:95%;
-}
-#cartItems p{
-    margin:6px 0;
-    font-size:16px;
-}
-#cart button{
-    background:#0052cc;
-    color:white;
-    font-weight:bold;
-    padding:12px;
-    border-radius:12px;
-    border:none;
-    cursor:pointer;
-    width:100%;
-    margin-top:10px;
-    transition:0.3s;
-}
-#cart button:hover{
-    background:linear-gradient(135deg,#3d82fc,#0052cc);
-}
-
-/* ---------- بانل الأدمن ---------- */
-#adminPanel{
-    display:none;
-    position:fixed;
-    top:0; left:0;
-    width:100%; height:100%;
-    background:rgba(0,0,0,0.85);
-    overflow:auto;
-}
-.admin-box{
-    background:#e0f0ff;
-    border-radius:12px;
-    padding:20px;
-    max-width:380px;
-    margin:80px auto;
-    box-shadow:0 0 20px rgba(0,0,0,0.5);
-}
-.admin-box input{
-    width:90%;
-    padding:12px;
-    margin:10px 0;
-    border-radius:8px;
-    border:none;
-    font-size:16px;
-}
-.admin-box button{
-    width:90%;
-    margin-top:10px;
-    padding:12px;
-    font-size:16px;
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>موقعي الشخصي على GitHub</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+        }
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            max-width: 400px;
+        }
+        h1 { color: #333; }
+        p { color: #666; line-height: 1.6; }
+        .btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #2ea44f;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .btn:hover { background-color: #2c974b; }
+    </style>
 </head>
 <body>
 
-<!-- Sidebar الأقسام -->
-<div id="sidebar">
-<button onclick="showCategory('300-500')">300-500</button>
-<button onclick="showCategory('500-1000')">500-1000</button>
-<button onclick="showCategory('1000+')">1000+</button>
-</div>
+    <div class="container">
+        <h1>أهلاً بك في مشروعي! 🚀</h1>
+        <p>هذه صفحة HTML بسيطة تم إنشاؤها ليتم استضافتها عبر GitHub Pages.</p>
+        <a href="https://github.com" class="btn">تابعني على GitHub</a>
+    </div>
 
-<!-- البانر -->
-<header>
-<h1><span>ZOUINE</span> <span>CHOP</span></h1>
-<div id="adminClickArea"></div>
-</header>
-
-<!-- المنتجات -->
-<div class="products" id="productList"></div>
-
-<!-- سلة المشتريات -->
-<div id="cart">
-<h3>🛒 سلة المشتريات</h3>
-<div id="cartItems"></div>
-<h3 id="totalPrice">المجموع: 0 درهم</h3>
-<button onclick="checkout()">إتمام الطلب عبر واتساب</button>
-</div>
-
-<!-- بانل الأدمن -->
-<div id="adminPanel">
-<div class="admin-box" id="loginBox">
-<h3>🔐 أدخل الرمز السري</h3>
-<input type="password" id="adminPass" placeholder="الرمز السري">
-<button onclick="checkPassword()">دخول</button>
-</div>
-
-<div class="admin-box" id="addProductBox" style="display:none;">
-<h3>➕ إضافة حساب</h3>
-<input type="text" id="imgURL" placeholder="رابط صورة الحساب"><br>
-<input type="text" id="nameInput" placeholder="اسم الحساب"><br>
-<input type="number" id="priceInput" placeholder="السعر بالدرهم"><br>
-<button onclick="addNewProduct()">إضافة المنتج</button>
-<button onclick="closeAdmin()">إغلاق</button>
-</div>
-</div>
-
-<script>
-// ---------- الإعدادات ----------
-let cart=[];
-let adminClickCounter=0;
-const adminPassword="12345";
-
-let products=[
-{img:"https://via.placeholder.com/200x120.png?text=FF1", name:"حساب Free Fire 1", price:400, category:"300-500"},
-{img:"https://via.placeholder.com/200x120.png?text=FF2", name:"حساب Free Fire 2", price:600, category:"500-1000"},
-{img:"https://via.placeholder.com/200x120.png?text=FF3", name:"حساب Free Fire 3", price:1200, category:"1000+"},
-{img:"https://via.placeholder.com/200x120.png?text=FF4", name:"حساب Free Fire 4", price:350, category:"300-500"},
-{img:"https://via.placeholder.com/200x120.png?text=FF5", name:"حساب Free Fire 5", price:900, category:"500-1000"}
-];
-
-// ---------- بانل الأدمن بعد 10 ضغطات ----------
-document.getElementById("adminClickArea").addEventListener("click", ()=>{
-    adminClickCounter++;
-    if(adminClickCounter===10){
-        document.getElementById("adminPanel").style.display="block";
-        adminClickCounter=0;
-    }
-});
-
-// ---------- بانل الأدمن ----------
-function checkPassword(){
-    let pass=document.getElementById("adminPass").value;
-    if(pass===adminPassword){
-        document.getElementById("loginBox").style.display="none";
-        document.getElementById("addProductBox").style.display="block";
-    }else{alert("رمز خاطئ ❌");}
-}
-function closeAdmin(){
-    document.getElementById("adminPanel").style.display="none";
-    document.getElementById("loginBox").style.display="block";
-    document.getElementById("addProductBox").style.display="none";
-}
-
-// ---------- إضافة منتجات ----------
-function addNewProduct(){
-    let img=document.getElementById("imgURL").value;
-    let name=document.getElementById("nameInput").value;
-    let price=document.getElementById("priceInput").value;
-    if(!img||!name||!price){alert("املأ جميع الحقول");return;}
-    let category="";
-    if(price>=300 && price<=500) category="300-500";
-    else if(price>500 && price<=1000) category="500-1000";
-    else category="1000+";
-    products.push({img,name,price,category});
-    renderProducts(currentCategory);
-    alert("تمت إضافة الحساب ✅");
-}
-
-// ---------- عرض المنتجات حسب القسم ----------
-let currentCategory="";
-function renderProducts(filterCategory=""){
-    currentCategory=filterCategory;
-    let list=document.getElementById("productList");
-    list.innerHTML="";
-    let filtered=products.filter(p=>!filterCategory||p.category===filterCategory);
-    filtered.forEach(p=>{
-        let card=document.createElement("div");
-        card.className="card";
-        card.innerHTML=`<img src="${p.img}"><h3>${p.name}</h3><p class="price">${p.price} درهم</p><button>أضف إلى السلة</button>`;
-        card.querySelector("button").onclick=()=>addToCart(p.name,p.price);
-        list.appendChild(card);
-    });
-}
-
-// ---------- Sidebar ----------
-function showCategory(cat){renderProducts(cat);}
-
-// ---------- سلة المشتريات ----------
-function addToCart(product,price){
-    if(cart.find(i=>i.product===product)){alert("هذا المنتج تمت إضافته مسبقاً ❌");return;}
-    cart.push({product,price});
-    displayCart();
-    document.getElementById("cart").style.display="block";
-}
-function displayCart(){
-    let div=document.getElementById("cartItems");
-    let total=0;
-    div.innerHTML="";
-    cart.forEach((i,n)=>{
-        div.innerHTML+=`<p>${n+1}- ${i.product} - ${i.price} درهم <button onclick="removeFromCart(${n})">❌</button></p>`;
-        total+=i.price;
-    });
-    document.getElementById("totalPrice").innerText="المجموع: "+total+" درهم";
-}
-function removeFromCart(index){
-    cart.splice(index,1);
-    displayCart();
-}
-
-// ---------- Checkout واتساب ----------
-function checkout(){
-    if(cart.length===0){alert("السلة فارغة");return;}
-    let phone="212644404084";
-    let msg="السلام عليكم 👋 أريد شراء:\n";
-    let total=0;
-    cart.forEach((i,n)=>{
-        msg+=(n+1)+"- "+i.product+" - "+i.price+" درهم\n";
-        total+=i.price;
-    });
-    msg+="\nالمجموع: "+total+" درهم";
-    window.open("https://wa.me/"+phone+"?text="+encodeURIComponent(msg));
-}
-</script>
 </body>
 </html>
