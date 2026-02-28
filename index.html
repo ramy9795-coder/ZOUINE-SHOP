@@ -2,21 +2,21 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<title>ZOUINE CHOP</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZOUINE CHOP</title>
 <style>
-/* ---------------- Body ---------------- */
+/* ---------- Body ---------- */
 body{
     margin:0;
     font-family:'Arial',sans-serif;
-    background:#f5f9ff;
+    background:#f0f5ff;
     color:#222;
     display:flex;
     flex-direction:column;
     align-items:center;
 }
 
-/* ---------------- Sidebar الأقسام ---------------- */
+/* ---------- Sidebar الأقسام ---------- */
 #sidebar{
     width:100%;
     display:flex;
@@ -25,7 +25,7 @@ body{
     padding:12px 0;
 }
 #sidebar button{
-    background:#ffffffaa;
+    background:#ffffffcc;
     border:none;
     padding:14px 20px;
     margin:0 6px;
@@ -42,7 +42,7 @@ body{
     transform:scale(1.05);
 }
 
-/* ---------------- البانر ---------------- */
+/* ---------- البانر ---------- */
 header{
     background:linear-gradient(135deg,#ffffff,#0052cc) url("https://i.ibb.co/xSfvYGKq") center/cover no-repeat;
     height:220px;
@@ -69,7 +69,7 @@ header h1 span:last-child{color:#0052cc;}
     cursor:pointer;
 }
 
-/* ---------------- المنتجات ---------------- */
+/* ---------- المنتجات ---------- */
 .products{
     display:grid;
     grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
@@ -123,10 +123,10 @@ header h1 span:last-child{color:#0052cc;}
     transform:scale(1.05);
 }
 
-/* ---------------- سلة المشتريات ---------------- */
+/* ---------- سلة المشتريات ---------- */
 #cart{
     display:none;
-    background:#ffffffaa;
+    background:#ffffffcc;
     padding:18px;
     border-radius:15px;
     margin:20px 0 30px 0;
@@ -153,7 +153,7 @@ header h1 span:last-child{color:#0052cc;}
     background:linear-gradient(135deg,#3d82fc,#0052cc);
 }
 
-/* ---------------- بانل الأدمن ---------------- */
+/* ---------- بانل الأدمن ---------- */
 #adminPanel{
     display:none;
     position:fixed;
@@ -231,21 +231,20 @@ header h1 span:last-child{color:#0052cc;}
 </div>
 
 <script>
-// ---------------- الإعدادات الأساسية ----------------
+// ---------- الإعدادات ----------
 let cart=[];
 let adminClickCounter=0;
 const adminPassword="12345";
 
-// منتجات تجريبية
 let products=[
-{img:"https://via.placeholder.com/200x120.png?text=FreeFire1", name:"حساب FF 1", price:400, category:"300-500"},
-{img:"https://via.placeholder.com/200x120.png?text=FreeFire2", name:"حساب FF 2", price:600, category:"500-1000"},
-{img:"https://via.placeholder.com/200x120.png?text=FreeFire3", name:"حساب FF 3", price:1200, category:"1000+"},
-{img:"https://via.placeholder.com/200x120.png?text=FreeFire4", name:"حساب FF 4", price:350, category:"300-500"},
-{img:"https://via.placeholder.com/200x120.png?text=FreeFire5", name:"حساب FF 5", price:900, category:"500-1000"}
+{img:"https://via.placeholder.com/200x120.png?text=FF1", name:"حساب Free Fire 1", price:400, category:"300-500"},
+{img:"https://via.placeholder.com/200x120.png?text=FF2", name:"حساب Free Fire 2", price:600, category:"500-1000"},
+{img:"https://via.placeholder.com/200x120.png?text=FF3", name:"حساب Free Fire 3", price:1200, category:"1000+"},
+{img:"https://via.placeholder.com/200x120.png?text=FF4", name:"حساب Free Fire 4", price:350, category:"300-500"},
+{img:"https://via.placeholder.com/200x120.png?text=FF5", name:"حساب Free Fire 5", price:900, category:"500-1000"}
 ];
 
-// ---------------- بانل الأدمن بعد 10 ضغطات ----------------
+// ---------- بانل الأدمن بعد 10 ضغطات ----------
 document.getElementById("adminClickArea").addEventListener("click", ()=>{
     adminClickCounter++;
     if(adminClickCounter===10){
@@ -254,7 +253,7 @@ document.getElementById("adminClickArea").addEventListener("click", ()=>{
     }
 });
 
-// ---------------- بانل الأدمن ----------------
+// ---------- بانل الأدمن ----------
 function checkPassword(){
     let pass=document.getElementById("adminPass").value;
     if(pass===adminPassword){
@@ -268,7 +267,7 @@ function closeAdmin(){
     document.getElementById("addProductBox").style.display="none";
 }
 
-// ---------------- إضافة منتجات من بانل الأدمن ----------------
+// ---------- إضافة منتجات ----------
 function addNewProduct(){
     let img=document.getElementById("imgURL").value;
     let name=document.getElementById("nameInput").value;
@@ -283,7 +282,7 @@ function addNewProduct(){
     alert("تمت إضافة الحساب ✅");
 }
 
-// ---------------- عرض المنتجات حسب القسم ----------------
+// ---------- عرض المنتجات حسب القسم ----------
 let currentCategory="";
 function renderProducts(filterCategory=""){
     currentCategory=filterCategory;
@@ -293,16 +292,16 @@ function renderProducts(filterCategory=""){
     filtered.forEach(p=>{
         let card=document.createElement("div");
         card.className="card";
-        card.innerHTML=`<img src="${p.img}"><h3>${p.name}</h3><p class="price">${p.price} درهم</p>`;
-        card.onclick=()=>addToCart(p.name,p.price);
+        card.innerHTML=`<img src="${p.img}"><h3>${p.name}</h3><p class="price">${p.price} درهم</p><button>أضف إلى السلة</button>`;
+        card.querySelector("button").onclick=()=>addToCart(p.name,p.price);
         list.appendChild(card);
     });
 }
 
-// ---------------- Sidebar ----------------
+// ---------- Sidebar ----------
 function showCategory(cat){renderProducts(cat);}
 
-// ---------------- سلة المشتريات ----------------
+// ---------- سلة المشتريات ----------
 function addToCart(product,price){
     if(cart.find(i=>i.product===product)){alert("هذا المنتج تمت إضافته مسبقاً ❌");return;}
     cart.push({product,price});
@@ -324,7 +323,7 @@ function removeFromCart(index){
     displayCart();
 }
 
-// ---------------- Checkout واتساب ----------------
+// ---------- Checkout واتساب ----------
 function checkout(){
     if(cart.length===0){alert("السلة فارغة");return;}
     let phone="212644404084";
@@ -338,6 +337,5 @@ function checkout(){
     window.open("https://wa.me/"+phone+"?text="+encodeURIComponent(msg));
 }
 </script>
-
 </body>
 </html>
