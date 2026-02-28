@@ -3,128 +3,247 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>متجري الخاص</title>
+    <title>ZOUINE CHOP - متجرك المفضل</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        :root { --primary: #1a73e8; --whatsapp: #25d366; --dark: #1e293b; }
-        body, html { margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; scroll-behavior: smooth; background-color: #f8fafc; }
-        header { background: var(--dark); color: white; padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
-        .cart-btn { background: var(--primary); padding: 8px 15px; border-radius: 50px; font-weight: bold; display: flex; align-items: center; gap: 8px; cursor: pointer; }
-        .hero { background: linear-gradient(135deg, #0f172a 0%, #334155 100%); color: white; text-align: center; padding: 100px 20px; }
-        .container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
-        #admin-panel { display: none; background: white; padding: 30px; border-radius: 15px; margin-bottom: 40px; border: 2px dashed var(--primary); }
-        .admin-form input, .admin-form textarea { width: 100%; padding: 12px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
-        .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
-        .product-card { background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); transition: 0.3s; }
-        .image-box { width: 100%; height: 250px; background: #e2e8f0; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #94a3b8; }
-        .product-img-real { width: 100%; height: 250px; object-fit: cover; }
+        :root {
+            --primary-gold: #ffcc00; /* لون ذهبي جذاب */
+            --dark-bg: #111111;     /* أسود فخم */
+            --text-gray: #dddddd;
+            --white: #ffffff;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            margin: 0; padding: 0;
+            background-color: #000;
+            color: var(--white);
+            scroll-behavior: smooth;
+        }
+
+        /* الهيدر */
+        header {
+            background-color: var(--dark-bg);
+            border-bottom: 2px solid var(--primary-gold);
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky; top: 0; z-index: 1000;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--primary-gold);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .cart-btn {
+            background: var(--primary-gold);
+            color: #000;
+            padding: 8px 18px;
+            border-radius: 5px;
+            font-weight: bold;
+            display: flex; align-items: center; gap: 8px;
+            cursor: pointer;
+        }
+
+        /* الواجهة الرئيسية */
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&q=80&w=1000');
+            background-size: cover;
+            background-position: center;
+            height: 60vh;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            text-align: center; border-bottom: 5px solid var(--primary-gold);
+        }
+
+        .hero h2 { font-size: 3rem; margin: 0; color: var(--primary-gold); }
+        .hero p { font-size: 1.2rem; max-width: 600px; }
+
+        /* حاوية المنتجات */
+        .container { max-width: 1200px; margin: 50px auto; padding: 0 20px; }
+
+        .section-title {
+            text-align: center; font-size: 2rem; margin-bottom: 40px;
+            color: var(--white); border-right: 5px solid var(--primary-gold); padding-right: 15px;
+            display: inline-block;
+        }
+
+        /* لوحة التحكم */
+        #admin-panel {
+            display: none; background: #222; padding: 25px;
+            border-radius: 10px; border: 1px solid var(--primary-gold); margin-bottom: 30px;
+        }
+        .admin-form input, .admin-form textarea {
+            width: 100%; padding: 12px; margin-bottom: 10px;
+            background: #333; border: 1px solid #444; color: white; border-radius: 5px;
+        }
+
+        /* شبكة المنتجات */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .card {
+            background: #1a1a1a;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid #333;
+            transition: 0.3s;
+        }
+
+        .card:hover { border-color: var(--primary-gold); transform: translateY(-5px); }
+
+        .image-box {
+            width: 100%; height: 280px; background: #222;
+            display: flex; align-items: center; justify-content: center;
+            color: #444; overflow: hidden;
+        }
+        .image-box img { width: 100%; height: 100%; object-fit: cover; }
+
         .info { padding: 20px; text-align: center; }
-        .price { font-size: 1.5rem; color: var(--primary); font-weight: bold; margin: 10px 0; }
-        .btn-whatsapp { background: var(--whatsapp); color: white; text-decoration: none; padding: 12px; border-radius: 10px; display: flex; align-items: center; justify-content: center; gap: 10px; font-weight: bold; }
-        .btn-delete { background: #ef4444; color: white; border: none; padding: 8px; border-radius: 5px; cursor: pointer; width: 100%; margin-top: 10px; display: none; }
-        footer { background: #0f172a; color: #475569; text-align: center; padding: 40px 20px; margin-top: 50px; }
-        #secret-trigger { cursor: pointer; transition: 0.3s; }
+        .info h3 { margin: 0; font-size: 1.4rem; color: var(--white); }
+        .price { color: var(--primary-gold); font-size: 1.6rem; font-weight: bold; margin: 15px 0; }
+
+        .btn-order {
+            background: #25d366; color: white; text-decoration: none;
+            padding: 12px; border-radius: 5px; display: flex;
+            align-items: center; justify-content: center; gap: 10px;
+            font-weight: bold; transition: 0.3s;
+        }
+        .btn-order:hover { background: #1eb954; }
+
+        .btn-del { background: #ff4444; color: white; border: none; width: 100%; padding: 8px; margin-top: 10px; cursor: pointer; border-radius: 5px; display: none; }
+
+        /* الفوتر */
+        footer {
+            background: var(--dark-bg); color: #666;
+            text-align: center; padding: 40px 20px; border-top: 1px solid #222;
+        }
+        #secret-btn { cursor: pointer; color: #333; font-size: 0.8rem; }
     </style>
 </head>
 <body>
 
 <header>
-    <div style="font-weight: bold; font-size: 1.2rem;">متجري الرقمي</div>
+    <div class="logo">ZOUINE CHOP</div>
     <div class="cart-btn">
         <i class="fas fa-shopping-cart"></i>
-        <span>السلة: <span id="cart-count">0</span></span>
+        <span>السلة: <span id="cart-val">0</span></span>
     </div>
 </header>
 
 <section class="hero">
-    <h1>أهلاً بك في متجرنا 🛍️</h1>
-    <p>تصفح أفضل المنتجات واطلبها مباشرة عبر الواتساب</p>
+    <h2>ZOUINE CHOP</h2>
+    <p>الأناقة والجودة في مكان واحد. اكتشف أفضل العروض اليوم!</p>
 </section>
 
 <div class="container">
     <div id="admin-panel">
-        <h2 style="color: var(--primary);"><i class="fas fa-user-lock"></i> لوحة الإدارة</h2>
+        <h3 style="color: var(--primary-gold);">إضافة منتج جديد</h3>
         <div class="admin-form">
-            <input type="text" id="p-name" placeholder="اسم المنتج">
-            <input type="text" id="p-img" placeholder="رابط الصورة">
-            <textarea id="p-desc" placeholder="وصف المنتج"></textarea>
-            <input type="number" id="p-price" placeholder="الثمن بالدرهم">
-            <button onclick="saveProduct()" class="btn-whatsapp" style="background: var(--primary);">نشر المنتج</button>
+            <input type="text" id="n" placeholder="اسم المنتج">
+            <input type="text" id="i" placeholder="رابط الصورة (اختياري)">
+            <textarea id="d" placeholder="وصف المنتج"></textarea>
+            <input type="number" id="p" placeholder="الثمن (درهم)">
+            <button onclick="add()" class="btn-order" style="background: var(--primary-gold); color: black;">نشر المنتج</button>
         </div>
     </div>
-    <div class="products-grid" id="products-container"></div>
+
+    <h2 class="section-title">أحدث المنتجات</h2>
+    <div class="grid" id="main-grid">
+        </div>
 </div>
 
 <footer>
-    <p id="secret-trigger">جميع الحقوق محفوظة &copy; 2026</p>
+    <p id="secret-btn">جميع الحقوق محفوظة &copy; 2026 ZOUINE CHOP</p>
 </footer>
 
 <script>
     let clicks = 0;
     let cart = 0;
-    let managerMode = false;
-    let myNumber = "212644404084";
-    let products = JSON.parse(localStorage.getItem('store_products')) || [];
+    let isAdmin = false;
+    let myPhone = "212644404084";
 
-    document.getElementById('secret-trigger').onclick = function() {
+    // منتج تجريبي (Demo)
+    let defaultProduct = [
+        { n: "ساعة فاخرة - إصدار خاص", i: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=1000", d: "خامة عالية الجودة وتصميم عصري يناسب جميع الأذواق.", p: "499" }
+    ];
+
+    let products = JSON.parse(localStorage.getItem('zouine_data')) || defaultProduct;
+
+    // فتح الإدارة (10 ضغطات على الفوتر)
+    document.getElementById('secret-btn').onclick = function() {
         clicks++;
         if (clicks === 10) {
-            let pass = prompt("الرمز:");
+            let pass = prompt("الرمز السري:");
             if (pass === "12345") {
-                managerMode = true;
+                isAdmin = true;
                 document.getElementById('admin-panel').style.display = 'block';
-                displayProducts();
+                render();
             } else { clicks = 0; }
         }
     };
 
-    function saveProduct() {
-        const name = document.getElementById('p-name').value;
-        const img = document.getElementById('p-img').value;
-        const desc = document.getElementById('p-desc').value;
-        const price = document.getElementById('p-price').value;
+    function add() {
+        const name = document.getElementById('n').value;
+        const img = document.getElementById('i').value;
+        const desc = document.getElementById('d').value;
+        const price = document.getElementById('p').value;
         if(name && price) {
-            products.push({ name, img, desc, price });
-            localStorage.setItem('store_products', JSON.stringify(products));
-            displayProducts();
-            document.getElementById('p-name').value = '';
-            document.getElementById('p-price').value = '';
+            products.push({ n:name, i:img, d:desc, p:price });
+            localStorage.setItem('zouine_data', JSON.stringify(products));
+            render();
+            alert("تمت الإضافة!");
         }
     }
 
-    function deleteItem(index) {
-        if(confirm("حذف؟")) {
-            products.splice(index, 1);
-            localStorage.setItem('store_products', JSON.stringify(products));
-            displayProducts();
+    function del(idx) {
+        if(confirm("حذف المنتج؟")) {
+            products.splice(idx, 1);
+            localStorage.setItem('zouine_data', JSON.stringify(products));
+            render();
         }
     }
 
     function order(name) {
         cart++;
-        document.getElementById('cart-count').innerText = cart;
-        let text = encodeURIComponent("طلب منتج: " + name);
-        window.open(`https://wa.me/${myNumber}?text=${text}`, '_blank');
+        document.getElementById('cart-val').innerText = cart;
+        let msg = encodeURIComponent("أريد طلب منتج: " + name);
+        window.open(`https://wa.me/${myPhone}?text=${msg}`, '_blank');
     }
 
-    function displayProducts() {
-        const container = document.getElementById('products-container');
-        container.innerHTML = '';
-        products.forEach((p, index) => {
-            container.innerHTML += `
-                <div class="product-card">
-                    ${p.img ? `<img src="${p.img}" class="product-img-real">` : `<div class="image-box"><i class="fas fa-image fa-3x"></i></div>`}
+    function render() {
+        const grid = document.getElementById('main-grid');
+        grid.innerHTML = '';
+        products.forEach((prod, index) => {
+            grid.innerHTML += `
+                <div class="card">
+                    <div class="image-box">
+                        ${prod.i ? `<img src="${prod.i}">` : `<i class="fas fa-image fa-3x"></i>`}
+                    </div>
                     <div class="info">
-                        <h3>${p.name}</h3>
-                        <p style="color: #64748b; font-size: 0.8rem;">${p.desc || ''}</p>
-                        <div class="price">${p.price} درهم</div>
-                        <button onclick="order('${p.name}')" class="btn-whatsapp"><i class="fab fa-whatsapp"></i> اطلب الآن</button>
-                        ${managerMode ? `<button class="btn-delete" style="display:block" onclick="deleteItem(${index})">حذف</button>` : ''}
+                        <h3>${prod.n}</h3>
+                        <p style="color: #888; font-size: 0.9rem;">${prod.d || ''}</p>
+                        <div class="price">${prod.p} درهم</div>
+                        <button onclick="order('${prod.n}')" class="btn-order">
+                            <i class="fab fa-whatsapp"></i> اطلب عبر واتساب
+                        </button>
+                        ${isAdmin ? `<button class="btn-del" style="display:block" onclick="del(${index})">حذف المنتج</button>` : ''}
                     </div>
                 </div>`;
         });
     }
-    displayProducts();
+
+    render();
 </script>
+
 </body>
 </html>
