@@ -7,48 +7,51 @@
 body{
     margin:0;
     font-family:'Arial',sans-serif;
-    background:linear-gradient(135deg,#f0f8ff,#e0f0ff);
+    background:#f0f8ff;
     color:#222;
     display:flex;
     flex-direction:column;
     align-items:center;
 }
-/* Sidebar */
+
+/* Sidebar الأقسام */
 #sidebar{
     width:100%;
-    background:#1A73E8;
+    background:#1A73E8; /* الأزرق العصري */
     display:flex;
     overflow-x:auto;
-    padding:10px 0;
+    padding:12px 0;
 }
 #sidebar button{
     background:#ffffffaa;
     border:none;
-    padding:12px 16px;
-    margin:0 5px;
-    border-radius:10px;
+    padding:14px 20px;
+    margin:0 6px;
+    border-radius:12px;
     color:#1A73E8;
     font-weight:bold;
     cursor:pointer;
     white-space:nowrap;
     font-size:16px;
+    transition:0.3s;
 }
-#sidebar button:hover{background:#ffffff;}
+#sidebar button:hover{background:#ffffff; transform:scale(1.05);}
 
 /* البانر */
 header{
     background:linear-gradient(135deg,#ffffff,#1A73E8) url("https://i.ibb.co/xSfvYGKq") center/cover no-repeat;
-    height:180px;
-    width:90%;
+    height:200px;
+    width:95%;
     border-radius:15px;
-    margin:10px 0;
+    margin:15px 0;
     display:flex;
     justify-content:center;
     align-items:center;
     position:relative;
+    box-shadow:0 6px 20px rgba(0,0,0,0.25);
 }
 header h1{
-    font-size:32px;
+    font-size:36px;
     font-style:italic;
     font-weight:bold;
 }
@@ -58,7 +61,7 @@ header h1 span:last-child{color:#1A73E8;}
 /* منطقة نقر الأدمن */
 #adminClickArea{
     position:absolute;
-    bottom:10px; right:10px;
+    bottom:12px; right:12px;
     width:50px; height:50px;
     cursor:pointer;
 }
@@ -67,16 +70,16 @@ header h1 span:last-child{color:#1A73E8;}
 .products{
     display:flex;
     flex-wrap:wrap;
-    gap:15px;
+    gap:18px;
     justify-content:center;
     width:95%;
 }
 .card{
-    background:linear-gradient(135deg,#ffffff,#1A73E8);
-    width:180px;
+    background:linear-gradient(135deg,#ffffff,#cce0ff);
+    width:200px;
     border-radius:15px;
     padding:12px;
-    box-shadow:0 5px 15px rgba(0,0,0,0.2);
+    box-shadow:0 5px 18px rgba(0,0,0,0.25);
     transition:0.3s;
     text-align:center;
     cursor:pointer;
@@ -92,45 +95,57 @@ header h1 span:last-child{color:#1A73E8;}
 }
 .price{
     font-weight:bold;
-    color:#ff5722;
+    color:#1A73E8;
     font-size:16px;
 }
 .card:hover{
     transform:scale(1.05);
-    box-shadow:0 8px 20px rgba(0,0,0,0.35);
+    box-shadow:0 8px 25px rgba(0,0,0,0.35);
 }
-
-/* الأزرار داخل الكرت */
 .card button{
     background:#4CAF50;
     border:none;
     padding:10px;
-    border-radius:10px;
+    border-radius:12px;
     color:white;
     cursor:pointer;
     font-weight:bold;
     width:100%;
+    margin-top:6px;
+    transition:0.3s;
 }
 .card button:hover{
     background:linear-gradient(135deg,#6fb1fc,#1A73E8);
     transform:scale(1.05);
-    transition:0.3s;
 }
 
 /* السلة */
 #cart{
     background:#ffffffaa;
-    padding:15px;
+    padding:18px;
     border-radius:15px;
-    margin:15px 0 30px 0;
-    box-shadow:0 0 10px rgba(0,0,0,0.2);
+    margin:20px 0 30px 0;
+    box-shadow:0 0 15px rgba(0,0,0,0.25);
     width:95%;
 }
-#cartItems p{margin:5px 0;}
+#cartItems p{
+    margin:6px 0;
+    font-size:16px;
+}
+#cart button{
+    background:#1A73E8;
+    color:white;
+    font-weight:bold;
+    padding:12px;
+    border-radius:12px;
+    border:none;
+    cursor:pointer;
+    width:100%;
+    margin-top:10px;
+    transition:0.3s;
+}
 #cart button:hover{
     background:linear-gradient(135deg,#6fb1fc,#1A73E8);
-    transform:scale(1.03);
-    transition:0.3s;
 }
 
 /* بانل الأدمن */
@@ -146,26 +161,29 @@ header h1 span:last-child{color:#1A73E8;}
     background:#e0f0ff;
     border-radius:12px;
     padding:20px;
-    max-width:350px;
+    max-width:380px;
     margin:80px auto;
-    box-shadow:0 0 15px rgba(0,0,0,0.5);
+    box-shadow:0 0 20px rgba(0,0,0,0.5);
 }
 .admin-box input{
     width:90%;
-    padding:10px;
+    padding:12px;
     margin:10px 0;
     border-radius:8px;
     border:none;
+    font-size:16px;
 }
 .admin-box button{
     width:90%;
-    margin-top:8px;
+    margin-top:10px;
+    padding:12px;
+    font-size:16px;
 }
 </style>
 </head>
 <body>
 
-<!-- Sidebar -->
+<!-- Sidebar الأقسام -->
 <div id="sidebar">
 <button onclick="showCategory('300-500')">300-500</button>
 <button onclick="showCategory('500-1000')">500-1000</button>
@@ -209,18 +227,18 @@ header h1 span:last-child{color:#1A73E8;}
 </div>
 
 <script>
-// إعدادات أساسية
+// الإعدادات الأساسية
 let cart=[];
 let adminClickCounter=0;
 const adminPassword="12345";
 
 // منتجات تجريبية
 let products=[
-{img:"https://via.placeholder.com/180x120.png?text=FreeFire1", name:"حساب FF 1", price:400, category:"300-500"},
-{img:"https://via.placeholder.com/180x120.png?text=FreeFire2", name:"حساب FF 2", price:600, category:"500-1000"},
-{img:"https://via.placeholder.com/180x120.png?text=FreeFire3", name:"حساب FF 3", price:1200, category:"1000+"},
-{img:"https://via.placeholder.com/180x120.png?text=FreeFire4", name:"حساب FF 4", price:350, category:"300-500"},
-{img:"https://via.placeholder.com/180x120.png?text=FreeFire5", name:"حساب FF 5", price:900, category:"500-1000"}
+{img:"https://via.placeholder.com/200x120.png?text=FreeFire1", name:"حساب FF 1", price:400, category:"300-500"},
+{img:"https://via.placeholder.com/200x120.png?text=FreeFire2", name:"حساب FF 2", price:600, category:"500-1000"},
+{img:"https://via.placeholder.com/200x120.png?text=FreeFire3", name:"حساب FF 3", price:1200, category:"1000+"},
+{img:"https://via.placeholder.com/200x120.png?text=FreeFire4", name:"حساب FF 4", price:350, category:"300-500"},
+{img:"https://via.placeholder.com/200x120.png?text=FreeFire5", name:"حساب FF 5", price:900, category:"500-1000"}
 ];
 
 // بانل الأدمن بعد 10 ضغطات
