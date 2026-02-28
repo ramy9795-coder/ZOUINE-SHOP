@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZOUINE CHOP | المتجر المتكامل</title>
+    <title>ZOUINE CHOP | العرض الكامل</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
@@ -11,19 +11,17 @@
         :root {
             --main-blue: #007bff;
             --dark-bg: #0a0a0a;
-            --card-bg: #151515;
-            --white: #ffffff;
+            --card-bg: #ffffff; /* جعل خلفية الكارت بيضاء لتبرز الصورة */
+            --text-color: #1a1a1a;
         }
 
         body {
             font-family: 'Cairo', sans-serif;
             margin: 0; padding: 0;
             background-color: var(--dark-bg);
-            color: var(--white);
-            overflow-x: hidden;
+            color: white;
         }
 
-        /* الهيدر */
         header {
             background-color: #000;
             border-bottom: 2px solid var(--main-blue);
@@ -32,59 +30,84 @@
             position: sticky; top: 0; z-index: 1000;
         }
 
-        .logo { font-size: 1.8rem; font-weight: 900; color: var(--main-blue); }
-
         .cart-icon {
-            background: var(--main-blue);
-            color: white; padding: 10px 20px; border-radius: 50px;
-            cursor: pointer; position: relative; border: none; font-weight: bold;
+            background: var(--main-blue); color: white; padding: 10px 20px;
+            border-radius: 50px; cursor: pointer; border: none; font-weight: bold;
         }
 
-        /* واجهة العرض */
+        /* تعديل منطقة الهيرو (الخلفية العلوية) */
         .hero {
-            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.7)), url('https://img.sanishtech.com/u/62f53496d8a23522dfbedcc643094b28.jpg');
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.8)), url('https://i.ibb.co/1Jw683f0/your-image.jpg');
             background-size: cover; background-position: center;
-            height: 40vh; display: flex; flex-direction: column;
-            justify-content: center; align-items: center; text-align: center;
+            height: 30vh; display: flex; align-items: center; justify-content: center;
         }
 
-        /* شبكة المنتجات */
         .container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
+        
+        /* تصميم الكارت الجديد: الصورة أولاً وبحجمها الكامل */
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
 
         .card {
-            background: var(--card-bg); border-radius: 15px; overflow: hidden;
-            border: 1px solid #222; transition: 0.3s;
+            background: var(--card-bg); 
+            border-radius: 12px; 
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
         }
-        .card:hover { transform: translateY(-5px); border-color: var(--main-blue); }
 
-        .image-box { width: 100%; height: 250px; background: #111; overflow: hidden; }
-        .image-box img { width: 100%; height: 100%; object-fit: cover; }
+        .image-box {
+            width: 100%;
+            background: #f0f0f0;
+            line-height: 0; /* لإزالة الفراغات أسفل الصورة */
+        }
 
-        .info { padding: 15px; text-align: center; }
-        .price { color: var(--main-blue); font-size: 1.5rem; font-weight: bold; margin: 10px 0; }
+        .image-box img {
+            width: 100%;
+            height: auto; /* يجعل الصورة تأخذ حجمها الطبيعي بالكامل */
+            display: block;
+            object-fit: contain; /* يضمن عدم قص أي جزء من الصورة */
+        }
+
+        .info { 
+            padding: 20px; 
+            text-align: right; 
+            color: var(--text-color); 
+        }
+
+        .info h3 { margin: 0 0 10px 0; font-size: 1.4rem; color: #000; }
+
+        .price { 
+            color: var(--main-blue); 
+            font-size: 1.6rem; 
+            font-weight: 900; 
+            margin-bottom: 15px; 
+        }
 
         .btn-add-cart {
-            background: var(--main-blue); color: white; border: none; width: 100%;
-            padding: 12px; border-radius: 8px; cursor: pointer; font-weight: bold;
+            background: var(--main-blue); 
+            color: white; 
+            border: none; 
+            width: 100%;
+            padding: 15px; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: 0.3s;
         }
+        .btn-add-cart:hover { background: #0056b3; }
 
-        /* نافذة السلة (Modal) */
+        /* مودال السلة */
         #cart-modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.9); z-index: 2000; justify-content: center; align-items: center;
         }
         .cart-content {
-            background: #111; width: 90%; max-width: 500px; padding: 30px;
-            border-radius: 20px; border: 1px solid var(--main-blue); position: relative;
+            background: white; color: black; width: 90%; max-width: 500px; padding: 25px;
+            border-radius: 15px; position: relative;
         }
-        .close-cart { position: absolute; top: 15px; left: 15px; cursor: pointer; color: red; font-size: 1.5rem; }
-
-        .cart-item {
-            display: flex; justify-content: space-between; align-items: center;
-            border-bottom: 1px solid #222; padding: 10px 0;
-        }
-
+        .cart-item { display: flex; justify-content: space-between; border-bottom: 1px solid #eee; padding: 10px 0; }
         .whatsapp-order {
             background: #25d366; color: white; text-align: center; display: block;
             padding: 15px; border-radius: 10px; margin-top: 20px; text-decoration: none; font-weight: bold;
@@ -92,10 +115,10 @@
 
         /* لوحة التحكم */
         #admin-panel {
-            display: none; background: #000; padding: 20px; border: 1px dashed var(--main-blue);
+            display: none; background: #1a1a1a; padding: 20px; border: 2px dashed var(--main-blue);
             margin-bottom: 30px; border-radius: 10px;
         }
-        .admin-form input { width: 100%; padding: 10px; margin-bottom: 10px; background: #111; color: white; border: 1px solid #333; }
+        .admin-form input { width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 5px; border: 1px solid #333; }
 
         footer { text-align: center; padding: 40px; color: #444; }
     </style>
@@ -103,25 +126,24 @@
 <body>
 
 <header>
-    <div class="logo">ZOUINE CHOP</div>
+    <div class="logo" style="color:var(--main-blue); font-weight:900; font-size:1.5rem;">ZOUINE CHOP</div>
     <button class="cart-icon" onclick="toggleCart()">
-        <i class="fas fa-shopping-cart"></i> السلة (<span id="cart-count">0</span>)
+        <i class="fas fa-shopping-basket"></i> السلة (<span id="cart-count">0</span>)
     </button>
 </header>
 
 <section class="hero">
-    <h1>ZOUINE CHOP</h1>
-    <p>اختر منتجاتك وسنتواصل معك فوراً</p>
+    <h1 style="font-size: 3rem; text-shadow: 2px 2px 10px #000;">ZOUINE CHOP</h1>
 </section>
 
 <div class="container">
     <div id="admin-panel">
-        <h3 style="color:var(--main-blue)">إضافة منتج جديد</h3>
+        <h3 style="color:var(--main-blue)">لوحة إضافة المنتجات</h3>
         <div class="admin-form">
-            <input type="text" id="n" placeholder="اسم المنتج">
-            <input type="text" id="i" placeholder="رابط الصورة">
-            <input type="number" id="p" placeholder="الثمن">
-            <button onclick="addProduct()" class="btn-add-cart">نشر المنتج</button>
+            <input type="text" id="n" placeholder="اسم المنتج (مثلاً: حذاء رياضي)">
+            <input type="text" id="i" placeholder="رابط الصورة المباشر">
+            <input type="number" id="p" placeholder="الثمن بالدرهم">
+            <button onclick="addProduct()" class="btn-add-cart">إضافة للمتجر الآن</button>
         </div>
     </div>
 
@@ -130,29 +152,29 @@
 
 <div id="cart-modal">
     <div class="cart-content">
-        <span class="close-cart" onclick="toggleCart()">&times;</span>
-        <h3 style="color:var(--main-blue)">سلتي المشتراة</h3>
+        <span style="float:left; cursor:pointer; color:red; font-weight:bold;" onclick="toggleCart()">إغلاق</span>
+        <h3>سلة الطلبات</h3>
         <div id="cart-items-list"></div>
-        <div style="margin-top: 20px; font-weight: bold;">المجموع: <span id="total-price">0</span> درهم</div>
+        <div style="margin-top: 20px; font-size: 1.2rem; font-weight: bold;">المجموع الكلي: <span id="total-price">0</span> درهم</div>
         <a href="#" class="whatsapp-order" onclick="sendWhatsApp()">
-            <i class="fab fa-whatsapp"></i> إتمام الطلب عبر واتساب
+            <i class="fab fa-whatsapp"></i> إرسال الطلب عبر واتساب
         </a>
     </div>
 </div>
 
 <footer>
-    <p id="admin-trigger">ZOUINE CHOP &copy; 2026 - جميع الحقوق محفوظة</p>
+    <p id="admin-trigger">ZOUINE CHOP &copy; 2026</p>
 </footer>
 
 <script>
-    let myPhone = "212644404084"; // رقمك
-    let products = JSON.parse(localStorage.getItem('zouine_shop_db')) || [];
-    let cart = JSON.parse(localStorage.getItem('zouine_cart_db')) || [];
+    let myPhone = "212644404084";
+    let products = JSON.parse(localStorage.getItem('zouine_v4_db')) || [];
+    let cart = JSON.parse(localStorage.getItem('zouine_v4_cart')) || [];
 
-    // إدارة المنتجات
     document.getElementById('admin-trigger').onclick = function() {
-        if(prompt("الرمز:") === "12345") {
+        if(prompt("كلمة السر:") === "12345") {
             document.getElementById('admin-panel').style.display = 'block';
+            renderProducts();
         }
     }
 
@@ -162,9 +184,9 @@
         let p = document.getElementById('p').value;
         if(n && p) {
             products.push({n, i, p});
-            localStorage.setItem('zouine_shop_db', JSON.stringify(products));
+            localStorage.setItem('zouine_v4_db', JSON.stringify(products));
             renderProducts();
-            alert("تم الحفظ بنجاح!");
+            alert("تمت الإضافة!");
         }
     }
 
@@ -172,27 +194,24 @@
         let grid = document.getElementById('products-grid');
         grid.innerHTML = products.map((prod, idx) => `
             <div class="card">
-                <div class="image-box"><img src="${prod.i || 'https://via.placeholder.com/300'}" onerror="this.src='https://via.placeholder.com/300'"></div>
+                <div class="image-box">
+                    <img src="${prod.i || 'https://via.placeholder.com/400x400?text=No+Image'}" alt="${prod.n}">
+                </div>
                 <div class="info">
                     <h3>${prod.n}</h3>
                     <div class="price">${prod.p} درهم</div>
                     <button class="btn-add-cart" onclick="addToCart(${idx})">إضافة إلى السلة</button>
-                    ${document.getElementById('admin-panel').style.display === 'block' ? `<button onclick="delProd(${idx})" style="background:red; border:none; color:white; margin-top:5px; cursor:pointer; width:100%; padding:5px; border-radius:5px;">حذف</button>` : ''}
+                    ${document.getElementById('admin-panel').style.display === 'block' ? `<button onclick="delProd(${idx})" style="background:#ff4444; color:white; border:none; margin-top:10px; cursor:pointer; width:100%; padding:8px; border-radius:5px;">حذف المنتج</button>` : ''}
                 </div>
             </div>
         `).join('');
     }
 
-    // إدارة السلة
     function addToCart(idx) {
         cart.push(products[idx]);
-        saveCart();
-        alert("تمت إضافة " + products[idx].n + " إلى السلة");
-    }
-
-    function saveCart() {
-        localStorage.setItem('zouine_cart_db', JSON.stringify(cart));
+        localStorage.setItem('zouine_v4_cart', JSON.stringify(cart));
         document.getElementById('cart-count').innerText = cart.length;
+        alert("تمت الإضافة للسلة!");
     }
 
     function toggleCart() {
@@ -206,19 +225,15 @@
         let total = 0;
         list.innerHTML = cart.map((item, idx) => {
             total += parseInt(item.p);
-            return `
-                <div class="cart-item">
-                    <span>${item.n}</span>
-                    <span>${item.p} درهم <i class="fas fa-trash" style="color:red; cursor:pointer; margin-right:10px;" onclick="removeFromCart(${idx})"></i></span>
-                </div>
-            `;
+            return `<div class="cart-item"><span>${item.n}</span><span>${item.p} درهم <i class="fas fa-trash" style="color:red; margin-right:10px; cursor:pointer;" onclick="removeItem(${idx})"></i></span></div>`;
         }).join('');
         document.getElementById('total-price').innerText = total;
     }
 
-    function removeFromCart(idx) {
+    function removeItem(idx) {
         cart.splice(idx, 1);
-        saveCart();
+        localStorage.setItem('zouine_v4_cart', JSON.stringify(cart));
+        document.getElementById('cart-count').innerText = cart.length;
         renderCart();
     }
 
@@ -226,19 +241,18 @@
         if(cart.length === 0) return alert("السلة فارغة!");
         let text = "طلب جديد من ZOUINE CHOP:\n";
         cart.forEach(item => text += `- ${item.n} (${item.p} درهم)\n`);
-        text += "\nالمجموع الكلي: " + document.getElementById('total-price').innerText + " درهم";
+        text += "\nالمجموع: " + document.getElementById('total-price').innerText + " درهم";
         window.open(`https://wa.me/${myPhone}?text=${encodeURIComponent(text)}`);
     }
 
     function delProd(idx) {
         if(confirm("حذف؟")) {
             products.splice(idx, 1);
-            localStorage.setItem('zouine_shop_db', JSON.stringify(products));
+            localStorage.setItem('zouine_v4_db', JSON.stringify(products));
             renderProducts();
         }
     }
 
-    // التشغيل الأولي
     renderProducts();
     document.getElementById('cart-count').innerText = cart.length;
 </script>
