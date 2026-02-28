@@ -7,14 +7,14 @@
 body{
     margin:0;
     font-family:Arial;
-    background:linear-gradient(135deg,#0a1a4f,#1a0033);
+    background: linear-gradient(135deg,#0a1a4f,#1a0033);
     color:white;
     text-align:center;
 }
 
 /* Banner */
 header{
-    background:#141b3d url("https://via.placeholder.com/600x220.png?text=بانر+ZOUINE+SHOP") center/cover no-repeat;
+    background:#0a1a4f url("https://via.placeholder.com/600x220.png?text=بانر+ZOUINE+SHOP") center/cover no-repeat;
     padding:50px 10px;
     box-shadow:0 4px 15px black;
 }
@@ -39,14 +39,15 @@ header h1{
 
 /* Card */
 .card{
-    background:#141b3d;
+    background: linear-gradient(145deg,#2e1f4d,#1c1a3d);
     width:220px;
     border-radius:15px;
     padding:12px;
-    box-shadow:0 0 12px #000;
+    box-shadow:0 0 15px #000;
     transition:0.3s;
+    position:relative;
 }
-.card:hover{transform:scale(1.03);}
+.card:hover{transform:scale(1.05);}
 .card img{
     width:100%;
     border-radius:12px;
@@ -54,7 +55,15 @@ header h1{
 .price{
     color:#00ffcc;
     font-weight:bold;
+    font-size:16px;
 }
+
+/* Delete button */
+.card button.delete{
+    background:#e74c3c;
+    margin-top:5px;
+}
+.card button.delete:hover{background:#c0392b;}
 
 /* Buttons */
 button{
@@ -67,6 +76,7 @@ button{
     width:100%;
     font-weight:bold;
     margin-top:5px;
+    transition:0.3s;
 }
 button:hover{background:#27ae60;}
 
@@ -111,6 +121,14 @@ button:hover{background:#27ae60;}
     margin-top:10px;
     text-align:right;
 }
+
+/* Category titles */
+.category-title{
+    text-align:right;
+    margin:15px 0 5px 0;
+    font-size:18px;
+    color:#4da6ff;
+}
 </style>
 </head>
 <body>
@@ -123,7 +141,7 @@ button:hover{background:#27ae60;}
 
 <div class="section">
 <h2>🛍 المنتجات</h2>
-<div class="products" id="productList"></div>
+<div id="productList"></div>
 </div>
 
 <h2>🛒 سلة المشتريات</h2>
@@ -157,13 +175,16 @@ button:hover{background:#27ae60;}
 <script>
 let cart=[];
 let clickCount=0;
-const adminPassword="12345"; // يمكنك تغييره
-let products=[];
+const adminPassword="12345";
 
-// تحميل المنتجات من LocalStorage عند فتح الموقع
-if(localStorage.getItem('products')){
-    products = JSON.parse(localStorage.getItem('products'));
-}
+// منتجات تجريبية
+let products=[
+{img:"https://via.placeholder.com/200x150.png?text=FreeFire1", name:"حساب FF 1", price:400, category:"300-500"},
+{img:"https://via.placeholder.com/200x150.png?text=FreeFire2", name:"حساب FF 2", price:600, category:"500-1000"},
+{img:"https://via.placeholder.com/200x150.png?text=FreeFire3", name:"حساب FF 3", price:1200, category:"1000+"},
+{img:"https://via.placeholder.com/200x150.png?text=FreeFire4", name:"حساب FF 4", price:350, category:"300-500"},
+{img:"https://via.placeholder.com/200x150.png?text=FreeFire5", name:"حساب FF 5", price:900, category:"500-1000"}
+];
 
 // فتح بانل الأدمن بعد 5 ضغطات
 document.body.addEventListener("click",()=>{
@@ -201,29 +222,42 @@ if(!img||!name||!price){
     return;
 }
 
-// تقسيم المنتجات حسب السعر
 let category = '';
 if(price>=300 && price<=500) category='300-500';
 else if(price>500 && price<=1000) category='500-1000';
 else category='1000+';
 
 products.push({img,name,price,category});
-localStorage.setItem('products', JSON.stringify(products));
 renderProducts();
 alert("تمت إضافة الحساب ✅");
 }
 
+function deleteProduct(name){
+products = products.filter(p=>p.name!==name);
+renderProducts();
+}
+
+// عرض المنتجات مع تقسيم حسب الفئات
 function renderProducts(){
-let list=document.getElementById("productList");
+let list = document.getElementById("productList");
 list.innerHTML="";
-products.forEach(p=>{
-list.innerHTML+=`
-<div class="card">
-<img src="${p.img}">
-<h3>${p.name}</h3>
-<p class="price">${p.price} درهم</p>
-<button onclick="addToCart('${p.name}',${p.price})">أضف إلى السلة</button>
-</div>`;
+
+let categories = ["300-500","500-1000","1000+"];
+categories.forEach(cat=>{
+    let catProducts = products.filter(p=>p.category===cat);
+    if(catProducts.length>0){
+        list.innerHTML+=`<div class="category-title">السعر: ${cat}</div>`;
+        catProducts.forEach(p=>{
+            list.innerHTML+=`
+            <div class="card">
+            <img src="${p.img}">
+            <h3>${p.name}</h3>
+            <p class="price">${p.price} درهم</p>
+            <button onclick="addToCart('${p.name}',${p.price})">أضف إلى السلة</button>
+            <button class="delete" onclick="deleteProduct('${p.name}')">حذف المنتج</button>
+            </div>`;
+        });
+    }
 });
 }
 
