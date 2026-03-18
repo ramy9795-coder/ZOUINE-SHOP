@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ZOUINE Chop - Boutique</title>
+<title>Malika Louche - Boutique</title>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
 <style>
 body{
   margin:0;
-  font-family:'Cairo', sans-serif;
+  font-family:'Cairo';
   background:#050816;
   color:white;
 }
@@ -74,6 +74,7 @@ header{
 .btn:hover{
   background:#00f;
   color:#fff;
+  transform:scale(1.05);
 }
 
 /* CHAT BOX */
@@ -84,7 +85,7 @@ header{
   background:#001f3d;
   display:none;
   padding:10px;
-  border-top:3px solid #0ff;
+  box-shadow:0 -5px 15px #0ff;
 }
 #chat{
   height:200px;
@@ -92,6 +93,7 @@ header{
   background:#000c1f;
   padding:10px;
   border-radius:10px;
+  margin-bottom:5px;
 }
 .msg{
   background:#0a1f3d;
@@ -105,12 +107,10 @@ input{
   border:none;
   border-radius:10px;
   margin-top:5px;
-  color:white;
-  background:#0a1f3d;
 }
 </style>
 
-<!-- Firebase SDK -->
+<!-- Firebase SDKs -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
@@ -119,7 +119,7 @@ input{
 <body>
 
 <header id="header">
-  <h2 class="title">💀 ZOUINE Chop 💀</h2>
+  <h2 class="title">💀 Malika Louche 💀</h2>
   <p class="sub">🔥 FreeFire Accounts 🔥</p>
 </header>
 
@@ -139,16 +139,19 @@ const firebaseConfig = {
   projectId: "zouine-chop",
   storageBucket: "zouine-chop.appspot.com",
   messagingSenderId: "363784604705",
-  appId: "1:363784604705:web:REPLACE_WITH_YOUR_WEB_APP_ID"
+  appId: "1:363784604705:web:REPLACE_THIS_WITH_WEB_APP_ID"
 };
 
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
-firebase.auth().signInAnonymously().catch(console.error);
+const auth = firebase.auth();
+
+// Auth anonymement
+auth.signInAnonymously().catch(console.error);
 
 // ======== PRODUITS ========
-const products = [
+let products = [
   {name:"Compte VIP 1", price:50, img:"https://via.placeholder.com/400x400?text=VIP1"},
   {name:"Compte VIP 2", price:70, img:"https://via.placeholder.com/400x400?text=VIP2"},
   {name:"Compte VIP 3", price:100, img:"https://via.placeholder.com/400x400?text=VIP3"},
@@ -169,39 +172,33 @@ function renderProducts(){
   document.getElementById("products").innerHTML = html;
 }
 
-// ======== CHAT REALTIME ========
-const chatRef = db.collection("chat");
-
-function renderChat(messages){
-  const chatDiv = document.getElementById("chat");
-  chatDiv.innerHTML = "";
-  messages.forEach(m=>{
-    chatDiv.innerHTML += `<div class="msg">${m.text}</div>`;
-  });
-  chatDiv.scrollTop = chatDiv.scrollHeight;
+// ======== CHAT ========
+function openChat(){
+  document.getElementById("chatBox").style.display = "block";
 }
 
-// Écoute en temps réel
-chatRef.orderBy("timestamp").onSnapshot(snapshot=>{
-  const msgs = snapshot.docs.map(doc => doc.data());
-  renderChat(msgs);
+// Récupérer les messages en temps réel
+db.collection("messages").orderBy("timestamp").onSnapshot(snapshot=>{
+  const chat = document.getElementById("chat");
+  chat.innerHTML = "";
+  snapshot.forEach(doc=>{
+    let m = doc.data();
+    chat.innerHTML += `<div class="msg">${m.text}</div>`;
+  });
+  chat.scrollTop = chat.scrollHeight;
 });
 
 function sendMsg(){
-  const text = document.getElementById("msg").value;
+  let text = document.getElementById("msg").value;
   if(!text) return;
-  chatRef.add({
-    text,
+  db.collection("messages").add({
+    text: text,
     timestamp: firebase.firestore.FieldValue.serverTimestamp()
   });
   document.getElementById("msg").value = "";
 }
 
-function openChat(){
-  document.getElementById("chatBox").style.display = "block";
-}
-
-/* INIT */
+// Init
 renderProducts();
 </script>
 
