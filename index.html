@@ -13,32 +13,36 @@
 body{
     margin:0;
     font-family:'Cairo',sans-serif;
-    background:#f5f7fb;
-    color:#222;
+    background:#eef3f9;
 }
 
 /* HEADER */
 header{
-    background:#0a2540;
+    background:#0a3d62;
     color:white;
     text-align:center;
     padding:15px;
-    font-size:20px;
 }
 
 /* PRODUCTS */
 #products{
-    padding:10px;
     display:grid;
     grid-template-columns:1fr;
     gap:15px;
+    padding:10px;
 }
 
 .card{
     background:white;
     border-radius:15px;
     overflow:hidden;
-    box-shadow:0 5px 20px rgba(0,0,0,0.1);
+    box-shadow:0 4px 15px rgba(0,0,0,0.1);
+    animation:fade 0.3s;
+}
+
+@keyframes fade{
+    from{opacity:0; transform:scale(0.9);}
+    to{opacity:1;}
 }
 
 .card img{
@@ -52,7 +56,7 @@ header{
 }
 
 .price{
-    color:#0077ff;
+    color:#0a3d62;
     font-weight:bold;
 }
 
@@ -61,9 +65,8 @@ button{
     padding:10px;
     border:none;
     border-radius:10px;
-    background:#0077ff;
+    background:#0a3d62;
     color:white;
-    margin-top:5px;
 }
 
 /* CART */
@@ -71,9 +74,10 @@ button{
     position:fixed;
     bottom:20px;
     right:20px;
-    background:#0077ff;
+    background:#0a3d62;
     padding:12px;
     border-radius:50%;
+    color:white;
 }
 
 #cart{
@@ -86,38 +90,66 @@ button{
     border-radius:20px 20px 0 0;
 }
 
+/* CHAT BUTTON */
+#chat-btn{
+    position:fixed;
+    bottom:20px;
+    left:20px;
+    background:#0a3d62;
+    color:white;
+    padding:12px;
+    border-radius:50%;
+}
+
 /* CHAT */
 #chat{
     position:fixed;
-    top:0;
-    right:0;
+    bottom:0;
+    left:0;
     width:100%;
     max-width:400px;
     height:100%;
-    background:white;
+    background:#ece5dd;
     display:none;
+    flex-direction:column;
 }
 
-#chat-box{
-    height:80%;
+#messages{
+    flex:1;
     overflow:auto;
     padding:10px;
 }
 
 .msg{
-    margin:5px;
+    max-width:70%;
     padding:8px;
+    margin:5px;
     border-radius:10px;
 }
 
-.client{background:#e5e5e5;}
-.admin{background:#0077ff;color:white;}
+.client{
+    background:#dcf8c6;
+    margin-left:auto;
+}
 
-input{
-    width:100%;
+.bot{
+    background:white;
+}
+
+/* INPUT */
+#input{
+    display:flex;
+}
+
+#input input{
+    flex:1;
     padding:10px;
     border:none;
-    border-top:1px solid #ccc;
+}
+
+#input button{
+    background:#0a3d62;
+    color:white;
 }
 
 </style>
@@ -129,27 +161,37 @@ input{
 
 <div id="products"></div>
 
+<!-- CART -->
 <button id="cart-btn" onclick="toggleCart()">🛒 <span id="count">0</span></button>
 
 <div id="cart">
 <h3>السلة</h3>
 <div id="cart-items"></div>
 <h4>المجموع: <span id="total">0</span> درهم</h4>
-<button onclick="sendOrder()">إرسال الطلب</button>
-<button onclick="openChat()">💬 تواصل</button>
 </div>
 
 <!-- CHAT -->
+<div id="chat-btn" onclick="openChat()">💬</div>
+
 <div id="chat">
-<div id="chat-box"></div>
+<div id="messages"></div>
+
+<div id="input">
 <input id="msg" placeholder="كتب رسالة..." onkeypress="if(event.key==='Enter') sendMsg()">
+<button onclick="sendMsg()">➤</button>
+</div>
 </div>
 
 <script>
 
-let products = JSON.parse(localStorage.getItem('db')) || [];
-let cart = JSON.parse(localStorage.getItem('cart')) || [];
-let messages = JSON.parse(localStorage.getItem('msgs')) || [];
+/* DATA */
+let products = [
+    {n:"منتج 1", i:"https://via.placeholder.com/400", p:50},
+    {n:"منتج 2", i:"https://via.placeholder.com/400", p:80}
+];
+
+let cart = [];
+let msgs = [];
 
 /* PRODUCTS */
 function renderProducts(){
@@ -161,7 +203,7 @@ function renderProducts(){
             <div class="info">
                 <h3>${p.n}</h3>
                 <div class="price">${p.p} درهم</div>
-                <button onclick="addToCart(${i})">أضف للسلة</button>
+                <button onclick="addToCart(${i})">إضافة</button>
             </div>
         </div>
     `).join('');
@@ -170,7 +212,6 @@ function renderProducts(){
 /* CART */
 function addToCart(i){
     cart.push(products[i]);
-    localStorage.setItem('cart',JSON.stringify(cart));
     document.getElementById('count').innerText = cart.length;
 }
 
@@ -185,54 +226,63 @@ function renderCart(){
     let total = 0;
 
     div.innerHTML = cart.map(p=>{
-        total += parseInt(p.p);
-        return `<div>${p.n} - ${p.p}</div>`;
+        total += p.p;
+        return `<div>${p.n} - ${p.p} درهم</div>`;
     }).join('');
 
     document.getElementById('total').innerText = total;
 }
 
-/* ORDER */
-function sendOrder(){
-    let msg = "طلب:\n";
-    cart.forEach(p=>{
-        msg += `- ${p.n} (${p.p})\n`;
-    });
-
-    messages.push({from:"client",text:msg});
-    localStorage.setItem('msgs',JSON.stringify(messages));
-
-    alert("تم إرسال الطلب");
-}
-
 /* CHAT */
 function openChat(){
-    document.getElementById('chat').style.display="block";
+    document.getElementById('chat').style.display="flex";
     renderMsgs();
 }
 
 function sendMsg(){
-    let txt = document.getElementById('msg').value;
-    if(!txt) return;
+    let input = document.getElementById('msg');
+    let text = input.value;
 
-    messages.push({from:"client",text:txt});
-    localStorage.setItem('msgs',JSON.stringify(messages));
+    if(!text) return;
 
-    document.getElementById('msg').value="";
+    msgs.push({type:"client", text:text});
+    input.value="";
+    renderMsgs();
+
+    setTimeout(()=>botReply(text),800);
+}
+
+/* BOT */
+function botReply(text){
+
+    let reply = "مرحبا 👋";
+
+    if(text.includes("ثمن")){
+        reply = "الأثمنة مكتوبة فالموقع 🛍️";
+    }
+    else if(text.includes("سلام")){
+        reply = "وعليكم السلام 😊";
+    }
+    else{
+        reply = "شكرا على الرسالة ديالك 👍";
+    }
+
+    msgs.push({type:"bot", text:reply});
     renderMsgs();
 }
 
 function renderMsgs(){
-    let box = document.getElementById('chat-box');
+    let box = document.getElementById('messages');
 
-    box.innerHTML = messages.map(m=>`
-        <div class="msg ${m.from}">${m.text}</div>
+    box.innerHTML = msgs.map(m=>`
+        <div class="msg ${m.type}">${m.text}</div>
     `).join('');
+
+    box.scrollTop = box.scrollHeight;
 }
 
 /* INIT */
 renderProducts();
-document.getElementById('count').innerText = cart.length;
 
 </script>
 
