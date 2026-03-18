@@ -3,182 +3,273 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ZOUINE CHOP - Ultra Max</title>
+<title>ZOUINE CHOP</title>
+
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+
 <style>
-body{margin:0;font-family:'Cairo',sans-serif;background:#0b0c17;color:white;}
-header{background:#0a1f3d;padding:15px;text-align:center;position:relative;}
-#online{position:absolute;top:10px;right:10px;font-size:12px;color:#0ff;}
-#products{padding:10px;display:grid;grid-template-columns:1fr 1fr;gap:15px;}
-.card{background:#0a1f3d;border-radius:15px;overflow:hidden;box-shadow:0 0 10px #00f;cursor:pointer;transition:.3s;border:1px solid #00f;}
-.card:hover{box-shadow:0 0 15px #0ff,0 0 25px #00f inset;transform:scale(1.05);}
-.card img{width:100%;height:150px;object-fit:cover;}
-.info{padding:10px;text-align:center;}
-.price{color:#00f;font-weight:bold;}
-button{padding:8px;border:none;border-radius:10px;background:#001f3d;color:#0ff;margin-top:5px;cursor:pointer;}
-#cart{position:fixed;bottom:0;width:100%;background:#001f3d;display:none;padding:15px;border-radius:15px 15px 0 0;}
-#chat{display:none;margin-top:10px;background:#000c1f;padding:10px;border-radius:10px;}
-.msg{padding:6px;margin:5px;border-radius:8px;}
-.client{background:#005f99;text-align:right;}
-.bot{background:#0a1f3d;text-align:left;}
-#admin-panel{display:none;background:#fff;color:#0a1f3d;padding:15px;border-radius:15px;margin:10px;box-shadow:0 0 20px #00f;}
-#toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#0a1f3d;color:#0ff;padding:10px 20px;border-radius:20px;opacity:0;transition:.3s;}
-.login-box{position:fixed;top:0;left:0;width:100%;height:100%;background:#0a1f3d;display:flex;flex-direction:column;justify-content:center;align-items:center;}
-.login-box input{padding:10px;margin:5px;border-radius:10px;border:none;width:200px;}
-.login-box button{padding:10px;width:220px;margin-top:10px;border:none;border-radius:10px;background:#00f;color:#fff;cursor:pointer;}
+body{
+margin:0;
+font-family:'Cairo',sans-serif;
+background:#0b0c17;
+color:white;
+}
+
+/* HEADER */
+header{
+background:#0a1f3d;
+padding:15px;
+text-align:center;
+font-size:20px;
+cursor:pointer;
+}
+
+/* PRODUCTS */
+#products{
+padding:10px;
+display:grid;
+gap:15px;
+}
+
+.card{
+background:#111827;
+border-radius:15px;
+overflow:hidden;
+}
+
+.card img{
+width:100%;
+height:180px;
+object-fit:cover;
+}
+
+.info{padding:12px;}
+
+.price{color:#00aaff;font-weight:bold;}
+
+button{
+width:100%;
+padding:12px;
+border:none;
+border-radius:10px;
+margin-top:5px;
+font-size:16px;
+}
+
+.buy{background:#00c853;color:white;}
+.delete{background:red;color:white;}
+
+/* CART */
+#cart{
+position:fixed;
+bottom:0;
+width:100%;
+background:#111;
+display:none;
+padding:15px;
+border-radius:20px 20px 0 0;
+}
+
+/* CHAT */
+#chat{display:none;margin-top:10px;}
+.msg{padding:8px;margin:5px;border-radius:10px;}
+.client{background:#00aaff;text-align:right;}
+.admin{background:#333;text-align:left;}
+
+/* ADMIN */
+#admin{display:none;background:#111;padding:15px;}
+
+/* LOGIN */
+#login{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:#0b0c17;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+}
+
+input{
+padding:12px;
+margin:5px;
+border-radius:10px;
+border:none;
+width:80%;
+}
 </style>
 </head>
+
 <body>
 
-<header>
-ZOUINE CHOP - FreeFire Accounts
-<div id="online">🟢 1 online</div>
-</header>
+<header id="header">ZOUINE CHOP</header>
 
 <!-- LOGIN -->
-<div id="login" class="login-box">
-<h2>تسجيل الدخول / إنشاء حساب</h2>
-<input id="login-user" placeholder="اسم المستخدم">
-<input id="login-pass" placeholder="كلمة السر" type="password">
-<button onclick="login()">دخول / تسجيل</button>
-<p style="font-size:12px;color:#aaa;">⚠️ إذا نسيت كلمة السر لن تستطيع الدخول!</p>
+<div id="login">
+<input id="user" placeholder="اسم المستخدم">
+<input id="pass" placeholder="كلمة السر" type="password">
+<input type="file" id="avatar">
+<button onclick="login()">دخول / إنشاء</button>
 </div>
 
 <!-- ADMIN -->
-<div id="admin-panel">
-<h4>🌟 Admin Panel 🌟</h4>
-<input id="n" placeholder="اسم الحساب">
-<input type="file" id="i">
-<input id="p" placeholder="ثمن الحساب">
-<button onclick="addProduct()">إضافة</button>
+<div id="admin">
+<h3>Admin Panel</h3>
+<input id="n" placeholder="اسم المنتج">
+<input id="p" placeholder="الثمن">
+<input type="file" id="img">
+<button onclick="addProduct()">إضافة منتج</button>
+
+<h4>Users</h4>
+<div id="users"></div>
 </div>
 
 <div id="products"></div>
 
+<!-- CART -->
 <div id="cart">
-<h3>قسم المشتريات</h3>
+<h3>السلة</h3>
 <div id="cart-items"></div>
-<h4>المجموع: <span id="total">0</span> درهم</h4>
-<button onclick="toggleChat()">💬 تواصل</button>
+<button onclick="openChat()">💬 تواصل</button>
+
 <div id="chat">
 <div id="messages"></div>
-<input id="msg" placeholder="كتب..." onkeypress="if(event.key==='Enter') sendMsg()">
-</div>
+<input id="msg" placeholder="اكتب..." onkeypress="if(event.key==='Enter') sendMsg()">
 </div>
 
-<div id="toast"></div>
-<div id="landmine" style="position:fixed;top:0;width:100%;height:40px;"></div>
+</div>
+
+<audio id="sound" src="https://www.soundjay.com/buttons/sounds/button-3.mp3"></audio>
 
 <script>
-// USERS
-let users=JSON.parse(localStorage.getItem('users'))||{};
-let currentUser=null;
+
+// ===== USERS =====
+let users = JSON.parse(localStorage.getItem("users"))||{};
+let banned = JSON.parse(localStorage.getItem("banned"))||[];
+let current=null;
 
 function login(){
-let u=document.getElementById('login-user').value;
-let p=document.getElementById('login-pass').value;
+let u=user.value;
+let p=pass.value;
+
+if(banned.includes(u)){
+alert("🚫 تم حظرك");
+return;
+}
 
 if(users[u]){
-if(users[u]===p){currentUser=u;afterLogin();}
-else alert("كلمة السر خاطئة");
+if(users[u].pass!==p){alert("خطأ");return;}
 }else{
-if(confirm("إنشاء حساب؟")){
-users[u]=p;
-localStorage.setItem('users',JSON.stringify(users));
-currentUser=u;
-afterLogin();
+if(users[u]){alert("مستعمل");return;}
+let file=avatar.files[0];
+let reader=new FileReader();
+reader.onload=e=>{
+users[u]={pass:p,img:e.target.result};
+saveUsers();
+start(u);
+};
+reader.readAsDataURL(file);
+return;
 }
-}
+start(u);
 }
 
-function afterLogin(){
-document.getElementById('login').style.display='none';
+function start(u){
+current=u;
+login.style.display="none";
 renderProducts();
 }
 
-// DATA
-let products=JSON.parse(localStorage.getItem('db'))||[];
-let cart=JSON.parse(localStorage.getItem('cart'))||[];
-let msgs=JSON.parse(localStorage.getItem('msgs'))||[];
+// ===== PRODUCTS =====
+let products=JSON.parse(localStorage.getItem("db"))||[];
+let cart=[];
 
 function addProduct(){
-let n=document.getElementById('n').value;
-let file=document.getElementById('i').files[0];
-let p=document.getElementById('p').value;
-
+let file=img.files[0];
 let reader=new FileReader();
-reader.onload=function(e){
-products.push({n,i:e.target.result,p});
-localStorage.setItem('db',JSON.stringify(products));
+reader.onload=e=>{
+products.push({n:n.value,p:p.value,i:e.target.result});
+localStorage.setItem("db",JSON.stringify(products));
 renderProducts();
 };
-if(file) reader.readAsDataURL(file);
+reader.readAsDataURL(file);
 }
 
 function renderProducts(){
-let div=document.getElementById('products');
-div.innerHTML=products.map((p,i)=>`
+productsDiv.innerHTML=products.map((p,i)=>`
 <div class="card">
 <img src="${p.i}">
 <div class="info">
 <h3>${p.n}</h3>
 <div class="price">${p.p} درهم</div>
-<button onclick="addToCart(${i})">شراء</button>
+<button class="buy" onclick="addToCart(${i})">شراء</button>
+${current==="admin" ? `<button class="delete" onclick="del(${i})">حذف</button>`:""}
 </div>
 </div>
 `).join('');
 }
 
+let productsDiv=document.getElementById("products");
+
 function addToCart(i){
-cart=[products[i]];
-localStorage.setItem('cart',JSON.stringify(cart));
-renderCart();
+cart.push(products[i]);
+cart.style="transform:scale(1.1)";
+document.getElementById("cart").style.display="block";
 }
 
-function renderCart(){
-let div=document.getElementById('cart-items');
-let total=0;
-div.innerHTML=cart.map(p=>{total+=parseInt(p.p);return `<div>${p.n} - ${p.p}</div>`}).join('');
-document.getElementById('total').innerText=total;
-}
+// ===== CHAT =====
+let msgs=[];
 
-function toggleChat(){
-let c=document.getElementById('chat');
-c.style.display=c.style.display==="block"?"none":"block";
-renderMsgs();
+function openChat(){
+chat.style.display="block";
 }
 
 function sendMsg(){
-let input=document.getElementById('msg');
-let text=input.value;
-if(!text)return;
-msgs.push({type:"client",text});
-input.value="";
+let t=msg.value;
+msgs.push({t,type:"client"});
+msg.value="";
 renderMsgs();
-setTimeout(()=>bot(text),700);
-}
-
-function bot(text){
-let r="🤖 ما فهمتش";
-if(text.includes("ثمن")) r="💰 الثمن تحت المنتج";
-msgs.push({type:"bot",text:r});
-renderMsgs();
+sound.play();
 }
 
 function renderMsgs(){
-let box=document.getElementById('messages');
-box.innerHTML=msgs.map(m=>`<div class="msg ${m.type}">${m.text}</div>`).join('');
+messages.innerHTML=msgs.map(m=>`
+<div class="msg ${m.type}">${m.t}</div>
+`).join('');
 }
 
-// ADMIN SECRET
+// ===== ADMIN =====
 let clicks=0;
-document.getElementById('landmine').onclick=function(){
+header.onclick=()=>{
 clicks++;
 if(clicks>=10){
-document.getElementById('admin-panel').style.display='block';
+admin.style.display="block";
+loadUsers();
 clicks=0;
 }
+};
+
+function loadUsers(){
+usersDiv.innerHTML=Object.keys(users).map(u=>`
+<div>${u} <button onclick="ban('${u}')">🚫</button></div>
+`).join('');
 }
+
+let usersDiv=document.getElementById("users");
+
+function ban(u){
+banned.push(u);
+localStorage.setItem("banned",JSON.stringify(banned));
+alert("تم الحظر");
+}
+
+function saveUsers(){
+localStorage.setItem("users",JSON.stringify(users));
+}
+
 </script>
 
 </body>
