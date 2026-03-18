@@ -3,54 +3,35 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>ZOUINE CHOP</title>
 
 <style>
 body{
-    margin:0;
     font-family:sans-serif;
     background:#0d0d0d;
     color:white;
 }
 
-header{
-    display:flex;
-    justify-content:space-between;
-    padding:15px;
-    background:#111;
-}
-
-#cart-btn{
-    background:#00aaff;
-    color:white;
-}
-
-#products{
+#products-grid{
     display:grid;
-    grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+    grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
     gap:15px;
     padding:15px;
 }
 
 .card{
     background:#1a1a1a;
-    border-radius:12px;
-    overflow:hidden;
-    transition:0.3s;
-}
-
-.card:hover{
-    transform:scale(1.05);
+    padding:10px;
+    border-radius:10px;
+    text-align:center;
 }
 
 .card img{
     width:100%;
-    height:180px;
+    height:120px;
     object-fit:cover;
-}
-
-.info{
-    padding:10px;
+    border-radius:10px;
 }
 
 .price{
@@ -59,173 +40,197 @@ header{
 }
 
 button{
-    width:100%;
     padding:8px;
     border:none;
-    border-radius:6px;
-    background:#00aaff;
-    color:white;
+    border-radius:5px;
     cursor:pointer;
 }
 
-#admin{
+#cart-modal{
+    display:none;
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.8);
+    justify-content:center;
+    align-items:center;
+}
+
+.cart-box{
+    background:#111;
+    padding:20px;
+    width:90%;
+    max-width:400px;
+}
+
+.cart-item{
+    display:flex;
+    justify-content:space-between;
+    margin:5px 0;
+}
+
+#admin-panel{
     display:none;
     padding:15px;
 }
 
-#cart{
-    position:fixed;
-    top:0;
-    right:0;
-    width:300px;
-    height:100%;
-    background:#111;
-    padding:10px;
-    display:none;
-}
-
-.cart-item{
-    margin:10px 0;
-    border-bottom:1px solid #333;
-    padding-bottom:5px;
-}
-
 input{
     width:100%;
-    padding:8px;
+    padding:10px;
     margin:5px 0;
-    border-radius:5px;
-    border:none;
 }
 </style>
 </head>
 
 <body>
 
-<header>
-<h2>ZOUINE CHOP</h2>
-<button onclick="toggleCart()" id="cart-btn">🛒 (<span id="count">0</span>)</button>
-</header>
+<h2 style="text-align:center;">ZOUINE CHOP</h2>
 
-<!-- ADMIN -->
-<div id="admin">
-<h3>إضافة منتج</h3>
-<input id="n" placeholder="اسم المنتج">
-<input type="file" id="i" accept="image/*">
-<input id="p" placeholder="الثمن">
-<button onclick="addProduct()">إضافة</button>
+<div id="admin-panel">
+    <input id="n" placeholder="اسم المنتج">
+    <input type="file" id="i" accept="image/*">
+    <input id="p" placeholder="الثمن">
+    <button onclick="addProduct()">إضافة</button>
 </div>
 
-<!-- PRODUCTS -->
-<div id="products"></div>
+<div id="products-grid"></div>
 
-<!-- CART -->
-<div id="cart">
-<h3>السلة</h3>
-<div id="cart-items"></div>
-<h4>المجموع: <span id="total">0</span> درهم</h4>
-<button onclick="sendOrder()">إرسال الطلب</button>
+<button onclick="toggleCart()">🛒 (<span id="cart-count">0</span>)</button>
+
+<div id="cart-modal">
+    <div class="cart-box">
+        <h3>السلة</h3>
+        <div id="cart-items-list"></div>
+        <h4>المجموع: <span id="total-price">0</span> درهم</h4>
+        <button onclick="sendOrder()">إرسال الطلب</button>
+    </div>
 </div>
+
+<footer>
+<p id="admin-trigger">ZOUINE CHOP © 2026</p>
+</footer>
 
 <script>
 
-let products = JSON.parse(localStorage.getItem('db')) || [];
-let cart = JSON.parse(localStorage.getItem('cart')) || [];
+let products = JSON.parse(localStorage.getItem('zouine_v4_db')) || [];
+let cart = JSON.parse(localStorage.getItem('zouine_v4_cart')) || [];
+let messages = JSON.parse(localStorage.getItem('zouine_msgs')) || [];
 
 // LOGIN
-document.body.ondblclick = function(){
+document.getElementById('admin-trigger').onclick = function() {
+
     let pass = prompt("كلمة السر:");
+
     if(pass === "123"){
-        document.getElementById('admin').style.display="block";
+        localStorage.setItem("role","admin");
+        document.getElementById('admin-panel').style.display = 'block';
+        renderProducts();
+    }
+
+    else if(pass === "12345"){
+        localStorage.setItem("role","chat");
+        alert("وضع الشات مفعل");
     }
 }
 
+// AUTO LOGIN
+if(localStorage.getItem("role") === "admin"){
+    document.getElementById('admin-panel').style.display = 'block';
+}
+
 // ADD PRODUCT WITH IMAGE
-function addProduct(){
+function addProduct() {
     let n = document.getElementById('n').value;
     let file = document.getElementById('i').files[0];
     let p = document.getElementById('p').value;
 
-    if(n && p){
-        let reader = new FileReader();
+    if(n && p) {
 
-        reader.onload = function(e){
-            products.push({
-                n:n,
-                i:e.target.result,
-                p:p
-            });
+        if(file){
+            let reader = new FileReader();
 
-            localStorage.setItem('db', JSON.stringify(products));
+            reader.onload = function(e){
+                products.push({n, i: e.target.result, p});
+                localStorage.setItem('zouine_v4_db', JSON.stringify(products));
+                renderProducts();
+            }
+
+            reader.readAsDataURL(file);
+
+        } else {
+            products.push({n, i:"", p});
+            localStorage.setItem('zouine_v4_db', JSON.stringify(products));
             renderProducts();
         }
-
-        if(file) reader.readAsDataURL(file);
     }
 }
 
-// SHOW PRODUCTS
-function renderProducts(){
-    let div = document.getElementById('products');
+// RENDER PRODUCTS
+function renderProducts() {
+    let grid = document.getElementById('products-grid');
 
-    div.innerHTML = products.map((e,idx)=>`
+    grid.innerHTML = products.map((prod, idx) => `
         <div class="card">
-            <img src="${e.i}">
-            <div class="info">
-                <h4>${e.n}</h4>
-                <div class="price">${e.p} درهم</div>
-                <button onclick="addToCart(${idx})">أضف للسلة</button>
-            </div>
+            <img src="${prod.i || 'https://via.placeholder.com/400'}">
+            <h3>${prod.n}</h3>
+            <div class="price">${prod.p} درهم</div>
+            <button onclick="addToCart(${idx})">إضافة إلى السلة</button>
         </div>
     `).join('');
 }
 
 // CART
-function addToCart(i){
-    cart.push(products[i]);
-    localStorage.setItem('cart', JSON.stringify(cart));
-    document.getElementById('count').innerText = cart.length;
+function addToCart(idx) {
+    cart.push(products[idx]);
+    localStorage.setItem('zouine_v4_cart', JSON.stringify(cart));
+    document.getElementById('cart-count').innerText = cart.length;
 }
 
-function toggleCart(){
-    let c = document.getElementById('cart');
-    c.style.display = c.style.display==="block" ? "none":"block";
+function toggleCart() {
+    let modal = document.getElementById('cart-modal');
+    modal.style.display = (modal.style.display === 'flex') ? 'none' : 'flex';
     renderCart();
 }
 
-function renderCart(){
-    let div = document.getElementById('cart-items');
+function renderCart() {
+    let list = document.getElementById('cart-items-list');
     let total = 0;
 
-    div.innerHTML = cart.map((e)=>{
-        total += parseInt(e.p);
-        return `<div class="cart-item">${e.n} - ${e.p} درهم</div>`;
+    list.innerHTML = cart.map((item, idx) => {
+        total += parseInt(item.p);
+        return `<div class="cart-item">
+            <span>${item.n}</span>
+            <span>${item.p} درهم</span>
+        </div>`;
     }).join('');
 
-    document.getElementById('total').innerText = total;
+    document.getElementById('total-price').innerText = total;
 }
 
-// SEND ORDER (MESSAGE)
-function sendOrder(){
-    if(cart.length === 0){
-        alert("السلة فارغة!");
-        return;
-    }
+// SEND ORDER (بدل واتساب)
+function sendOrder() {
 
-    let msg = "طلب جديد:\n";
+    if(cart.length === 0) return alert("السلة فارغة!");
 
-    cart.forEach(e=>{
-        msg += `- ${e.n} (${e.p} درهم)\n`;
+    let text = "طلب جديد:\n";
+
+    cart.forEach(item => {
+        text += `- ${item.n} (${item.p} درهم)\n`;
     });
 
-    msg += "المجموع: " + document.getElementById('total').innerText + " درهم";
+    text += "\nالمجموع: " + document.getElementById('total-price').innerText + " درهم";
 
-    alert(msg); // هنا كيبان message
+    messages.push({text});
+    localStorage.setItem('zouine_msgs', JSON.stringify(messages));
+
+    alert("تم إرسال الطلب بنجاح!");
 }
 
 // INIT
 renderProducts();
-document.getElementById('count').innerText = cart.length;
+document.getElementById('cart-count').innerText = cart.length;
 
 </script>
 
