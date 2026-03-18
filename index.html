@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="ar">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Malika Louche - Boutique</title>
+<title>GOD MODE STORE - Chat</title>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
 <style>
 body{
@@ -59,7 +59,6 @@ header{
 }
 .price{
   color:#0ff;
-  font-weight:bold;
 }
 .btn{
   background:#001f3d;
@@ -69,12 +68,6 @@ header{
   border-radius:10px;
   width:100%;
   cursor:pointer;
-  transition:.3s;
-}
-.btn:hover{
-  background:#00f;
-  color:#fff;
-  transform:scale(1.05);
 }
 
 /* CHAT BOX */
@@ -85,7 +78,6 @@ header{
   background:#001f3d;
   display:none;
   padding:10px;
-  box-shadow:0 -5px 15px #0ff;
 }
 #chat{
   height:200px;
@@ -93,7 +85,6 @@ header{
   background:#000c1f;
   padding:10px;
   border-radius:10px;
-  margin-bottom:5px;
 }
 .msg{
   background:#0a1f3d;
@@ -109,52 +100,29 @@ input{
   margin-top:5px;
 }
 </style>
-
-<!-- Firebase SDKs -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-
 </head>
+
 <body>
 
 <header id="header">
-  <h2 class="title">💀 Malika Louche 💀</h2>
+  <h2 class="title">💀 GOD MODE STORE 💀</h2>
   <p class="sub">🔥 FreeFire Accounts 🔥</p>
 </header>
 
 <div id="products"></div>
 
 <div id="chatBox">
-  <h3>💬 Chat en direct</h3>
+  <h3>💬 تواصل معي مباشرة</h3>
   <div id="chat"></div>
-  <input id="msg" placeholder="Écris ton message..." onkeypress="if(event.key==='Enter') sendMsg()">
+  <input id="msg" placeholder="كتب الرسالة..." onkeypress="if(event.key==='Enter') sendMsg()">
 </div>
 
 <script>
-// ======== FIREBASE CONFIG ========
-const firebaseConfig = {
-  apiKey: "AIzaSyDTDvPtHxP_7z05fbzrSqeHzk-p4eHNYYI",
-  authDomain: "zouine-chop.firebaseapp.com",
-  projectId: "zouine-chop",
-  storageBucket: "zouine-chop.appspot.com",
-  messagingSenderId: "363784604705",
-  appId: "1:363784604705:web:REPLACE_THIS_WITH_WEB_APP_ID"
-};
-
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
-const auth = firebase.auth();
-
-// Auth anonymement
-auth.signInAnonymously().catch(console.error);
-
-// ======== PRODUITS ========
+/* ======== PRODUCTS ======== */
 let products = [
-  {name:"Compte VIP 1", price:50, img:"https://via.placeholder.com/400x400?text=VIP1"},
-  {name:"Compte VIP 2", price:70, img:"https://via.placeholder.com/400x400?text=VIP2"},
-  {name:"Compte VIP 3", price:100, img:"https://via.placeholder.com/400x400?text=VIP3"},
+  {name:"حساب VIP 1", price:50, img:"https://via.placeholder.com/400x400?text=VIP1"},
+  {name:"حساب VIP 2", price:70, img:"https://via.placeholder.com/400x400?text=VIP2"},
+  {name:"حساب VIP 3", price:100, img:"https://via.placeholder.com/400x400?text=VIP3"},
 ];
 
 function renderProducts(){
@@ -164,42 +132,42 @@ function renderProducts(){
       <img src="${p.img}">
       <div class="info">
         <h3>${p.name}</h3>
-        <div class="price">${p.price} DH</div>
-        <button class="btn" onclick="openChat()">Contacter</button>
+        <div class="price">${p.price} درهم</div>
+        <button class="btn" onclick="openChat()">تواصل معي</button>
       </div>
     </div>`;
   });
   document.getElementById("products").innerHTML = html;
 }
 
-// ======== CHAT ========
-function openChat(){
-  document.getElementById("chatBox").style.display = "block";
-}
+/* ======== CHAT ======== */
+let messages = JSON.parse(localStorage.getItem("messages")) || [];
 
-// Récupérer les messages en temps réel
-db.collection("messages").orderBy("timestamp").onSnapshot(snapshot=>{
-  const chat = document.getElementById("chat");
-  chat.innerHTML = "";
-  snapshot.forEach(doc=>{
-    let m = doc.data();
-    chat.innerHTML += `<div class="msg">${m.text}</div>`;
+function renderChat(){
+  let html = "";
+  messages.forEach(m=>{
+    html += `<div class="msg">${m}</div>`;
   });
-  chat.scrollTop = chat.scrollHeight;
-});
+  document.getElementById("chat").innerHTML = html;
+  document.getElementById("chat").scrollTop = document.getElementById("chat").scrollHeight;
+}
 
 function sendMsg(){
   let text = document.getElementById("msg").value;
   if(!text) return;
-  db.collection("messages").add({
-    text: text,
-    timestamp: firebase.firestore.FieldValue.serverTimestamp()
-  });
+  messages.push(text);
+  localStorage.setItem("messages", JSON.stringify(messages));
   document.getElementById("msg").value = "";
+  renderChat();
 }
 
-// Init
+function openChat(){
+  document.getElementById("chatBox").style.display = "block";
+}
+
+/* INIT */
 renderProducts();
+renderChat();
 </script>
 
 </body>
