@@ -3,98 +3,116 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ZOUINE CHOP</title>
+<title>ZOUINE CHOP FF ACCOUNTS</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
 
 <style>
 
+/* GENERAL */
 body{
 margin:0;
 font-family:'Cairo',sans-serif;
-background:#eef3f9;
+background:#0b0c17;
+color:white;
 }
 
 /* HEADER */
 header{
-background:#0a3d62;
-color:white;
-text-align:center;
+background:#0a1f3d;
 padding:15px;
+text-align:center;
+position:relative;
 }
 
-/* PRODUCTS */
+/* ONLINE FAKE */
+#online{
+position:absolute;
+top:10px;
+right:10px;
+font-size:12px;
+color:#0ff;
+}
+
+/* PRODUCTS / ACCOUNTS */
 #products{
 padding:10px;
 display:grid;
+grid-template-columns:1fr 1fr;
 gap:15px;
 }
 
 .card{
-background:white;
+background:#0a1f3d;
 border-radius:15px;
 overflow:hidden;
-box-shadow:0 4px 15px rgba(0,0,0,0.1);
-animation:fade .3s;
+box-shadow:0 0 10px #00f;
+position:relative;
+cursor:pointer;
+transition:.3s;
+border:1px solid #00f;
 }
 
-@keyframes fade{
-from{opacity:0;transform:scale(.9);}
-to{opacity:1;}
+.card:hover{
+box-shadow:0 0 15px #0ff,0 0 25px #00f inset;
+transform:scale(1.05);
 }
 
 .card img{
 width:100%;
-height:200px;
+height:150px;
 object-fit:cover;
 }
 
+/* INFO */
 .info{
 padding:10px;
+text-align:center;
 }
 
 .price{
-color:#0a3d62;
+color:#00f;
 font-weight:bold;
+}
+
+.selected{
+border:2px solid #0ff;
+animation:blink .8s infinite;
+}
+
+@keyframes blink{
+0%{box-shadow:0 0 5px #0ff}
+50%{box-shadow:0 0 15px #00f}
+100%{box-shadow:0 0 5px #0ff}
 }
 
 /* BUTTON */
 button{
-width:100%;
-padding:10px;
+padding:8px;
 border:none;
 border-radius:10px;
-background:#0a3d62;
-color:white;
+background:#001f3d;
+color:#0ff;
 margin-top:5px;
+cursor:pointer;
 }
 
-/* CART */
-#cart-btn{
-position:fixed;
-bottom:20px;
-right:20px;
-background:#0a3d62;
-color:white;
-padding:12px;
-border-radius:50%;
-}
-
+/* CART SECTION */
 #cart{
 position:fixed;
 bottom:0;
 width:100%;
-background:white;
+background:#001f3d;
 display:none;
 padding:15px;
-border-radius:20px 20px 0 0;
+border-radius:15px 15px 0 0;
 }
 
 /* CHAT */
 #chat{
 display:none;
 margin-top:10px;
-background:#f1f1f1;
+background:#000c1f;
 padding:10px;
 border-radius:10px;
 }
@@ -105,22 +123,16 @@ margin:5px;
 border-radius:8px;
 }
 
-.client{background:#dcf8c6;text-align:right;}
-.bot{background:white;text-align:left;}
+.client{background:#005f99;text-align:right;}
+.bot{background:#0a1f3d;text-align:left;}
 
-/* ADMIN */
+/* ADMIN PANEL */
 #admin-panel{
 display:none;
+background:#001a33;
 padding:10px;
-background:#fff;
-}
-
-input{
-width:100%;
-padding:10px;
-margin:5px 0;
 border-radius:10px;
-border:1px solid #ccc;
+margin:10px;
 }
 
 /* TOAST */
@@ -129,45 +141,38 @@ position:fixed;
 bottom:80px;
 left:50%;
 transform:translateX(-50%);
-background:#0a3d62;
-color:white;
+background:#0a1f3d;
+color:#0ff;
 padding:10px 20px;
 border-radius:20px;
 opacity:0;
 transition:.3s;
 }
 
-/* LIKE */
-.like{
-cursor:pointer;
-font-size:18px;
-}
-
 </style>
 </head>
-
 <body>
 
 <header>
-ZOUINE CHOP
+ZOUINE CHOP - FreeFire Accounts
 <div id="online">🟢 1 online</div>
 </header>
 
-<!-- ADMIN -->
+<!-- ADMIN PANEL -->
 <div id="admin-panel">
-<input id="n" placeholder="اسم المنتج">
+<h4>Admin Control</h4>
+<input id="n" placeholder="اسم الحساب">
 <input type="file" id="i">
-<input id="p" placeholder="الثمن">
+<input id="p" placeholder="ثمن الحساب">
 <button onclick="addProduct()">إضافة</button>
+<h5>يمكنك تعطيو admin لأي user</h5>
 </div>
 
 <div id="products"></div>
 
 <!-- CART -->
-<button id="cart-btn" onclick="toggleCart()">🛒 <span id="count">0</span></button>
-
 <div id="cart">
-<h3>السلة</h3>
+<h3>قسم المشتريات</h3>
 <div id="cart-items"></div>
 <h4>المجموع: <span id="total">0</span> درهم</h4>
 
@@ -177,16 +182,15 @@ ZOUINE CHOP
 <div id="messages"></div>
 <input id="msg" placeholder="كتب..." onkeypress="if(event.key==='Enter') sendMsg()">
 </div>
-
 </div>
 
 <div id="toast"></div>
 
-<p id="admin-trigger" style="text-align:center;font-size:12px;color:#888;">ZOUINE CHOP</p>
+<p id="admin-trigger" style="text-align:center;font-size:12px;color:#888;cursor:pointer;">ZOUINE CHOP</p>
 
 <script>
 
-/* LOGIN */
+/* LOGIN SIMULATED */
 let user = localStorage.getItem("user");
 if(!user){
 user = prompt("دخل اسمك:");
@@ -197,20 +201,26 @@ localStorage.setItem("user",user);
 let products = JSON.parse(localStorage.getItem('db')) || [];
 let cart = JSON.parse(localStorage.getItem('cart')) || [];
 let msgs = JSON.parse(localStorage.getItem('msgs')) || [];
-let likes = JSON.parse(localStorage.getItem('likes')) || {};
-let stats = JSON.parse(localStorage.getItem('stats')) || {};
+let selected = null;
+let admins = JSON.parse(localStorage.getItem('admins')) || [user];
+
+/* ONLINE FAKE */
+setInterval(()=>{
+document.getElementById("online").innerText=
+"🟢 "+(Math.floor(Math.random()*5)+1)+" online";
+},3000);
 
 /* ADMIN */
 document.getElementById('admin-trigger').onclick = function(){
-if(prompt("code?") === "123"){
+if(prompt("ادخل كود الادمن")==="123456"){
 document.getElementById('admin-panel').style.display="block";
 }
 }
 
 /* TOAST */
 function toast(msg){
-let t = document.getElementById('toast');
-t.innerText = msg;
+let t=document.getElementById('toast');
+t.innerText=msg;
 t.style.opacity=1;
 setTimeout(()=>t.style.opacity=0,2000);
 }
@@ -226,65 +236,51 @@ reader.onload=function(e){
 products.push({n,i:e.target.result,p});
 localStorage.setItem('db',JSON.stringify(products));
 renderProducts();
-toast("✔ تزاد المنتج");
+toast("✔ Account added");
 }
 if(file) reader.readAsDataURL(file);
 }
 
-/* PRODUCTS */
+/* RENDER PRODUCTS */
 function renderProducts(){
 let div=document.getElementById('products');
-
 div.innerHTML=products.map((p,i)=>`
-<div class="card">
+<div class="card ${selected===i?'selected':''}" onclick="selectProd(${i})">
 <img src="${p.i}">
 <div class="info">
 <h3>${p.n}</h3>
 <div class="price">${p.p} درهم</div>
-
-<div class="like" onclick="like(${i})">
-${likes[i] ? '❤️' : '🤍'}
-</div>
-
-${stats[i]>2 ? '<div style="color:red;">🔥 الأكثر طلباً</div>' : ''}
-
-<button onclick="addToCart(${i})">إضافة</button>
-<button onclick="del(${i})">🗑️</button>
-
+<button onclick="addToCart(${i});event.stopPropagation()">شراء</button>
+<button onclick="del(${i});event.stopPropagation()">🗑️</button>
 </div>
 </div>
 `).join('');
 }
 
-/* LIKE */
-function like(i){
-likes[i]=!likes[i];
-localStorage.setItem("likes",JSON.stringify(likes));
+/* SELECT PRODUCT */
+function selectProd(i){
+selected=i;
 renderProducts();
 }
 
 /* DELETE */
 function del(i){
+if(admins.includes(user)){
 products.splice(i,1);
 localStorage.setItem('db',JSON.stringify(products));
 renderProducts();
+toast("🗑️ تم الحذف");
+}else{
+toast("❌ ليس لديك صلاحية");
+}
 }
 
 /* CART */
 function addToCart(i){
 cart.push(products[i]);
-
-stats[i]=(stats[i]||0)+1;
-localStorage.setItem("stats",JSON.stringify(stats));
-
 localStorage.setItem('cart',JSON.stringify(cart));
-
-document.getElementById('count').innerText=cart.length;
-
-document.getElementById('cart-btn').style.transform="scale(1.2)";
-setTimeout(()=>document.getElementById('cart-btn').style.transform="scale(1)",200);
-
-toast("🛒 تزاد للسلة");
+renderCart();
+toast("🛒 تمت الإضافة");
 }
 
 function toggleCart(){
@@ -299,7 +295,7 @@ let total=0;
 
 div.innerHTML=cart.map(p=>{
 total+=parseInt(p.p);
-return `<div>${p.n} - ${p.p} درهم</div>`;
+return `<div>${p.n} - ${p.p}</div>`;
 }).join('');
 
 document.getElementById('total').innerText=total;
@@ -330,7 +326,7 @@ let r="🤖 ما فهمتش";
 
 if(text.includes("ثمن")) r="💰 الثمن تحت المنتج";
 else if(text.includes("سلام")) r="👋 مرحبا";
-else if(text.includes("توصيل")) r="🚚 كاين التوصيل";
+else if(text.includes("توصيل")) r="🚚 التوصيل متاح";
 
 msgs.push({type:"bot",text:r});
 save();
@@ -339,11 +335,7 @@ renderMsgs();
 
 function renderMsgs(){
 let box=document.getElementById('messages');
-
-box.innerHTML=msgs.map(m=>`
-<div class="msg ${m.type}">${m.text}</div>
-`).join('');
-
+box.innerHTML=msgs.map(m=>`<div class="msg ${m.type}">${m.text}</div>`).join('');
 box.scrollTop=box.scrollHeight;
 }
 
@@ -351,17 +343,10 @@ function save(){
 localStorage.setItem('msgs',JSON.stringify(msgs));
 }
 
-/* ONLINE FAKE */
-setInterval(()=>{
-document.getElementById("online").innerText=
-"🟢 "+(Math.floor(Math.random()*5)+1)+" online";
-},3000);
-
 /* INIT */
 renderProducts();
-document.getElementById('count').innerText=cart.length;
+document.getElementById('total').innerText=cart.reduce((a,b)=>a+parseInt(b.p),0);
 
 </script>
-
 </body>
 </html>
