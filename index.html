@@ -3,171 +3,255 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GOD MODE STORE - Chat</title>
+<title>ZOUINE CHOP</title>
+
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+
 <style>
+
+/* UI PRO */
 body{
-  margin:0;
-  font-family:'Cairo';
-  background:#050816;
-  color:white;
+margin:0;
+font-family:'Cairo';
+background:#050816;
+color:white;
+overflow:hidden;
 }
 
-/* HEADER */
+/* glow lines */
+body::before{
+content:"";
+position:fixed;
+width:200%;
+height:200%;
+background:repeating-linear-gradient(
+45deg,
+rgba(0,0,255,0.1),
+rgba(0,0,255,0.1) 2px,
+transparent 2px,
+transparent 40px
+);
+animation:move 10s linear infinite;
+}
+@keyframes move{
+0%{transform:translate(0,0)}
+100%{transform:translate(-50%,-50%)}
+}
+
 header{
-  text-align:center;
-  padding:15px;
-  background:#001f3d;
-  cursor:pointer;
-  box-shadow:0 0 20px #00f;
-}
-.title{
-  color:#0ff;
-  text-shadow:0 0 10px #0ff,0 0 30px #00f;
-  font-size:24px;
-}
-.sub{
-  font-size:14px;
-  color:#aaa;
+padding:15px;
+text-align:center;
+background:#001f3d;
+box-shadow:0 0 15px #00f;
 }
 
-/* PRODUCTS GRID */
+/* PRODUCTS */
 #products{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-  padding:10px;
-}
-.card{
-  background:#0a1f3d;
-  border-radius:15px;
-  overflow:hidden;
-  transition:.3s;
-}
-.card:hover{
-  transform:scale(1.05);
-  box-shadow:0 0 15px #0ff;
-}
-.card img{
-  width:100%;
-  height:140px;
-  object-fit:cover;
-}
-.info{
-  padding:10px;
-  text-align:center;
-}
-.price{
-  color:#0ff;
-}
-.btn{
-  background:#001f3d;
-  color:#0ff;
-  border:none;
-  padding:8px;
-  border-radius:10px;
-  width:100%;
-  cursor:pointer;
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px;
+padding:10px;
 }
 
-/* CHAT BOX */
-#chatBox{
-  position:fixed;
-  bottom:0;
-  width:100%;
-  background:#001f3d;
-  display:none;
-  padding:10px;
+.card{
+background:#0a1f3d;
+border-radius:15px;
+overflow:hidden;
+border:1px solid #00f;
+transition:.3s;
 }
+
+.card:hover{
+transform:scale(1.05);
+box-shadow:0 0 20px #0ff;
+}
+
+.card img{
+width:100%;
+height:130px;
+object-fit:cover;
+}
+
+.info{
+text-align:center;
+padding:10px;
+}
+
+.price{color:#0ff;}
+
+/* BUTTON */
+.btn{
+background:#001f3d;
+color:#0ff;
+border:none;
+padding:8px;
+border-radius:10px;
+width:100%;
+}
+
+/* CART */
+#cart{
+position:fixed;
+bottom:0;
+width:100%;
+background:#001f3d;
+padding:15px;
+display:none;
+border-radius:20px 20px 0 0;
+}
+
+/* CHAT */
 #chat{
-  height:200px;
-  overflow:auto;
-  background:#000c1f;
-  padding:10px;
-  border-radius:10px;
+background:#000c1f;
+padding:10px;
+margin-top:10px;
+height:200px;
+overflow:auto;
+border-radius:10px;
 }
+
 .msg{
-  background:#0a1f3d;
-  margin:5px;
-  padding:6px;
-  border-radius:8px;
+margin:5px;
+padding:6px;
+border-radius:8px;
+max-width:70%;
 }
+
+.me{background:#004c80;margin-left:auto;}
+.other{background:#0a1f3d;}
+
 input{
-  width:100%;
-  padding:10px;
-  border:none;
-  border-radius:10px;
-  margin-top:5px;
+width:100%;
+padding:10px;
+margin-top:5px;
+border:none;
+border-radius:10px;
 }
+
+/* ONLINE */
+#online{
+position:absolute;
+top:10px;
+right:10px;
+color:#0ff;
+font-size:12px;
+}
+
 </style>
 </head>
 
 <body>
 
-<header id="header">
-  <h2 class="title">💀 GOD MODE STORE 💀</h2>
-  <p class="sub">🔥 FreeFire Accounts 🔥</p>
+<header>
+🔥 ZOUINE CHOP NEXT LEVEL 🔥
+<div id="online">🟢 0 online</div>
 </header>
 
 <div id="products"></div>
 
-<div id="chatBox">
-  <h3>💬 تواصل معي مباشرة</h3>
-  <div id="chat"></div>
-  <input id="msg" placeholder="كتب الرسالة..." onkeypress="if(event.key==='Enter') sendMsg()">
+<div id="cart">
+<h3>🛒 شراء</h3>
+<div id="cart-items"></div>
+
+<div id="chat"></div>
+<input id="msg" placeholder="كتب..." onkeypress="if(event.key==='Enter') sendMsg()">
 </div>
 
 <script>
-/* ======== PRODUCTS ======== */
-let products = [
-  {name:"حساب VIP 1", price:50, img:"https://via.placeholder.com/400x400?text=VIP1"},
-  {name:"حساب VIP 2", price:70, img:"https://via.placeholder.com/400x400?text=VIP2"},
-  {name:"حساب VIP 3", price:100, img:"https://via.placeholder.com/400x400?text=VIP3"},
-];
 
-function renderProducts(){
-  let html = "";
-  products.forEach((p)=>{
-    html += `<div class="card">
-      <img src="${p.img}">
-      <div class="info">
-        <h3>${p.name}</h3>
-        <div class="price">${p.price} درهم</div>
-        <button class="btn" onclick="openChat()">تواصل معي</button>
-      </div>
-    </div>`;
-  });
-  document.getElementById("products").innerHTML = html;
+/* 🔥 CONFIG */
+const firebaseConfig = {
+apiKey:"PUT",
+authDomain:"PUT",
+projectId:"PUT"
+};
+
+firebase.initializeApp(firebaseConfig);
+
+const db=firebase.firestore();
+const auth=firebase.auth();
+
+/* LOGIN */
+auth.signInAnonymously().then(()=>{
+start();
+});
+
+let uid;
+
+/* START */
+function start(){
+uid=auth.currentUser.uid;
+
+/* ONLINE */
+db.collection("online").doc(uid).set({time:Date.now()});
+setInterval(()=>{
+db.collection("online").doc(uid).set({time:Date.now()});
+},5000);
+
+db.collection("online").onSnapshot(snap=>{
+document.getElementById("online").innerText="🟢 "+snap.size+" online";
+});
+
+/* PRODUCTS */
+db.collection("products").onSnapshot(snap=>{
+let div=document.getElementById("products");
+div.innerHTML="";
+snap.forEach(doc=>{
+let p=doc.data();
+
+div.innerHTML+=`
+<div class="card">
+<img src="${p.img}">
+<div class="info">
+<h3>${p.name}</h3>
+<div class="price">${p.price} درهم</div>
+<button class="btn" onclick="buy('${doc.id}')">شراء</button>
+</div>
+</div>`;
+});
+});
+
+/* CHAT */
+db.collection("chat").orderBy("time")
+.onSnapshot(snap=>{
+let box=document.getElementById("chat");
+box.innerHTML="";
+snap.forEach(doc=>{
+let m=doc.data();
+box.innerHTML+=`
+<div class="msg ${m.uid===uid?'me':'other'}">
+${m.text}
+</div>`;
+});
+box.scrollTop=box.scrollHeight;
+});
+
 }
 
-/* ======== CHAT ======== */
-let messages = JSON.parse(localStorage.getItem("messages")) || [];
-
-function renderChat(){
-  let html = "";
-  messages.forEach(m=>{
-    html += `<div class="msg">${m}</div>`;
-  });
-  document.getElementById("chat").innerHTML = html;
-  document.getElementById("chat").scrollTop = document.getElementById("chat").scrollHeight;
+/* BUY */
+function buy(id){
+document.getElementById("cart").style.display="block";
+db.collection("cart").doc(uid).set({product:id});
 }
 
+/* SEND */
 function sendMsg(){
-  let text = document.getElementById("msg").value;
-  if(!text) return;
-  messages.push(text);
-  localStorage.setItem("messages", JSON.stringify(messages));
-  document.getElementById("msg").value = "";
-  renderChat();
+let t=document.getElementById("msg").value;
+if(!t)return;
+
+db.collection("chat").add({
+text:t,
+uid:uid,
+time:Date.now()
+});
+
+document.getElementById("msg").value="";
 }
 
-function openChat(){
-  document.getElementById("chatBox").style.display = "block";
-}
-
-/* INIT */
-renderProducts();
-renderChat();
 </script>
 
 </body>
