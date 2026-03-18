@@ -1,78 +1,87 @@
-<!DOCTYPE html>
-<html lang="ar">
+<!DOCTYPE html><html lang="ar">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ZOUINE CHOP - Ultra Max</title>
+<title>ZOUINE CHOP</title>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
 <style>
 body{
-  margin:0;font-family:'Cairo',sans-serif;background:#0b0c17;color:white;
+  margin:0;
+  font-family:'Cairo',sans-serif;
+  background:linear-gradient(120deg, #eef3f9, #cce0ff);
+  color:#111;
 }
-/* HEADER */
 header{
-  background:#0a1f3d;padding:15px;text-align:center;position:relative;cursor:pointer;
-  box-shadow:0 0 20px #00f;
+  background:#0a3d62;
+  color:white;
+  text-align:center;
+  padding:15px;
+  position:relative;
 }
 #online{position:absolute;top:10px;right:10px;font-size:12px;color:#0ff;}
-h2{color:#0ff;text-shadow:0 0 10px #0ff,0 0 30px #00f;}
-
-/* PRODUCTS GRID */
 #products{
-  padding:10px;display:grid;grid-template-columns:1fr 1fr;gap:15px;
+  padding:10px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:15px;
 }
 .card{
-  background:#0a1f3d;border-radius:15px;overflow:hidden;box-shadow:0 0 10px #00f;
-  cursor:pointer;transition:.3s;border:1px solid #00f;
-  animation:glow 2s infinite alternate;
+  background:white;
+  border-radius:15px;
+  overflow:hidden;
+  box-shadow:0 0 10px rgba(0,0,255,0.2);
+  transition:.3s;
+  cursor:pointer;
+  position:relative;
 }
-@keyframes glow{
-  0%{box-shadow:0 0 5px #0ff,0 0 15px #00f inset;}
-  50%{box-shadow:0 0 15px #0ff,0 0 25px #00f inset;}
-  100%{box-shadow:0 0 5px #0ff,0 0 15px #00f inset;}
+.card:hover{
+  transform:scale(1.05);
+  box-shadow:0 0 15px #0ff,0 0 25px #00f inset;
 }
-.card:hover{transform:scale(1.05);}
 .card img{width:100%;height:150px;object-fit:cover;}
-.info{text-align:center;padding:10px;}
-.price{color:#00f;font-weight:bold;}
+.info{padding:10px;text-align:center;}
+.price{color:#0a3d62;font-weight:bold;}
 button{
-  padding:8px;border:none;border-radius:10px;background:#001f3d;color:#0ff;margin-top:5px;
-  cursor:pointer;transition:.3s;animation:glow 2s infinite alternate;
+  width:100%;padding:10px;margin-top:5px;
+  border:none;border-radius:10px;
+  background:#0a3d62;color:white;
+  cursor:pointer;
+  transition:.3s;
 }
-button:hover{transform:scale(1.05);}
-
-/* CHAT BOX */
-#cart{position:fixed;bottom:0;width:100%;background:#001f3d;padding:15px;border-radius:15px 15px 0 0;display:none;}
-#chat{display:none;margin-top:10px;background:#000c1f;padding:10px;border-radius:10px;height:200px;overflow:auto;}
+button:hover{box-shadow:0 0 10px #00f;}
+#cart-btn{
+  position:fixed;bottom:20px;right:20px;
+  background:#0a3d62;color:white;padding:12px;border-radius:50%;cursor:pointer;
+  transition:.3s;
+}
+#cart-btn:hover{box-shadow:0 0 15px #0ff;}
+#cart{
+  position:fixed;bottom:0;width:100%;background:white;
+  display:none;padding:15px;border-radius:20px 20px 0 0;
+}
+#chat{display:none;margin-top:10px;background:#f1f1f1;padding:10px;border-radius:10px;}
 .msg{padding:6px;margin:5px;border-radius:8px;}
-.client{background:#005f99;text-align:right;}
-.bot{background:#0a1f3d;text-align:left;}
-#admin-panel{display:none;background:#fff;color:#001f3d;padding:15px;border-radius:15px;margin:10px;box-shadow:0 0 20px #0ff;}
-#toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#0a1f3d;color:#0ff;padding:10px 20px;border-radius:20px;opacity:0;transition:.3s;}
-.editable{outline:1px dashed #0ff;padding:2px;}
+.client{background:#dcf8c6;text-align:right;}
+.bot{background:white;text-align:left;}
+#toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#0a3d62;color:white;padding:10px 20px;border-radius:20px;opacity:0;transition:.3s;}
+.like{cursor:pointer;font-size:18px;}
+.blink{animation:blink .8s infinite;}
+@keyframes blink{0%{box-shadow:0 0 5px #0ff}50%{box-shadow:0 0 15px #00f}100%{box-shadow:0 0 5px #0ff}}
 </style>
 </head>
-<body>
-
-<header id="header">
-  <h2 class="editable" contenteditable="false">ZOUINE CHOP - FreeFire Accounts</h2>
-  <div id="online">🟢 1 online</div>
-</header>
-
-<div id="admin-panel">
-<h4>🌟 Admin Panel</h4>
-<button onclick="toggleEdit()">تفعيل / تعطيل تعديل الصفحة</button>
-<input id="n" placeholder="اسم الحساب">
+<body><header>
+ZOUINE CHOP - FreeFire Accounts
+<div id="online">🟢 1 online</div>
+</header><div id="admin-panel" style="display:none;">
+<h4>Admin Control</h4>
+<input id="n" placeholder="اسم المنتج">
 <input type="file" id="i">
-<input id="p" placeholder="ثمن الحساب">
-<button onclick="addProduct()">إضافة حساب</button>
-<h5>يمكنك تعديل أي نص أو صورة مباشرة</h5>
-</div>
-
-<div id="products"></div>
-
+<input id="p" placeholder="ثمن المنتج">
+<button onclick="addProduct()">إضافة</button>
+</div><div id="products"></div>
+<button id="cart-btn" onclick="toggleCart()">🛒 <span id="count">0</span></button>
 <div id="cart">
-<h3>قسم المشتريات</h3>
+<h3>السلة</h3>
 <div id="cart-items"></div>
 <h4>المجموع: <span id="total">0</span> درهم</h4>
 <button onclick="toggleChat()">💬 تواصل</button>
@@ -81,152 +90,30 @@ button:hover{transform:scale(1.05);}
 <input id="msg" placeholder="كتب..." onkeypress="if(event.key==='Enter') sendMsg()">
 </div>
 </div>
-
 <div id="toast"></div>
-
-<p id="admin-trigger" style="text-align:center;font-size:12px;color:#888;cursor:pointer;">ZOUINE CHOP</p>
-
-<audio id="notif-sound" src="https://www.soundjay.com/buttons/sounds/button-3.mp3"></audio>
+<p id="admin-trigger" style="text-align:center;font-size:12px;color:#888;cursor:pointer;">ZOUINE CHOP</p><audio id="notif" src="https://www.myinstants.com/media/sounds/notification.mp3"></audio>
 
 <script>
-// ========== INITIAL DATA ==========
-let user = localStorage.getItem("user");
-if(!user){user=prompt("دخل اسمك:");localStorage.setItem("user",user);}
-let products=JSON.parse(localStorage.getItem('db'))||[
-  {name:"حساب VIP 1",price:50,img:"https://via.placeholder.com/400x400?text=VIP1"},
-  {name:"حساب VIP 2",price:70,img:"https://via.placeholder.com/400x400?text=VIP2"}
-];
-let cart=JSON.parse(localStorage.getItem('cart'))||[];
-let msgs=JSON.parse(localStorage.getItem('msgs'))||[];
-let selected=null;
-let admins=JSON.parse(localStorage.getItem('admins'))||[user];
+let user = localStorage.getItem("user")||prompt("دخل اسمك:");
+localStorage.setItem("user",user);
 
-// ===== ONLINE SIMULATION =====
+let products = JSON.parse(localStorage.getItem('db'))||[];
+let cart = JSON.parse(localStorage.getItem('cart'))||[];
+let msgs = JSON.parse(localStorage.getItem('msgs'))||[];
+let likes = JSON.parse(localStorage.getItem('likes'))||{};
+let stats = JSON.parse(localStorage.getItem('stats'))||{};
+
 setInterval(()=>{document.getElementById("online").innerText="🟢 "+(Math.floor(Math.random()*5)+1)+" online";},3000);
 
-// ===== ADMIN PANEL =====
-document.getElementById('admin-trigger').onclick=function(){
-  if(prompt("ادخل كود الادمن")==="123456"){document.getElementById('admin-panel').style.display="block";}
-}
+document.getElementById('admin-trigger').onclick=function(){if(prompt("كود الادمن")==="123456"){document.getElementById('admin-panel').style.display='block';}}
 
-// ===== TOAST =====
-function toast(msg){
-  let t=document.getElementById('toast');
-  t.innerText=msg;
-  t.style.opacity=1;
-  setTimeout(()=>t.style.opacity=0,2000);
-}
+function toast(msg){let t=document.getElementById('toast');t.innerText=msg;t.style.opacity=1;setTimeout(()=>t.style.opacity=0,2000);}
 
-// ===== PRODUCTS =====
-function renderProducts(){
-  let div=document.getElementById('products');
-  div.innerHTML=products.map((p,i)=>`
-    <div class="card editable" contenteditable="false">
-      <img src="${p.img}" class="editable" contenteditable="false">
-      <div class="info">
-        <h3 class="editable" contenteditable="false">${p.name}</h3>
-        <div class="price editable" contenteditable="false">${p.price} درهم</div>
-        <button onclick="addToCart(${i});event.stopPropagation()">شراء</button>
-        <button onclick="del(${i});event.stopPropagation()">🗑️</button>
-      </div>
-    </div>
-  `).join('');
-}
+function addProduct(){let n=document.getElementById('n').value;let file=document.getElementById('i').files[0];let p=document.getElementById('p').value;let reader=new FileReader();reader.onload=function(e){products.push({n,i:e.target.result,p});localStorage.setItem('db',JSON.stringify(products));renderProducts();toast('✔ تم الإضافة');};if(file) reader.readAsDataURL(file);}
 
-function addProduct(){
-  let n=document.getElementById('n').value;
-  let file=document.getElementById('i').files[0];
-  let p=document.getElementById('p').value;
-  let reader=new FileReader();
-  reader.onload=function(e){
-    products.push({name:n,img:e.target.result,price:p});
-    localStorage.setItem('db',JSON.stringify(products));
-    renderProducts();
-    toast("✔ Account added");
-  };
-  if(file) reader.readAsDataURL(file);
-}
+function renderProducts(){let div=document.getElementById('products');
+div.innerHTML=products.map((p,i)=>`<div class="card ${stats[i]>2?'blink':''}"><img src="${p.i}"><div class="info"><h3>${p.n}</h3><div class="price">${p.p} درهم</div><div class="like" onclick="like(${i});event.stopPropagation()">${likes[i]?'❤️':'🤍'}</div><button onclick="addToCart(${i});event.stopPropagation()">شراء</button><button onclick="del(${i});event.stopPropagation()">🗑️</button></div></div>`).join('');}
 
-// ===== EDIT MODE =====
-let editMode=false;
-function toggleEdit(){
-  editMode=!editMode;
-  document.querySelectorAll('.editable').forEach(el=>{
-    el.contentEditable=editMode;
-    el.style.border=editMode?'1px dashed #0ff':'none';
-    el.style.padding=editMode? '2px':'0';
-  });
-  if(!editMode){
-    let saved=[];
-    document.querySelectorAll('.card').forEach(card=>{
-      let img=card.querySelector('img').src;
-      let name=card.querySelector('h3').innerText;
-      let price=card.querySelector('.price').innerText.replace('درهم','').trim();
-      saved.push({name:name,img:img,price:price});
-    });
-    localStorage.setItem('db',JSON.stringify(saved));
-    toast("💾 التعديلات حفظت");
-  }
-}
-
-// ===== CART =====
-function addToCart(i){
-  cart=[products[i]];
-  localStorage.setItem('cart',JSON.stringify(cart));
-  renderCart();
-  toast("🛒 تمت الإضافة");
-}
-function toggleCart(){
-  let c=document.getElementById('cart');
-  c.style.display=c.style.display==="block"?"none":"block";
-  renderCart();
-}
-function renderCart(){
-  let div=document.getElementById('cart-items');
-  let total=0;
-  div.innerHTML=cart.map(p=>{total+=parseInt(p.price);return `<div>${p.name} - ${p.price}</div>`}).join('');
-  document.getElementById('total').innerText=total;
-}
-
-// ===== CHAT =====
-function toggleChat(){
-  let c=document.getElementById('chat');
-  c.style.display=c.style.display==="block"?"none":"block";
-  renderMsgs();
-}
-function sendMsg(){
-  let input=document.getElementById('msg');
-  let text=input.value;
-  if(!text)return;
-  msgs.push({type:"client",text:text});
-  localStorage.setItem('msgs',JSON.stringify(msgs));
-  input.value="";
-  renderMsgs();
-  playSound();
-  setTimeout(()=>bot(text),700);
-}
-function bot(text){
-  let r="🤖 ما فهمتش";
-  if(text.includes("ثمن")) r="💰 الثمن تحت المنتج";
-  else if(text.includes("سلام")) r="👋 مرحبا";
-  else if(text.includes("توصيل")) r="🚚 التوصيل متاح";
-  msgs.push({type:"bot",text:r});
-  localStorage.setItem('msgs',JSON.stringify(msgs));
-  renderMsgs();
-  playSound();
-}
-function renderMsgs(){
-  let box=document.getElementById('messages');
-  box.innerHTML=msgs.map(m=>`<div class="msg ${m.type}">${m.text}</div>`).join('');
-  box.scrollTop=box.scrollHeight;
-}
-function playSound(){
-  document.getElementById('notif-sound').play();
-}
-
-renderProducts();
-document.getElementById('total').innerText=cart.reduce((a,b)=>a+parseInt(b.price),0);
-</script>
-
-</body>
-</html>
+function like(i){likes[i]=!likes[i];localStorage.setItem('likes',JSON.stringify(likes));renderProducts();}
+function del(i){products.splice(i,1);localStorage.setItem('db',JSON.stringify(products));renderProducts();toast('🗑️ تم الحذف');}
+function addToCart(i){cart.push(products[i]);stats[i]=(stats[i]||0)+1;localStorage.setItem('stats',JSON.stringify(stats));localStorage.setItem('cart',JSON.stringify(cart));
