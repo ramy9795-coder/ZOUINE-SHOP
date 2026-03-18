@@ -6,124 +6,118 @@
 
 <title>ZOUINE CHOP</title>
 
-<!-- FONT -->
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
 
 <style>
 
 body{
     margin:0;
-    font-family:'Cairo', sans-serif;
-    background:#111;
-    color:#eee;
+    font-family:'Cairo',sans-serif;
+    background:#f5f7fb;
+    color:#222;
 }
 
 /* HEADER */
 header{
+    background:#0a2540;
+    color:white;
     text-align:center;
     padding:15px;
     font-size:20px;
-    font-weight:bold;
 }
 
-/* GRID */
-#products-grid{
+/* PRODUCTS */
+#products{
+    padding:10px;
     display:grid;
     grid-template-columns:1fr;
     gap:15px;
-    padding:10px;
 }
 
-/* CARD */
 .card{
-    background:#1c1c1c;
+    background:white;
     border-radius:15px;
     overflow:hidden;
-    box-shadow:0 5px 20px rgba(0,0,0,0.5);
+    box-shadow:0 5px 20px rgba(0,0,0,0.1);
 }
 
-/* IMAGE */
 .card img{
     width:100%;
     height:200px;
     object-fit:cover;
 }
 
-/* INFO */
 .info{
     padding:10px;
 }
 
-.info h3{
-    margin:5px 0;
-}
-
 .price{
-    color:#00d4aa;
-    font-size:18px;
-    margin:5px 0;
+    color:#0077ff;
+    font-weight:bold;
 }
 
-/* BUTTON */
 button{
     width:100%;
     padding:10px;
     border:none;
     border-radius:10px;
-    background:#2a2a2a;
+    background:#0077ff;
     color:white;
-    font-size:15px;
-}
-
-/* CART BUTTON */
-#cart-btn{
-    position:fixed;
-    bottom:15px;
-    right:15px;
-    background:#00d4aa;
-    padding:12px;
-    border-radius:50px;
+    margin-top:5px;
 }
 
 /* CART */
-#cart-modal{
-    display:none;
+#cart-btn{
+    position:fixed;
+    bottom:20px;
+    right:20px;
+    background:#0077ff;
+    padding:12px;
+    border-radius:50%;
+}
+
+#cart{
     position:fixed;
     bottom:0;
     width:100%;
-    background:#1a1a1a;
-    border-top-left-radius:20px;
-    border-top-right-radius:20px;
-    padding:15px;
-}
-
-.cart-item{
-    display:flex;
-    justify-content:space-between;
-    margin:8px 0;
-    border-bottom:1px solid #333;
-}
-
-/* ADMIN */
-#admin-panel{
+    background:white;
     display:none;
+    padding:15px;
+    border-radius:20px 20px 0 0;
+}
+
+/* CHAT */
+#chat{
+    position:fixed;
+    top:0;
+    right:0;
+    width:100%;
+    max-width:400px;
+    height:100%;
+    background:white;
+    display:none;
+}
+
+#chat-box{
+    height:80%;
+    overflow:auto;
     padding:10px;
 }
+
+.msg{
+    margin:5px;
+    padding:8px;
+    border-radius:10px;
+}
+
+.client{background:#e5e5e5;}
+.admin{background:#0077ff;color:white;}
 
 input{
     width:100%;
     padding:10px;
-    margin:5px 0;
-    border-radius:10px;
     border:none;
-    background:#2a2a2a;
-    color:white;
-}
-
-footer{
-    text-align:center;
-    margin:20px 0;
-    color:#777;
+    border-top:1px solid #ccc;
 }
 
 </style>
@@ -133,127 +127,110 @@ footer{
 
 <header>ZOUINE CHOP</header>
 
-<!-- ADMIN -->
-<div id="admin-panel">
-    <input id="n" placeholder="اسم المنتج">
-    <input type="file" id="i" accept="image/*">
-    <input id="p" placeholder="الثمن">
-    <button onclick="addProduct()">إضافة المنتج</button>
+<div id="products"></div>
+
+<button id="cart-btn" onclick="toggleCart()">🛒 <span id="count">0</span></button>
+
+<div id="cart">
+<h3>السلة</h3>
+<div id="cart-items"></div>
+<h4>المجموع: <span id="total">0</span> درهم</h4>
+<button onclick="sendOrder()">إرسال الطلب</button>
+<button onclick="openChat()">💬 تواصل</button>
 </div>
 
-<!-- PRODUCTS -->
-<div id="products-grid"></div>
-
-<!-- CART BTN -->
-<button id="cart-btn" onclick="toggleCart()">🛒 (<span id="count">0</span>)</button>
-
-<!-- CART -->
-<div id="cart-modal">
-    <h3>السلة</h3>
-    <div id="cart-items"></div>
-    <h4>المجموع: <span id="total">0</span> درهم</h4>
-    <button onclick="sendOrder()">إرسال الطلب</button>
+<!-- CHAT -->
+<div id="chat">
+<div id="chat-box"></div>
+<input id="msg" placeholder="كتب رسالة..." onkeypress="if(event.key==='Enter') sendMsg()">
 </div>
-
-<footer id="admin-trigger">ZOUINE CHOP © 2026</footer>
 
 <script>
 
 let products = JSON.parse(localStorage.getItem('db')) || [];
 let cart = JSON.parse(localStorage.getItem('cart')) || [];
+let messages = JSON.parse(localStorage.getItem('msgs')) || [];
 
-// LOGIN ADMIN
-document.getElementById('admin-trigger').onclick = function(){
-    let pass = prompt("كلمة السر:");
-    if(pass === "123"){
-        localStorage.setItem("admin","yes");
-        document.getElementById('admin-panel').style.display="block";
-    }
-}
-
-// AUTO LOGIN
-if(localStorage.getItem("admin")==="yes"){
-    document.getElementById('admin-panel').style.display="block";
-}
-
-// ADD PRODUCT
-function addProduct(){
-    let n = document.getElementById('n').value;
-    let file = document.getElementById('i').files[0];
-    let p = document.getElementById('p').value;
-
-    if(n && p){
-        let reader = new FileReader();
-        reader.onload = function(e){
-            products.push({n,i:e.target.result,p});
-            localStorage.setItem('db',JSON.stringify(products));
-            renderProducts();
-        }
-        if(file) reader.readAsDataURL(file);
-    }
-}
-
-// SHOW PRODUCTS
+/* PRODUCTS */
 function renderProducts(){
-    let div = document.getElementById('products-grid');
+    let div = document.getElementById('products');
 
-    div.innerHTML = products.map((e,idx)=>`
+    div.innerHTML = products.map((p,i)=>`
         <div class="card">
-            <img src="${e.i}">
+            <img src="${p.i}">
             <div class="info">
-                <h3>${e.n}</h3>
-                <div class="price">${e.p} درهم</div>
-                <button onclick="addToCart(${idx})">أضف للسلة</button>
+                <h3>${p.n}</h3>
+                <div class="price">${p.p} درهم</div>
+                <button onclick="addToCart(${i})">أضف للسلة</button>
             </div>
         </div>
     `).join('');
 }
 
-// CART
+/* CART */
 function addToCart(i){
     cart.push(products[i]);
     localStorage.setItem('cart',JSON.stringify(cart));
     document.getElementById('count').innerText = cart.length;
 }
 
-// TOGGLE CART
 function toggleCart(){
-    let c = document.getElementById('cart-modal');
-    c.style.display = c.style.display==="block" ? "none":"block";
+    let c = document.getElementById('cart');
+    c.style.display = c.style.display==="block"?"none":"block";
     renderCart();
 }
 
-// RENDER CART
 function renderCart(){
     let div = document.getElementById('cart-items');
     let total = 0;
 
-    div.innerHTML = cart.map(e=>{
-        total += parseInt(e.p);
-        return `<div class="cart-item">${e.n} - ${e.p} درهم</div>`;
+    div.innerHTML = cart.map(p=>{
+        total += parseInt(p.p);
+        return `<div>${p.n} - ${p.p}</div>`;
     }).join('');
 
     document.getElementById('total').innerText = total;
 }
 
-// SEND ORDER
+/* ORDER */
 function sendOrder(){
-    if(cart.length === 0){
-        alert("السلة فارغة");
-        return;
-    }
-
     let msg = "طلب:\n";
-    cart.forEach(e=>{
-        msg += `- ${e.n} (${e.p} درهم)\n`;
+    cart.forEach(p=>{
+        msg += `- ${p.n} (${p.p})\n`;
     });
 
-    msg += "المجموع: " + document.getElementById('total').innerText;
+    messages.push({from:"client",text:msg});
+    localStorage.setItem('msgs',JSON.stringify(messages));
 
-    alert(msg);
+    alert("تم إرسال الطلب");
 }
 
-// INIT
+/* CHAT */
+function openChat(){
+    document.getElementById('chat').style.display="block";
+    renderMsgs();
+}
+
+function sendMsg(){
+    let txt = document.getElementById('msg').value;
+    if(!txt) return;
+
+    messages.push({from:"client",text:txt});
+    localStorage.setItem('msgs',JSON.stringify(messages));
+
+    document.getElementById('msg').value="";
+    renderMsgs();
+}
+
+function renderMsgs(){
+    let box = document.getElementById('chat-box');
+
+    box.innerHTML = messages.map(m=>`
+        <div class="msg ${m.from}">${m.text}</div>
+    `).join('');
+}
+
+/* INIT */
 renderProducts();
 document.getElementById('count').innerText = cart.length;
 
