@@ -1,123 +1,208 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ZOUINE CHOP GLOBAL</title>
-
+<title>ZOUINE Chop - Boutique</title>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
-
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"></script>
-
 <style>
-/* نفس التصميم القديم + تحسين glow */
-body{margin:0;font-family:'Cairo';background:#050816;color:#fff;}
-header{padding:15px;text-align:center;background:#001f3d;box-shadow:0 0 15px #00f;}
-#products{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:10px;}
-.card{background:#0a1f3d;border-radius:15px;border:1px solid #00f;overflow:hidden;transition:.3s;}
-.card:hover{transform:scale(1.05);box-shadow:0 0 15px #0ff;}
-.card img{width:100%;height:140px;object-fit:cover;}
-.info{text-align:center;padding:10px;}
-.price{color:#0ff;}
-.btn{background:#001f3d;color:#0ff;border:none;border-radius:10px;padding:8px;width:100%;}
-#cart{position:fixed;bottom:0;width:100%;background:#001f3d;padding:15px;display:none;}
-#chat{display:none;background:#000c1f;padding:10px;margin-top:10px;}
-.msg{padding:5px;margin:5px;border-radius:8px;}
-.client{background:#004c80;}
-.bot{background:#0a1f3d;}
-</style>
-</head>
+body{
+  margin:0;
+  font-family:'Cairo', sans-serif;
+  background:#050816;
+  color:white;
+}
 
+/* HEADER */
+header{
+  text-align:center;
+  padding:15px;
+  background:#001f3d;
+  cursor:pointer;
+  box-shadow:0 0 20px #00f;
+}
+.title{
+  color:#0ff;
+  text-shadow:0 0 10px #0ff,0 0 30px #00f;
+  font-size:24px;
+}
+.sub{
+  font-size:14px;
+  color:#aaa;
+}
+
+/* PRODUCTS GRID */
+#products{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  padding:10px;
+}
+.card{
+  background:#0a1f3d;
+  border-radius:15px;
+  overflow:hidden;
+  transition:.3s;
+}
+.card:hover{
+  transform:scale(1.05);
+  box-shadow:0 0 15px #0ff;
+}
+.card img{
+  width:100%;
+  height:140px;
+  object-fit:cover;
+}
+.info{
+  padding:10px;
+  text-align:center;
+}
+.price{
+  color:#0ff;
+  font-weight:bold;
+}
+.btn{
+  background:#001f3d;
+  color:#0ff;
+  border:none;
+  padding:8px;
+  border-radius:10px;
+  width:100%;
+  cursor:pointer;
+  transition:.3s;
+}
+.btn:hover{
+  background:#00f;
+  color:#fff;
+}
+
+/* CHAT BOX */
+#chatBox{
+  position:fixed;
+  bottom:0;
+  width:100%;
+  background:#001f3d;
+  display:none;
+  padding:10px;
+  border-top:3px solid #0ff;
+}
+#chat{
+  height:200px;
+  overflow:auto;
+  background:#000c1f;
+  padding:10px;
+  border-radius:10px;
+}
+.msg{
+  background:#0a1f3d;
+  margin:5px;
+  padding:6px;
+  border-radius:8px;
+}
+input{
+  width:100%;
+  padding:10px;
+  border:none;
+  border-radius:10px;
+  margin-top:5px;
+  color:white;
+  background:#0a1f3d;
+}
+</style>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+
+</head>
 <body>
 
-<header>🌍 ZOUINE CHOP GLOBAL</header>
+<header id="header">
+  <h2 class="title">💀 ZOUINE Chop 💀</h2>
+  <p class="sub">🔥 FreeFire Accounts 🔥</p>
+</header>
 
 <div id="products"></div>
 
-<div id="cart">
-<h3>🛒 المشتريات</h3>
-<div id="cart-items"></div>
-<button class="btn" onclick="toggleChat()">💬 Chat</button>
-
-<div id="chat">
-<div id="messages"></div>
-<input id="msg" placeholder="كتب..." onkeypress="if(event.key==='Enter') sendMsg()">
-</div>
+<div id="chatBox">
+  <h3>💬 Chat en direct</h3>
+  <div id="chat"></div>
+  <input id="msg" placeholder="Écris ton message..." onkeypress="if(event.key==='Enter') sendMsg()">
 </div>
 
 <script>
-
-/* 🔥 FIREBASE CONFIG */
+// ======== FIREBASE CONFIG ========
 const firebaseConfig = {
-  apiKey: "PUT-YOURS",
-  authDomain: "PUT-YOURS",
-  projectId: "PUT-YOURS"
+  apiKey: "AIzaSyDTDvPtHxP_7z05fbzrSqeHzk-p4eHNYYI",
+  authDomain: "zouine-chop.firebaseapp.com",
+  projectId: "zouine-chop",
+  storageBucket: "zouine-chop.appspot.com",
+  messagingSenderId: "363784604705",
+  appId: "1:363784604705:web:REPLACE_WITH_YOUR_WEB_APP_ID"
 };
 
+// Initialize Firebase
 firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
 const db = firebase.firestore();
+firebase.auth().signInAnonymously().catch(console.error);
 
-/* LOGIN */
-auth.signInAnonymously();
+// ======== PRODUITS ========
+const products = [
+  {name:"Compte VIP 1", price:50, img:"https://via.placeholder.com/400x400?text=VIP1"},
+  {name:"Compte VIP 2", price:70, img:"https://via.placeholder.com/400x400?text=VIP2"},
+  {name:"Compte VIP 3", price:100, img:"https://via.placeholder.com/400x400?text=VIP3"},
+];
 
-/* PRODUCTS REALTIME */
-db.collection("products").onSnapshot(snap=>{
-let div=document.getElementById("products");
-div.innerHTML="";
-snap.forEach(doc=>{
-let p=doc.data();
-div.innerHTML+=`
-<div class="card">
-<img src="${p.img}">
-<div class="info">
-<h3>${p.name}</h3>
-<div class="price">${p.price} درهم</div>
-<button class="btn" onclick="buy('${doc.id}')">شراء</button>
-</div>
-</div>`;
-});
-});
-
-/* BUY */
-function buy(id){
-db.collection("cart").add({product:id,user:auth.currentUser.uid});
-document.getElementById("cart").style.display="block";
+function renderProducts(){
+  let html = "";
+  products.forEach((p)=>{
+    html += `<div class="card">
+      <img src="${p.img}">
+      <div class="info">
+        <h3>${p.name}</h3>
+        <div class="price">${p.price} DH</div>
+        <button class="btn" onclick="openChat()">Contacter</button>
+      </div>
+    </div>`;
+  });
+  document.getElementById("products").innerHTML = html;
 }
 
-/* CHAT REALTIME */
+// ======== CHAT REALTIME ========
+const chatRef = db.collection("chat");
+
+function renderChat(messages){
+  const chatDiv = document.getElementById("chat");
+  chatDiv.innerHTML = "";
+  messages.forEach(m=>{
+    chatDiv.innerHTML += `<div class="msg">${m.text}</div>`;
+  });
+  chatDiv.scrollTop = chatDiv.scrollHeight;
+}
+
+// Écoute en temps réel
+chatRef.orderBy("timestamp").onSnapshot(snapshot=>{
+  const msgs = snapshot.docs.map(doc => doc.data());
+  renderChat(msgs);
+});
+
 function sendMsg(){
-let text=document.getElementById("msg").value;
-db.collection("chat").add({
-text:text,
-user:auth.currentUser.uid,
-time:Date.now()
-});
-document.getElementById("msg").value="";
+  const text = document.getElementById("msg").value;
+  if(!text) return;
+  chatRef.add({
+    text,
+    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+  });
+  document.getElementById("msg").value = "";
 }
 
-/* LISTEN CHAT */
-db.collection("chat").orderBy("time")
-.onSnapshot(snap=>{
-let box=document.getElementById("messages");
-box.innerHTML="";
-snap.forEach(doc=>{
-let m=doc.data();
-box.innerHTML+=`
-<div class="msg ${m.user===auth.currentUser.uid?'client':'bot'}">
-${m.text}
-</div>`;
-});
-});
-
-/* TOGGLE */
-function toggleChat(){
-let c=document.getElementById("chat");
-c.style.display=c.style.display==="block"?"none":"block";
+function openChat(){
+  document.getElementById("chatBox").style.display = "block";
 }
 
+/* INIT */
+renderProducts();
 </script>
 
 </body>
