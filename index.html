@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>ZOUINE CHOP</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
@@ -11,145 +10,137 @@
 <style>
 
 body{
-    margin:0;
-    font-family:'Cairo',sans-serif;
-    background:#eef3f9;
+margin:0;
+font-family:'Cairo',sans-serif;
+background:#eef3f9;
 }
 
 /* HEADER */
 header{
-    background:#0a3d62;
-    color:white;
-    text-align:center;
-    padding:15px;
+background:#0a3d62;
+color:white;
+text-align:center;
+padding:15px;
 }
 
 /* PRODUCTS */
 #products{
-    display:grid;
-    grid-template-columns:1fr;
-    gap:15px;
-    padding:10px;
+padding:10px;
+display:grid;
+gap:15px;
 }
 
 .card{
-    background:white;
-    border-radius:15px;
-    overflow:hidden;
-    box-shadow:0 4px 15px rgba(0,0,0,0.1);
-    animation:fade 0.3s;
+background:white;
+border-radius:15px;
+overflow:hidden;
+box-shadow:0 4px 15px rgba(0,0,0,0.1);
+animation:fade .3s;
 }
 
 @keyframes fade{
-    from{opacity:0; transform:scale(0.9);}
-    to{opacity:1;}
+from{opacity:0;transform:scale(.9);}
+to{opacity:1;}
 }
 
 .card img{
-    width:100%;
-    height:200px;
-    object-fit:cover;
+width:100%;
+height:200px;
+object-fit:cover;
 }
 
 .info{
-    padding:10px;
+padding:10px;
 }
 
 .price{
-    color:#0a3d62;
-    font-weight:bold;
+color:#0a3d62;
+font-weight:bold;
 }
 
+/* BUTTON */
 button{
-    width:100%;
-    padding:10px;
-    border:none;
-    border-radius:10px;
-    background:#0a3d62;
-    color:white;
+width:100%;
+padding:10px;
+border:none;
+border-radius:10px;
+background:#0a3d62;
+color:white;
+margin-top:5px;
 }
 
 /* CART */
 #cart-btn{
-    position:fixed;
-    bottom:20px;
-    right:20px;
-    background:#0a3d62;
-    padding:12px;
-    border-radius:50%;
-    color:white;
+position:fixed;
+bottom:20px;
+right:20px;
+background:#0a3d62;
+color:white;
+padding:12px;
+border-radius:50%;
 }
 
 #cart{
-    position:fixed;
-    bottom:0;
-    width:100%;
-    background:white;
-    display:none;
-    padding:15px;
-    border-radius:20px 20px 0 0;
-}
-
-/* CHAT BUTTON */
-#chat-btn{
-    position:fixed;
-    bottom:20px;
-    left:20px;
-    background:#0a3d62;
-    color:white;
-    padding:12px;
-    border-radius:50%;
+position:fixed;
+bottom:0;
+width:100%;
+background:white;
+display:none;
+padding:15px;
+border-radius:20px 20px 0 0;
 }
 
 /* CHAT */
 #chat{
-    position:fixed;
-    bottom:0;
-    left:0;
-    width:100%;
-    max-width:400px;
-    height:100%;
-    background:#ece5dd;
-    display:none;
-    flex-direction:column;
-}
-
-#messages{
-    flex:1;
-    overflow:auto;
-    padding:10px;
+display:none;
+margin-top:10px;
+background:#f1f1f1;
+padding:10px;
+border-radius:10px;
 }
 
 .msg{
-    max-width:70%;
-    padding:8px;
-    margin:5px;
-    border-radius:10px;
+padding:6px;
+margin:5px;
+border-radius:8px;
 }
 
-.client{
-    background:#dcf8c6;
-    margin-left:auto;
+.client{background:#dcf8c6;text-align:right;}
+.bot{background:white;text-align:left;}
+
+/* ADMIN */
+#admin-panel{
+display:none;
+padding:10px;
+background:#fff;
 }
 
-.bot{
-    background:white;
+input{
+width:100%;
+padding:10px;
+margin:5px 0;
+border-radius:10px;
+border:1px solid #ccc;
 }
 
-/* INPUT */
-#input{
-    display:flex;
+/* TOAST */
+#toast{
+position:fixed;
+bottom:80px;
+left:50%;
+transform:translateX(-50%);
+background:#0a3d62;
+color:white;
+padding:10px 20px;
+border-radius:20px;
+opacity:0;
+transition:.3s;
 }
 
-#input input{
-    flex:1;
-    padding:10px;
-    border:none;
-}
-
-#input button{
-    background:#0a3d62;
-    color:white;
+/* LIKE */
+.like{
+cursor:pointer;
+font-size:18px;
 }
 
 </style>
@@ -157,7 +148,18 @@ button{
 
 <body>
 
-<header>ZOUINE CHOP</header>
+<header>
+ZOUINE CHOP
+<div id="online">🟢 1 online</div>
+</header>
+
+<!-- ADMIN -->
+<div id="admin-panel">
+<input id="n" placeholder="اسم المنتج">
+<input type="file" id="i">
+<input id="p" placeholder="الثمن">
+<button onclick="addProduct()">إضافة</button>
+</div>
 
 <div id="products"></div>
 
@@ -168,121 +170,196 @@ button{
 <h3>السلة</h3>
 <div id="cart-items"></div>
 <h4>المجموع: <span id="total">0</span> درهم</h4>
-</div>
 
-<!-- CHAT -->
-<div id="chat-btn" onclick="openChat()">💬</div>
+<button onclick="toggleChat()">💬 تواصل</button>
 
 <div id="chat">
 <div id="messages"></div>
+<input id="msg" placeholder="كتب..." onkeypress="if(event.key==='Enter') sendMsg()">
+</div>
 
-<div id="input">
-<input id="msg" placeholder="كتب رسالة..." onkeypress="if(event.key==='Enter') sendMsg()">
-<button onclick="sendMsg()">➤</button>
 </div>
-</div>
+
+<div id="toast"></div>
+
+<p id="admin-trigger" style="text-align:center;font-size:12px;color:#888;">ZOUINE CHOP</p>
 
 <script>
 
-/* DATA */
-let products = [
-    {n:"منتج 1", i:"https://via.placeholder.com/400", p:50},
-    {n:"منتج 2", i:"https://via.placeholder.com/400", p:80}
-];
+/* LOGIN */
+let user = localStorage.getItem("user");
+if(!user){
+user = prompt("دخل اسمك:");
+localStorage.setItem("user",user);
+}
 
-let cart = [];
-let msgs = [];
+/* DATA */
+let products = JSON.parse(localStorage.getItem('db')) || [];
+let cart = JSON.parse(localStorage.getItem('cart')) || [];
+let msgs = JSON.parse(localStorage.getItem('msgs')) || [];
+let likes = JSON.parse(localStorage.getItem('likes')) || {};
+let stats = JSON.parse(localStorage.getItem('stats')) || {};
+
+/* ADMIN */
+document.getElementById('admin-trigger').onclick = function(){
+if(prompt("code?") === "123"){
+document.getElementById('admin-panel').style.display="block";
+}
+}
+
+/* TOAST */
+function toast(msg){
+let t = document.getElementById('toast');
+t.innerText = msg;
+t.style.opacity=1;
+setTimeout(()=>t.style.opacity=0,2000);
+}
+
+/* ADD PRODUCT */
+function addProduct(){
+let n=document.getElementById('n').value;
+let file=document.getElementById('i').files[0];
+let p=document.getElementById('p').value;
+
+let reader=new FileReader();
+reader.onload=function(e){
+products.push({n,i:e.target.result,p});
+localStorage.setItem('db',JSON.stringify(products));
+renderProducts();
+toast("✔ تزاد المنتج");
+}
+if(file) reader.readAsDataURL(file);
+}
 
 /* PRODUCTS */
 function renderProducts(){
-    let div = document.getElementById('products');
+let div=document.getElementById('products');
 
-    div.innerHTML = products.map((p,i)=>`
-        <div class="card">
-            <img src="${p.i}">
-            <div class="info">
-                <h3>${p.n}</h3>
-                <div class="price">${p.p} درهم</div>
-                <button onclick="addToCart(${i})">إضافة</button>
-            </div>
-        </div>
-    `).join('');
+div.innerHTML=products.map((p,i)=>`
+<div class="card">
+<img src="${p.i}">
+<div class="info">
+<h3>${p.n}</h3>
+<div class="price">${p.p} درهم</div>
+
+<div class="like" onclick="like(${i})">
+${likes[i] ? '❤️' : '🤍'}
+</div>
+
+${stats[i]>2 ? '<div style="color:red;">🔥 الأكثر طلباً</div>' : ''}
+
+<button onclick="addToCart(${i})">إضافة</button>
+<button onclick="del(${i})">🗑️</button>
+
+</div>
+</div>
+`).join('');
+}
+
+/* LIKE */
+function like(i){
+likes[i]=!likes[i];
+localStorage.setItem("likes",JSON.stringify(likes));
+renderProducts();
+}
+
+/* DELETE */
+function del(i){
+products.splice(i,1);
+localStorage.setItem('db',JSON.stringify(products));
+renderProducts();
 }
 
 /* CART */
 function addToCart(i){
-    cart.push(products[i]);
-    document.getElementById('count').innerText = cart.length;
+cart.push(products[i]);
+
+stats[i]=(stats[i]||0)+1;
+localStorage.setItem("stats",JSON.stringify(stats));
+
+localStorage.setItem('cart',JSON.stringify(cart));
+
+document.getElementById('count').innerText=cart.length;
+
+document.getElementById('cart-btn').style.transform="scale(1.2)";
+setTimeout(()=>document.getElementById('cart-btn').style.transform="scale(1)",200);
+
+toast("🛒 تزاد للسلة");
 }
 
 function toggleCart(){
-    let c = document.getElementById('cart');
-    c.style.display = c.style.display==="block"?"none":"block";
-    renderCart();
+let c=document.getElementById('cart');
+c.style.display=c.style.display==="block"?"none":"block";
+renderCart();
 }
 
 function renderCart(){
-    let div = document.getElementById('cart-items');
-    let total = 0;
+let div=document.getElementById('cart-items');
+let total=0;
 
-    div.innerHTML = cart.map(p=>{
-        total += p.p;
-        return `<div>${p.n} - ${p.p} درهم</div>`;
-    }).join('');
+div.innerHTML=cart.map(p=>{
+total+=parseInt(p.p);
+return `<div>${p.n} - ${p.p} درهم</div>`;
+}).join('');
 
-    document.getElementById('total').innerText = total;
+document.getElementById('total').innerText=total;
 }
 
 /* CHAT */
-function openChat(){
-    document.getElementById('chat').style.display="flex";
-    renderMsgs();
+function toggleChat(){
+let c=document.getElementById('chat');
+c.style.display=c.style.display==="block"?"none":"block";
+renderMsgs();
 }
 
 function sendMsg(){
-    let input = document.getElementById('msg');
-    let text = input.value;
+let input=document.getElementById('msg');
+let text=input.value;
+if(!text) return;
 
-    if(!text) return;
+msgs.push({type:"client",text:text});
+save();
+input.value="";
+renderMsgs();
 
-    msgs.push({type:"client", text:text});
-    input.value="";
-    renderMsgs();
-
-    setTimeout(()=>botReply(text),800);
+setTimeout(()=>bot(text),700);
 }
 
-/* BOT */
-function botReply(text){
+function bot(text){
+let r="🤖 ما فهمتش";
 
-    let reply = "مرحبا 👋";
+if(text.includes("ثمن")) r="💰 الثمن تحت المنتج";
+else if(text.includes("سلام")) r="👋 مرحبا";
+else if(text.includes("توصيل")) r="🚚 كاين التوصيل";
 
-    if(text.includes("ثمن")){
-        reply = "الأثمنة مكتوبة فالموقع 🛍️";
-    }
-    else if(text.includes("سلام")){
-        reply = "وعليكم السلام 😊";
-    }
-    else{
-        reply = "شكرا على الرسالة ديالك 👍";
-    }
-
-    msgs.push({type:"bot", text:reply});
-    renderMsgs();
+msgs.push({type:"bot",text:r});
+save();
+renderMsgs();
 }
 
 function renderMsgs(){
-    let box = document.getElementById('messages');
+let box=document.getElementById('messages');
 
-    box.innerHTML = msgs.map(m=>`
-        <div class="msg ${m.type}">${m.text}</div>
-    `).join('');
+box.innerHTML=msgs.map(m=>`
+<div class="msg ${m.type}">${m.text}</div>
+`).join('');
 
-    box.scrollTop = box.scrollHeight;
+box.scrollTop=box.scrollHeight;
 }
+
+function save(){
+localStorage.setItem('msgs',JSON.stringify(msgs));
+}
+
+/* ONLINE FAKE */
+setInterval(()=>{
+document.getElementById("online").innerText=
+"🟢 "+(Math.floor(Math.random()*5)+1)+" online";
+},3000);
 
 /* INIT */
 renderProducts();
+document.getElementById('count').innerText=cart.length;
 
 </script>
 
