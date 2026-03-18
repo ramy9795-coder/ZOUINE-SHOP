@@ -11,250 +11,303 @@
 body{
 margin:0;
 font-family:'Cairo',sans-serif;
-background:#0b0c17;
-color:white;
+background:#f4f7fb;
+color:#0a3d62;
 }
 
 /* HEADER */
 header{
-background:#0a1f3d;
-padding:15px;
+background:#0a3d62;
+color:white;
 text-align:center;
-font-size:20px;
+padding:15px;
 cursor:pointer;
 }
 
-/* PRODUCTS */
-#products{
-padding:10px;
-display:grid;
-gap:15px;
+#profileBox{
+display:flex;
+justify-content:center;
+align-items:center;
+gap:8px;
+margin-top:5px;
 }
 
-.card{
-background:#111827;
-border-radius:15px;
-overflow:hidden;
+#profileBox img{
+width:35px;
+height:35px;
+border-radius:50%;
+border:2px solid white;
 }
 
-.card img{
+/* BANNER */
+#banner img{
 width:100%;
 height:180px;
 object-fit:cover;
 }
 
-.info{padding:12px;}
+/* PRODUCTS */
+#products{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px;
+padding:10px;
+}
 
-.price{color:#00aaff;font-weight:bold;}
+.card{
+background:white;
+border-radius:15px;
+overflow:hidden;
+box-shadow:0 3px 10px rgba(0,0,0,0.1);
+}
+
+.card img{
+width:100%;
+height:140px;
+object-fit:cover;
+}
+
+.info{padding:10px;}
+.price{font-weight:bold;}
+
+.buy{background:#28a745;color:white;}
+.delete{background:red;color:white;}
 
 button{
 width:100%;
-padding:12px;
+padding:10px;
 border:none;
 border-radius:10px;
 margin-top:5px;
-font-size:16px;
 }
-
-.buy{background:#00c853;color:white;}
-.delete{background:red;color:white;}
-
-/* CART */
-#cart{
-position:fixed;
-bottom:0;
-width:100%;
-background:#111;
-display:none;
-padding:15px;
-border-radius:20px 20px 0 0;
-}
-
-/* CHAT */
-#chat{display:none;margin-top:10px;}
-.msg{padding:8px;margin:5px;border-radius:10px;}
-.client{background:#00aaff;text-align:right;}
-.admin{background:#333;text-align:left;}
-
-/* ADMIN */
-#admin{display:none;background:#111;padding:15px;}
 
 /* LOGIN */
 #login{
 position:fixed;
 top:0;
-left:0;
 width:100%;
 height:100%;
-background:#0b0c17;
+background:#f4f7fb;
 display:flex;
 flex-direction:column;
 justify-content:center;
 align-items:center;
 }
 
-input{
-padding:12px;
-margin:5px;
-border-radius:10px;
-border:none;
-width:80%;
+/* AVATARS */
+#avatars{
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+justify-content:center;
+margin:10px;
+}
+
+#avatars img{
+width:60px;
+height:60px;
+border-radius:50%;
+cursor:pointer;
+border:3px solid transparent;
+}
+
+.selected{
+border:3px solid #0a3d62;
+}
+
+/* ADMIN */
+#admin{
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:white;
+overflow:auto;
+padding:15px;
+}
+
+/* FREE IMAGE AREA */
+#freeImages img{
+width:100%;
+margin-top:10px;
+border-radius:15px;
 }
 </style>
 </head>
 
 <body>
 
-<header id="header">ZOUINE CHOP</header>
+<header onclick="adminClick()">
+ZOUINE CHOP
+<div id="profileBox" onclick="openProfile(event)">
+<img id="profileImg">
+<span id="profileName"></span>
+</div>
+</header>
+
+<div id="banner">
+<img src="https://via.placeholder.com/800x300?text=ZOUINE+CHOP">
+</div>
+
+<div id="freeImages"></div>
+
+<div id="products"></div>
 
 <!-- LOGIN -->
 <div id="login">
 <input id="user" placeholder="اسم المستخدم">
-<input id="pass" placeholder="كلمة السر" type="password">
-<input type="file" id="avatar">
-<button onclick="login()">دخول / إنشاء</button>
+<input id="pass" type="password" placeholder="كلمة السر">
+
+<div id="avatars">
+<img src="https://i.pravatar.cc/100?img=1" onclick="selectAvatar(this)">
+<img src="https://i.pravatar.cc/100?img=2" onclick="selectAvatar(this)">
+<img src="https://i.pravatar.cc/100?img=3" onclick="selectAvatar(this)">
 </div>
 
-<!-- ADMIN -->
+<button onclick="register()">🆕 إنشاء حساب</button>
+<button onclick="loginUser()">🔐 تسجيل الدخول</button>
+</div>
+
+<!-- ADMIN PANEL -->
 <div id="admin">
-<h3>Admin Panel</h3>
-<input id="n" placeholder="اسم المنتج">
-<input id="p" placeholder="الثمن">
+<h2>ADMIN PANEL</h2>
+
+<h3>➕ إضافة منتج</h3>
+<input id="n" placeholder="اسم">
+<input id="p" placeholder="ثمن">
 <input type="file" id="img">
-<button onclick="addProduct()">إضافة منتج</button>
+<button onclick="addProduct()">إضافة</button>
 
-<h4>Users</h4>
+<h3>🖼️ إضافة صورة في الموقع</h3>
+<input type="file" id="freeImg">
+<button onclick="addFreeImage()">إضافة صورة</button>
+
+<h3>👥 المستخدمين</h3>
 <div id="users"></div>
+
+<button onclick="closeAdmin()">❌ إغلاق</button>
 </div>
-
-<div id="products"></div>
-
-<!-- CART -->
-<div id="cart">
-<h3>السلة</h3>
-<div id="cart-items"></div>
-<button onclick="openChat()">💬 تواصل</button>
-
-<div id="chat">
-<div id="messages"></div>
-<input id="msg" placeholder="اكتب..." onkeypress="if(event.key==='Enter') sendMsg()">
-</div>
-
-</div>
-
-<audio id="sound" src="https://www.soundjay.com/buttons/sounds/button-3.mp3"></audio>
 
 <script>
 
-// ===== USERS =====
-let users = JSON.parse(localStorage.getItem("users"))||{};
-let banned = JSON.parse(localStorage.getItem("banned"))||[];
-let current=null;
+/* DATA */
+let users=JSON.parse(localStorage.getItem("users"))||{};
+let banned=JSON.parse(localStorage.getItem("banned"))||[];
+let products=JSON.parse(localStorage.getItem("products"))||[];
+let freeImages=JSON.parse(localStorage.getItem("freeImages"))||[];
 
-function login(){
+let current=null;
+let selectedAvatar="";
+
+/* LOGIN */
+function register(){
 let u=user.value;
 let p=pass.value;
 
-if(banned.includes(u)){
-alert("🚫 تم حظرك");
-return;
-}
+if(users[u]){alert("❌ مستعمل");return;}
+if(!selectedAvatar){alert("❗ اختار صورة");return;}
 
-if(users[u]){
-if(users[u].pass!==p){alert("خطأ");return;}
-}else{
-if(users[u]){alert("مستعمل");return;}
-let file=avatar.files[0];
-let reader=new FileReader();
-reader.onload=e=>{
-users[u]={pass:p,img:e.target.result};
+users[u]={pass:p,img:selectedAvatar};
 saveUsers();
 start(u);
-};
-reader.readAsDataURL(file);
-return;
 }
+
+function loginUser(){
+let u=user.value;
+let p=pass.value;
+
+if(banned.includes(u)){alert("🚫 محظور");return;}
+if(!users[u] || users[u].pass!==p){alert("❌ خطأ");return;}
+
 start(u);
 }
 
 function start(u){
 current=u;
 login.style.display="none";
-renderProducts();
+profileImg.src=users[u].img;
+profileName.innerText=u;
+render();
 }
 
-// ===== PRODUCTS =====
-let products=JSON.parse(localStorage.getItem("db"))||[];
-let cart=[];
-
-function addProduct(){
-let file=img.files[0];
-let reader=new FileReader();
-reader.onload=e=>{
-products.push({n:n.value,p:p.value,i:e.target.result});
-localStorage.setItem("db",JSON.stringify(products));
-renderProducts();
-};
-reader.readAsDataURL(file);
+/* AVATAR */
+function selectAvatar(img){
+document.querySelectorAll("#avatars img").forEach(i=>i.classList.remove("selected"));
+img.classList.add("selected");
+selectedAvatar=img.src;
 }
 
-function renderProducts(){
+/* PRODUCTS */
+function render(){
 productsDiv.innerHTML=products.map((p,i)=>`
 <div class="card">
 <img src="${p.i}">
 <div class="info">
 <h3>${p.n}</h3>
 <div class="price">${p.p} درهم</div>
-<button class="buy" onclick="addToCart(${i})">شراء</button>
-${current==="admin" ? `<button class="delete" onclick="del(${i})">حذف</button>`:""}
+<button class="buy">شراء</button>
+${current==="admin"?`<button class="delete" onclick="del(${i})">حذف</button>`:""}
 </div>
 </div>
 `).join('');
+
+freeImagesDiv.innerHTML=freeImages.map(img=>`<img src="${img}">`).join('');
 }
 
 let productsDiv=document.getElementById("products");
+let freeImagesDiv=document.getElementById("freeImages");
 
-function addToCart(i){
-cart.push(products[i]);
-cart.style="transform:scale(1.1)";
-document.getElementById("cart").style.display="block";
+function addProduct(){
+let file=img.files[0];
+let reader=new FileReader();
+reader.onload=e=>{
+products.push({n:n.value,p:p.value,i:e.target.result});
+localStorage.setItem("products",JSON.stringify(products));
+render();
+};
+reader.readAsDataURL(file);
 }
 
-// ===== CHAT =====
-let msgs=[];
-
-function openChat(){
-chat.style.display="block";
+function del(i){
+products.splice(i,1);
+localStorage.setItem("products",JSON.stringify(products));
+render();
 }
 
-function sendMsg(){
-let t=msg.value;
-msgs.push({t,type:"client"});
-msg.value="";
-renderMsgs();
-sound.play();
+/* FREE IMAGES */
+function addFreeImage(){
+let file=freeImg.files[0];
+let reader=new FileReader();
+reader.onload=e=>{
+freeImages.push(e.target.result);
+localStorage.setItem("freeImages",JSON.stringify(freeImages));
+render();
+};
+reader.readAsDataURL(file);
 }
 
-function renderMsgs(){
-messages.innerHTML=msgs.map(m=>`
-<div class="msg ${m.type}">${m.t}</div>
-`).join('');
-}
-
-// ===== ADMIN =====
+/* ADMIN */
 let clicks=0;
-header.onclick=()=>{
+function adminClick(){
 clicks++;
 if(clicks>=10){
 admin.style.display="block";
 loadUsers();
 clicks=0;
 }
-};
+}
+
+function closeAdmin(){
+admin.style.display="none";
+}
 
 function loadUsers(){
 usersDiv.innerHTML=Object.keys(users).map(u=>`
-<div>${u} <button onclick="ban('${u}')">🚫</button></div>
+<div>${u} 
+<button onclick="ban('${u}')">🚫</button>
+</div>
 `).join('');
 }
 
@@ -266,6 +319,7 @@ localStorage.setItem("banned",JSON.stringify(banned));
 alert("تم الحظر");
 }
 
+/* SAVE */
 function saveUsers(){
 localStorage.setItem("users",JSON.stringify(users));
 }
