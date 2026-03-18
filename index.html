@@ -3,180 +3,43 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ZOUINE CHOP FF ACCOUNTS</title>
+<title>ZOUINE CHOP GLOBAL</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
 
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"></script>
+
 <style>
-
-/* GENERAL */
-body{
-margin:0;
-font-family:'Cairo',sans-serif;
-background:#0b0c17;
-color:white;
-}
-
-/* HEADER */
-header{
-background:#0a1f3d;
-padding:15px;
-text-align:center;
-position:relative;
-}
-
-/* ONLINE FAKE */
-#online{
-position:absolute;
-top:10px;
-right:10px;
-font-size:12px;
-color:#0ff;
-}
-
-/* PRODUCTS / ACCOUNTS */
-#products{
-padding:10px;
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:15px;
-}
-
-.card{
-background:#0a1f3d;
-border-radius:15px;
-overflow:hidden;
-box-shadow:0 0 10px #00f;
-position:relative;
-cursor:pointer;
-transition:.3s;
-border:1px solid #00f;
-}
-
-.card:hover{
-box-shadow:0 0 15px #0ff,0 0 25px #00f inset;
-transform:scale(1.05);
-}
-
-.card img{
-width:100%;
-height:150px;
-object-fit:cover;
-}
-
-/* INFO */
-.info{
-padding:10px;
-text-align:center;
-}
-
-.price{
-color:#00f;
-font-weight:bold;
-}
-
-.selected{
-border:2px solid #0ff;
-animation:blink .8s infinite;
-}
-
-@keyframes blink{
-0%{box-shadow:0 0 5px #0ff}
-50%{box-shadow:0 0 15px #00f}
-100%{box-shadow:0 0 5px #0ff}
-}
-
-/* BUTTON */
-button{
-padding:8px;
-border:none;
-border-radius:10px;
-background:#001f3d;
-color:#0ff;
-margin-top:5px;
-cursor:pointer;
-}
-
-/* CART SECTION */
-#cart{
-position:fixed;
-bottom:0;
-width:100%;
-background:#001f3d;
-display:none;
-padding:15px;
-border-radius:15px 15px 0 0;
-}
-
-/* CHAT */
-#chat{
-display:none;
-margin-top:10px;
-background:#000c1f;
-padding:10px;
-border-radius:10px;
-}
-
-.msg{
-padding:6px;
-margin:5px;
-border-radius:8px;
-}
-
-.client{background:#005f99;text-align:right;}
-.bot{background:#0a1f3d;text-align:left;}
-
-/* ADMIN PANEL */
-#admin-panel{
-display:none;
-background:#001a33;
-padding:10px;
-border-radius:10px;
-margin:10px;
-}
-
-/* TOAST */
-#toast{
-position:fixed;
-bottom:80px;
-left:50%;
-transform:translateX(-50%);
-background:#0a1f3d;
-color:#0ff;
-padding:10px 20px;
-border-radius:20px;
-opacity:0;
-transition:.3s;
-}
-
+/* نفس التصميم القديم + تحسين glow */
+body{margin:0;font-family:'Cairo';background:#050816;color:#fff;}
+header{padding:15px;text-align:center;background:#001f3d;box-shadow:0 0 15px #00f;}
+#products{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:10px;}
+.card{background:#0a1f3d;border-radius:15px;border:1px solid #00f;overflow:hidden;transition:.3s;}
+.card:hover{transform:scale(1.05);box-shadow:0 0 15px #0ff;}
+.card img{width:100%;height:140px;object-fit:cover;}
+.info{text-align:center;padding:10px;}
+.price{color:#0ff;}
+.btn{background:#001f3d;color:#0ff;border:none;border-radius:10px;padding:8px;width:100%;}
+#cart{position:fixed;bottom:0;width:100%;background:#001f3d;padding:15px;display:none;}
+#chat{display:none;background:#000c1f;padding:10px;margin-top:10px;}
+.msg{padding:5px;margin:5px;border-radius:8px;}
+.client{background:#004c80;}
+.bot{background:#0a1f3d;}
 </style>
 </head>
+
 <body>
 
-<header>
-ZOUINE CHOP - FreeFire Accounts
-<div id="online">🟢 1 online</div>
-</header>
-
-<!-- ADMIN PANEL -->
-<div id="admin-panel">
-<h4>Admin Control</h4>
-<input id="n" placeholder="اسم الحساب">
-<input type="file" id="i">
-<input id="p" placeholder="ثمن الحساب">
-<button onclick="addProduct()">إضافة</button>
-<h5>يمكنك تعطيو admin لأي user</h5>
-</div>
+<header>🌍 ZOUINE CHOP GLOBAL</header>
 
 <div id="products"></div>
 
-<!-- CART -->
 <div id="cart">
-<h3>قسم المشتريات</h3>
+<h3>🛒 المشتريات</h3>
 <div id="cart-items"></div>
-<h4>المجموع: <span id="total">0</span> درهم</h4>
-
-<button onclick="toggleChat()">💬 تواصل</button>
+<button class="btn" onclick="toggleChat()">💬 Chat</button>
 
 <div id="chat">
 <div id="messages"></div>
@@ -184,169 +47,78 @@ ZOUINE CHOP - FreeFire Accounts
 </div>
 </div>
 
-<div id="toast"></div>
-
-<p id="admin-trigger" style="text-align:center;font-size:12px;color:#888;cursor:pointer;">ZOUINE CHOP</p>
-
 <script>
 
-/* LOGIN SIMULATED */
-let user = localStorage.getItem("user");
-if(!user){
-user = prompt("دخل اسمك:");
-localStorage.setItem("user",user);
-}
+/* 🔥 FIREBASE CONFIG */
+const firebaseConfig = {
+  apiKey: "PUT-YOURS",
+  authDomain: "PUT-YOURS",
+  projectId: "PUT-YOURS"
+};
 
-/* DATA */
-let products = JSON.parse(localStorage.getItem('db')) || [];
-let cart = JSON.parse(localStorage.getItem('cart')) || [];
-let msgs = JSON.parse(localStorage.getItem('msgs')) || [];
-let selected = null;
-let admins = JSON.parse(localStorage.getItem('admins')) || [user];
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
 
-/* ONLINE FAKE */
-setInterval(()=>{
-document.getElementById("online").innerText=
-"🟢 "+(Math.floor(Math.random()*5)+1)+" online";
-},3000);
+/* LOGIN */
+auth.signInAnonymously();
 
-/* ADMIN */
-document.getElementById('admin-trigger').onclick = function(){
-if(prompt("ادخل كود الادمن")==="123456"){
-document.getElementById('admin-panel').style.display="block";
-}
-}
-
-/* TOAST */
-function toast(msg){
-let t=document.getElementById('toast');
-t.innerText=msg;
-t.style.opacity=1;
-setTimeout(()=>t.style.opacity=0,2000);
-}
-
-/* ADD PRODUCT */
-function addProduct(){
-let n=document.getElementById('n').value;
-let file=document.getElementById('i').files[0];
-let p=document.getElementById('p').value;
-
-let reader=new FileReader();
-reader.onload=function(e){
-products.push({n,i:e.target.result,p});
-localStorage.setItem('db',JSON.stringify(products));
-renderProducts();
-toast("✔ Account added");
-}
-if(file) reader.readAsDataURL(file);
-}
-
-/* RENDER PRODUCTS */
-function renderProducts(){
-let div=document.getElementById('products');
-div.innerHTML=products.map((p,i)=>`
-<div class="card ${selected===i?'selected':''}" onclick="selectProd(${i})">
-<img src="${p.i}">
+/* PRODUCTS REALTIME */
+db.collection("products").onSnapshot(snap=>{
+let div=document.getElementById("products");
+div.innerHTML="";
+snap.forEach(doc=>{
+let p=doc.data();
+div.innerHTML+=`
+<div class="card">
+<img src="${p.img}">
 <div class="info">
-<h3>${p.n}</h3>
-<div class="price">${p.p} درهم</div>
-<button onclick="addToCart(${i});event.stopPropagation()">شراء</button>
-<button onclick="del(${i});event.stopPropagation()">🗑️</button>
+<h3>${p.name}</h3>
+<div class="price">${p.price} درهم</div>
+<button class="btn" onclick="buy('${doc.id}')">شراء</button>
 </div>
-</div>
-`).join('');
+</div>`;
+});
+});
+
+/* BUY */
+function buy(id){
+db.collection("cart").add({product:id,user:auth.currentUser.uid});
+document.getElementById("cart").style.display="block";
 }
 
-/* SELECT PRODUCT */
-function selectProd(i){
-selected=i;
-renderProducts();
-}
-
-/* DELETE */
-function del(i){
-if(admins.includes(user)){
-products.splice(i,1);
-localStorage.setItem('db',JSON.stringify(products));
-renderProducts();
-toast("🗑️ تم الحذف");
-}else{
-toast("❌ ليس لديك صلاحية");
-}
-}
-
-/* CART */
-function addToCart(i){
-cart.push(products[i]);
-localStorage.setItem('cart',JSON.stringify(cart));
-renderCart();
-toast("🛒 تمت الإضافة");
-}
-
-function toggleCart(){
-let c=document.getElementById('cart');
-c.style.display=c.style.display==="block"?"none":"block";
-renderCart();
-}
-
-function renderCart(){
-let div=document.getElementById('cart-items');
-let total=0;
-
-div.innerHTML=cart.map(p=>{
-total+=parseInt(p.p);
-return `<div>${p.n} - ${p.p}</div>`;
-}).join('');
-
-document.getElementById('total').innerText=total;
-}
-
-/* CHAT */
-function toggleChat(){
-let c=document.getElementById('chat');
-c.style.display=c.style.display==="block"?"none":"block";
-renderMsgs();
-}
-
+/* CHAT REALTIME */
 function sendMsg(){
-let input=document.getElementById('msg');
-let text=input.value;
-if(!text) return;
-
-msgs.push({type:"client",text:text});
-save();
-input.value="";
-renderMsgs();
-
-setTimeout(()=>bot(text),700);
+let text=document.getElementById("msg").value;
+db.collection("chat").add({
+text:text,
+user:auth.currentUser.uid,
+time:Date.now()
+});
+document.getElementById("msg").value="";
 }
 
-function bot(text){
-let r="🤖 ما فهمتش";
+/* LISTEN CHAT */
+db.collection("chat").orderBy("time")
+.onSnapshot(snap=>{
+let box=document.getElementById("messages");
+box.innerHTML="";
+snap.forEach(doc=>{
+let m=doc.data();
+box.innerHTML+=`
+<div class="msg ${m.user===auth.currentUser.uid?'client':'bot'}">
+${m.text}
+</div>`;
+});
+});
 
-if(text.includes("ثمن")) r="💰 الثمن تحت المنتج";
-else if(text.includes("سلام")) r="👋 مرحبا";
-else if(text.includes("توصيل")) r="🚚 التوصيل متاح";
-
-msgs.push({type:"bot",text:r});
-save();
-renderMsgs();
+/* TOGGLE */
+function toggleChat(){
+let c=document.getElementById("chat");
+c.style.display=c.style.display==="block"?"none":"block";
 }
-
-function renderMsgs(){
-let box=document.getElementById('messages');
-box.innerHTML=msgs.map(m=>`<div class="msg ${m.type}">${m.text}</div>`).join('');
-box.scrollTop=box.scrollHeight;
-}
-
-function save(){
-localStorage.setItem('msgs',JSON.stringify(msgs));
-}
-
-/* INIT */
-renderProducts();
-document.getElementById('total').innerText=cart.reduce((a,b)=>a+parseInt(b.p),0);
 
 </script>
+
 </body>
 </html>
