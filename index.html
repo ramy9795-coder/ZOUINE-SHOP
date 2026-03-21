@@ -1,330 +1,307 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ZOUINE CHOP</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free Fire Accounts Store - Blue & White Edition</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: #fff;
+            min-height: 100vh;
+        }
 
-<style>
-body{
-margin:0;
-font-family:'Cairo',sans-serif;
-background:#f4f7fb;
-color:#0a3d62;
-}
+        .header {
+            background: rgba(0,0,0,0.8);
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
 
-/* HEADER */
-header{
-background:#0a3d62;
-color:white;
-text-align:center;
-padding:15px;
-cursor:pointer;
-}
+        .nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
 
-#profileBox{
-display:flex;
-justify-content:center;
-align-items:center;
-gap:8px;
-margin-top:5px;
-}
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #00f, #fff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
 
-#profileBox img{
-width:35px;
-height:35px;
-border-radius:50%;
-border:2px solid white;
-}
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><radialGradient id="a" cx="50%" cy="50%"><stop offset="0%" stop-color="%2300f"/><stop offset="50%" stop-color="%23fff"/><stop offset="100%" stop-color="%23000"/></radialGradient></defs><rect width="100%" height="100%" fill="url(%23a)"/></svg>') center/cover;
+            margin-top: 80px;
+        }
 
-/* BANNER */
-#banner img{
-width:100%;
-height:180px;
-object-fit:cover;
-}
+        .hero-content h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 20px #00f;
+        }
 
-/* PRODUCTS */
-#products{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:10px;
-padding:10px;
-}
+        .hero-content p {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+        }
 
-.card{
-background:white;
-border-radius:15px;
-overflow:hidden;
-box-shadow:0 3px 10px rgba(0,0,0,0.1);
-}
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: linear-gradient(45deg, #00f, #fff);
+            color: #000;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0,0,255,0.3);
+        }
 
-.card img{
-width:100%;
-height:140px;
-object-fit:cover;
-}
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,255,0.5);
+        }
 
-.info{padding:10px;}
-.price{font-weight:bold;}
+        .accounts-section {
+            padding: 5rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
 
-.buy{background:#28a745;color:white;}
-.delete{background:red;color:white;}
+        .section-title {
+            text-align: center;
+            font-size: 3rem;
+            margin-bottom: 3rem;
+            background: linear-gradient(45deg, #fff, #00f);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
 
-button{
-width:100%;
-padding:10px;
-border:none;
-border-radius:10px;
-margin-top:5px;
-}
+        .accounts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
 
-/* LOGIN */
-#login{
-position:fixed;
-top:0;
-width:100%;
-height:100%;
-background:#f4f7fb;
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-}
+        .account-card {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            border: 2px solid rgba(0,0,255,0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
 
-/* AVATARS */
-#avatars{
-display:flex;
-gap:10px;
-flex-wrap:wrap;
-justify-content:center;
-margin:10px;
-}
+        .account-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
 
-#avatars img{
-width:60px;
-height:60px;
-border-radius:50%;
-cursor:pointer;
-border:3px solid transparent;
-}
+        .account-card:hover::before {
+            left: 100%;
+        }
 
-.selected{
-border:3px solid #0a3d62;
-}
+        .account-card:hover {
+            transform: translateY(-10px);
+            border-color: #fff;
+            box-shadow: 0 20px 40px rgba(0,0,255,0.4);
+        }
 
-/* ADMIN */
-#admin{
-display:none;
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:white;
-overflow:auto;
-padding:15px;
-}
+        .account-emoji {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
 
-/* FREE IMAGE AREA */
-#freeImages img{
-width:100%;
-margin-top:10px;
-border-radius:15px;
-}
-</style>
+        .account-title {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: #fff;
+        }
+
+        .account-price {
+            font-size: 2.5rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #00f, #fff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .account-features {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .account-features li {
+            padding: 0.5rem 0;
+            font-size: 1.1rem;
+        }
+
+        .buy-button {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(45deg, #00f, #87ceeb);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .buy-button:hover {
+            background: linear-gradient(45deg, #fff, #00f);
+            transform: scale(1.05);
+        }
+
+        .footer {
+            background: rgba(0,0,0,0.9);
+            text-align: center;
+            padding: 2rem;
+            margin-top: 5rem;
+        }
+
+        @media (max-width: 768px) {
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+            
+            .accounts-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
-
 <body>
+    <header class="header">
+        <nav class="nav">
+            <a href="#" class="logo">🔵 FF Accounts Store 🤍</a>
+            <div>
+                <a href="#accounts" style="color: #fff; text-decoration: none; margin: 0 1rem;">Accounts</a>
+                <a href="#" style="color: #fff; text-decoration: none; margin: 0 1rem;">Contact</a>
+            </div>
+        </nav>
+    </header>
 
-<header onclick="adminClick()">
-ZOUINE CHOP
-<div id="profileBox" onclick="openProfile(event)">
-<img id="profileImg">
-<span id="profileName"></span>
-</div>
-</header>
+    <section class="hero">
+        <div class="hero-content">
+            <h1>🔵 Blue & White Free Fire Accounts 🤍</h1>
+            <p>Premium accounts with exclusive Blue & White skins - Ready to dominate!</p>
+            <a href="#accounts" class="cta-button">Shop Now 🚀</a>
+        </div>
+    </section>
 
-<div id="banner">
-<img src="https://via.placeholder.com/800x300?text=ZOUINE+CHOP">
-</div>
+    <section id="accounts" class="accounts-section">
+        <h2 class="section-title">🔥 Featured Accounts 🔥</h2>
+        <div class="accounts-grid">
+            <div class="account-card">
+                <div class="account-emoji">🔵🤍</div>
+                <h3 class="account-title">Blue Honor Elite</h3>
+                <div class="account-price">$49.99</div>
+                <ul class="account-features">
+                    <li>✅ Level 85+</li>
+                    <li>✅ Blue Honor Elite Bundle</li>
+                    <li>✅ White Royal Skin Set</li>
+                    <li>✅ 10k+ Diamonds</li>
+                    <li>✅ 50+ Legendary Items</li>
+                </ul>
+                <button class="buy-button">Buy Now 💙</button>
+            </div>
 
-<div id="freeImages"></div>
+            <div class="account-card">
+                <div class="account-emoji">🔵🤍</div>
+                <h3 class="account-title">White Diamond Pro</h3>
+                <div class="account-price">$79.99</div>
+                <ul class="account-features">
+                    <li>✅ Level 90+</li>
+                    <li>✅ Complete Blue/White Collection</li>
+                    <li>✅ 25k Diamonds</li>
+                    <li>✅ All Elite Pass Seasons</li>
+                    <li>✅ 100+ Rare Skins</li>
+                </ul>
+                <button class="buy-button">Buy Now 💎</button>
+            </div>
 
-<div id="products"></div>
+            <div class="account-card">
+                <div class="account-emoji">🔵🤍</div>
+                <h3 class="account-title">Supreme Blue King</h3>
+                <div class="account-price">$129.99</div>
+                <ul class="account-features">
+                    <li>✅ Level 99</li>
+                    <li>✅ Every Blue/White Skin Available</li>
+                    <li>✅ 50k+ Diamonds</li>
+                    <li>✅ Grandmaster Rank</li>
+                    <li>✅ Unlimited Everything</li>
+                </ul>
+                <button class="buy-button">Buy Now 👑</button>
+            </div>
+        </div>
+    </section>
 
-<!-- LOGIN -->
-<div id="login">
-<input id="user" placeholder="اسم المستخدم">
-<input id="pass" type="password" placeholder="كلمة السر">
+    <footer class="footer">
+        <p>&copy; 2024 Blue & White FF Accounts Store. Instant delivery guaranteed! ⚡</p>
+        <p>Discord: ffaccounts#1234 | WhatsApp: +1-XXX-XXX-XXXX</p>
+    </footer>
 
-<div id="avatars">
-<img src="https://i.pravatar.cc/100?img=1" onclick="selectAvatar(this)">
-<img src="https://i.pravatar.cc/100?img=2" onclick="selectAvatar(this)">
-<img src="https://i.pravatar.cc/100?img=3" onclick="selectAvatar(this)">
-</div>
+    <script>
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
 
-<button onclick="register()">🆕 إنشاء حساب</button>
-<button onclick="loginUser()">🔐 تسجيل الدخول</button>
-</div>
-
-<!-- ADMIN PANEL -->
-<div id="admin">
-<h2>ADMIN PANEL</h2>
-
-<h3>➕ إضافة منتج</h3>
-<input id="n" placeholder="اسم">
-<input id="p" placeholder="ثمن">
-<input type="file" id="img">
-<button onclick="addProduct()">إضافة</button>
-
-<h3>🖼️ إضافة صورة في الموقع</h3>
-<input type="file" id="freeImg">
-<button onclick="addFreeImage()">إضافة صورة</button>
-
-<h3>👥 المستخدمين</h3>
-<div id="users"></div>
-
-<button onclick="closeAdmin()">❌ إغلاق</button>
-</div>
-
-<script>
-
-/* DATA */
-let users=JSON.parse(localStorage.getItem("users"))||{};
-let banned=JSON.parse(localStorage.getItem("banned"))||[];
-let products=JSON.parse(localStorage.getItem("products"))||[];
-let freeImages=JSON.parse(localStorage.getItem("freeImages"))||[];
-
-let current=null;
-let selectedAvatar="";
-
-/* LOGIN */
-function register(){
-let u=user.value;
-let p=pass.value;
-
-if(users[u]){alert("❌ مستعمل");return;}
-if(!selectedAvatar){alert("❗ اختار صورة");return;}
-
-users[u]={pass:p,img:selectedAvatar};
-saveUsers();
-start(u);
-}
-
-function loginUser(){
-let u=user.value;
-let p=pass.value;
-
-if(banned.includes(u)){alert("🚫 محظور");return;}
-if(!users[u] || users[u].pass!==p){alert("❌ خطأ");return;}
-
-start(u);
-}
-
-function start(u){
-current=u;
-login.style.display="none";
-profileImg.src=users[u].img;
-profileName.innerText=u;
-render();
-}
-
-/* AVATAR */
-function selectAvatar(img){
-document.querySelectorAll("#avatars img").forEach(i=>i.classList.remove("selected"));
-img.classList.add("selected");
-selectedAvatar=img.src;
-}
-
-/* PRODUCTS */
-function render(){
-productsDiv.innerHTML=products.map((p,i)=>`
-<div class="card">
-<img src="${p.i}">
-<div class="info">
-<h3>${p.n}</h3>
-<div class="price">${p.p} درهم</div>
-<button class="buy">شراء</button>
-${current==="admin"?`<button class="delete" onclick="del(${i})">حذف</button>`:""}
-</div>
-</div>
-`).join('');
-
-freeImagesDiv.innerHTML=freeImages.map(img=>`<img src="${img}">`).join('');
-}
-
-let productsDiv=document.getElementById("products");
-let freeImagesDiv=document.getElementById("freeImages");
-
-function addProduct(){
-let file=img.files[0];
-let reader=new FileReader();
-reader.onload=e=>{
-products.push({n:n.value,p:p.value,i:e.target.result});
-localStorage.setItem("products",JSON.stringify(products));
-render();
-};
-reader.readAsDataURL(file);
-}
-
-function del(i){
-products.splice(i,1);
-localStorage.setItem("products",JSON.stringify(products));
-render();
-}
-
-/* FREE IMAGES */
-function addFreeImage(){
-let file=freeImg.files[0];
-let reader=new FileReader();
-reader.onload=e=>{
-freeImages.push(e.target.result);
-localStorage.setItem("freeImages",JSON.stringify(freeImages));
-render();
-};
-reader.readAsDataURL(file);
-}
-
-/* ADMIN */
-let clicks=0;
-function adminClick(){
-clicks++;
-if(clicks>=10){
-admin.style.display="block";
-loadUsers();
-clicks=0;
-}
-}
-
-function closeAdmin(){
-admin.style.display="none";
-}
-
-function loadUsers(){
-usersDiv.innerHTML=Object.keys(users).map(u=>`
-<div>${u} 
-<button onclick="ban('${u}')">🚫</button>
-</div>
-`).join('');
-}
-
-let usersDiv=document.getElementById("users");
-
-function ban(u){
-banned.push(u);
-localStorage.setItem("banned",JSON.stringify(banned));
-alert("تم الحظر");
-}
-
-/* SAVE */
-function saveUsers(){
-localStorage.setItem("users",JSON.stringify(users));
-}
-
-</script>
-
+        // Buy button animation
+        document.querySelectorAll('.buy-button').forEach(button => {
+            button.addEventListener('click', function() {
+                this.innerHTML = 'Processing... ⏳';
+                this.style.background = 'linear-gradient(45deg, #ff6b6b, #ff8e8e)';
+                setTimeout(() => {
+                    this.innerHTML = 'Redirecting to Payment 💳';
+                }, 1000);
+                setTimeout(() => {
+                    alert('Demo: Payment gateway would open here! 🚀');
+                    this.innerHTML = 'Buy Now 💙';
+                    this.style.background = 'linear-gradient(45deg, #00f, #87ceeb)';
+                }, 2000);
+            });
+        });
+    </script>
 </body>
 </html>
