@@ -2,153 +2,178 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ZOUINE CHOP</title><!-- Google Fonts similar to poster style --><link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;800&family=Tajawal:wght@500;700&display=swap" rel="stylesheet"><style>
+<title>ZOUINE CHOP</title><!-- Arabic gaming-style fonts --><link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700;900&family=Tajawal:wght@400;700&display=swap" rel="stylesheet"><style>
 
 :root{
---main:#4b00ff;
---secondary:#0f5bff;
---dark:#0a0a1f;
---card:#121233;
---accent:#00b7ff;
+--blue:#071a52;
+--blue2:#0a2472;
+--white:#ffffff;
+--card:#0d1b5c;
+--accent:#2f6bff;
+}
+
+*{
+box-sizing:border-box;
 }
 
 body{
 margin:0;
 font-family:'Tajawal',sans-serif;
-background:linear-gradient(135deg,#1b0066,#12003f,#000);
+background:linear-gradient(160deg,var(--blue),#020a2e);
 color:white;
 }
 
 header{
-font-family:'Cairo',sans-serif;
-font-weight:800;
-font-size:28px;
-letter-spacing:2px;
+font-family:'Cairo';
+font-weight:900;
+font-size:30px;
+padding:20px;
 text-align:center;
-padding:18px;
-background:linear-gradient(90deg,#3c00ff,#007bff);
-box-shadow:0 0 20px #000;
+background:linear-gradient(90deg,#001f7a,#0044ff);
+letter-spacing:2px;
+box-shadow:0 0 20px black;
 }
 
-.logo{
-font-size:34px;
-color:white;
+.subtitle{
+font-size:14px;
+opacity:.8;
+margin-top:5px;
 }
 
 .container{
+max-width:420px;
+margin:auto;
 padding:15px;
+}
+
+.section{
+background:var(--card);
+padding:20px;
+border-radius:18px;
+margin-bottom:18px;
+box-shadow:0 0 20px rgba(0,0,0,.5);
 }
 
 .section-title{
 font-family:'Cairo';
 font-size:22px;
-margin-bottom:10px;
-color:#00b7ff;
+margin-bottom:12px;
+text-align:center;
 }
 
 input{
 width:100%;
-padding:12px;
+padding:14px;
 margin:6px 0;
-border-radius:8px;
+border-radius:12px;
 border:none;
-background:#1c1c44;
+background:#020a2e;
 color:white;
+font-size:15px;
 }
 
 button{
 width:100%;
-padding:12px;
-margin-top:8px;
+padding:14px;
+margin-top:10px;
 border:none;
-border-radius:10px;
-background:linear-gradient(90deg,#4b00ff,#007bff);
+border-radius:14px;
+background:linear-gradient(90deg,#0044ff,#2f6bff);
 color:white;
 font-weight:bold;
+font-size:15px;
 cursor:pointer;
 transition:.3s;
 }
 
 button:hover{
-transform:scale(1.05);
+transform:scale(1.04);
 }
 
 .card{
-background:var(--card);
-border-radius:16px;
-padding:12px;
-margin-bottom:15px;
-box-shadow:0 0 15px rgba(0,0,0,.6);
+background:#020a2e;
+padding:15px;
+border-radius:15px;
+margin-bottom:12px;
 }
 
 .card img{
 width:100%;
 border-radius:12px;
+margin-bottom:8px;
 }
 
 .price{
-color:#00eaff;
-font-size:18px;
-margin:5px 0;
-}
-
-.hidden{
-display:none;
+color:#4da3ff;
+font-weight:bold;
+margin-bottom:8px;
 }
 
 .chatbox{
-height:220px;
-overflow-y:auto;
-background:#070721;
+height:200px;
+overflow:auto;
+background:#020a2e;
 padding:10px;
 border-radius:12px;
 margin-bottom:10px;
 }
 
 .message{
-background:#1c1c44;
+background:#0a2472;
 padding:8px;
-margin:5px 0;
+margin:6px 0;
 border-radius:8px;
 }
 
-.admin-panel{
-background:#070721;
-padding:15px;
-border-radius:15px;
+.hidden{
+display:none;
 }
 
 footer{
 text-align:center;
-padding:15px;
-font-size:13px;
-color:#aaa;
+padding:20px;
+font-size:12px;
+opacity:.7;
 }
 
 </style></head><body><header>
-<div class="logo">ZOUINE CHOP</div>
-متجر بيع الحسابات والخدمات الرقمية
-</header><!-- LOGIN --><div class="container" id="authSection"><div class="section-title">تسجيل الدخول / إنشاء حساب</div><input id="firstName" placeholder="الاسم">
+ZOUINE CHOP
+<div class="subtitle">متجر الحسابات والخدمات الرقمية</div>
+</header><div class="container"><!-- LOGIN --><div class="section" id="authSection">
+<div class="section-title">تسجيل الدخول أو إنشاء حساب</div><input id="firstName" placeholder="الاسم">
 <input id="lastName" placeholder="النسب">
 <input id="phone" placeholder="رقم الهاتف">
-<input id="password" placeholder="كلمة المرور" type="password"><button onclick="register()">إنشاء حساب</button> <button onclick="login()">تسجيل الدخول</button>
+<input id="password" type="password" placeholder="كلمة المرور"><button onclick="register()">إنشاء حساب</button> <button onclick="login()">تسجيل الدخول</button>
 
-</div><!-- STORE --><div class="container hidden" id="storeSection"><div class="section-title">الحسابات المتوفرة</div><div id="products"></div></div><!-- CHAT --><div class="container hidden" id="chatSection"><div class="section-title">الدردشة داخل الموقع</div><div class="chatbox" id="chatbox"></div><input id="chatInput" placeholder="اكتب رسالتك">
-<button onclick="sendMessage()">إرسال</button></div><!-- ADMIN LOGIN --><div class="container hidden" id="adminUnlock"><div class="section-title">لوحة تحكم الأدمن</div><input id="adminCode" placeholder="كود الأدمن">
-<button onclick="unlockAdmin()">فتح لوحة الأدمن</button></div><!-- ADMIN PANEL --><div class="container hidden admin-panel" id="adminPanel"><div class="section-title">إضافة حساب جديد</div><input id="productName" placeholder="اسم الحساب">
+</div><!-- STORE --><div class="section hidden" id="storeSection">
+<div class="section-title">الحسابات المتوفرة</div>
+<div id="products"></div>
+</div><!-- CHAT --><div class="section hidden" id="chatSection">
+<div class="section-title">الدردشة</div>
+<div class="chatbox" id="chatbox"></div>
+<input id="chatInput" placeholder="اكتب رسالة">
+<button onclick="sendMessage()">إرسال</button>
+</div><!-- ADMIN --><div class="section hidden" id="adminSection">
+<div class="section-title">لوحة الأدمن</div><input id="adminCode" placeholder="كود الأدمن">
+<button onclick="unlockAdmin()">فتح الأدمن</button><div id="adminPanel" class="hidden"><input id="productName" placeholder="اسم الحساب">
 <input id="productPrice" placeholder="الثمن">
 <input id="productImage" placeholder="رابط الصورة"><button onclick="addProduct()">إضافة الحساب</button>
 
-</div><footer>
-ZOUINE CHOP © 2026 جميع الحقوق محفوظة
+</div>
+</div></div><footer>
+ZOUINE CHOP © 2026
 </footer><script>
 
 let users = JSON.parse(localStorage.getItem("users")) || [];
 let productsData = JSON.parse(localStorage.getItem("products")) || [];
 let chat = JSON.parse(localStorage.getItem("chat")) || [];
 
-
 function register(){
+
+if(!firstName.value || !lastName.value || !phone.value || !password.value){
+alert("عمر جميع الخانات");
+return;
+}
 
 let user={
 firstName:firstName.value,
@@ -158,13 +183,11 @@ password:password.value
 };
 
 users.push(user);
-
 localStorage.setItem("users",JSON.stringify(users));
 
 alert("تم إنشاء الحساب بنجاح");
 
 }
-
 
 function login(){
 
@@ -180,28 +203,30 @@ u.password==password.value
 
 if(found){
 
-alert("مرحبا بك في ZOUINE CHOP");
-
-
+alert("مرحبا بك");
 
  authSection.classList.add("hidden");
  storeSection.classList.remove("hidden");
  chatSection.classList.remove("hidden");
- adminUnlock.classList.remove("hidden");
+ adminSection.classList.remove("hidden");
 
  loadProducts();
  loadChat();
 
-}
+}else{
 
-else{
-alert("معلومات خاطئة");
-}
+alert("المعلومات غير صحيحة أو الحساب غير موجود");
 
 }
 
+}
 
 function addProduct(){
+
+if(!productName.value || !productPrice.value || !productImage.value){
+alert("عمر جميع الخانات");
+return;
+}
 
 let product={
 name:productName.value,
@@ -210,13 +235,11 @@ image:productImage.value
 };
 
 productsData.push(product);
-
 localStorage.setItem("products",JSON.stringify(productsData));
 
 loadProducts();
 
 }
-
 
 function loadProducts(){
 
@@ -225,83 +248,53 @@ products.innerHTML="";
 productsData.forEach(p=>{
 
 products.innerHTML+=`
-
 <div class="card">
-
 <img src="${p.image}">
-
 <h3>${p.name}</h3>
-
 <div class="price">${p.price} MAD</div>
-
 <button onclick="orderProduct('${p.name}')">طلب الحساب</button>
-
 </div>`;
 
 });
 
 }
 
-
 function orderProduct(name){
 
-chat.push("طلب جديد: "+name);
-
+chat.push("طلب حساب: "+name);
 localStorage.setItem("chat",JSON.stringify(chat));
-
 loadChat();
 
 }
-
 
 function sendMessage(){
 
-chat.push(chatInput.value);
+if(!chatInput.value) return;
 
+chat.push(chatInput.value);
 localStorage.setItem("chat",JSON.stringify(chat));
 
 loadChat();
-
 chatInput.value="";
 
 }
-
 
 function loadChat(){
 
 chatbox.innerHTML="";
 
 chat.forEach(msg=>{
-
 chatbox.innerHTML+=`<div class="message">${msg}</div>`;
-
 });
 
 }
 
-
-let attempts=0;
-
 function unlockAdmin(){
 
 if(adminCode.value=="197803"){
-
 adminPanel.classList.remove("hidden");
-
-}
-
-else{
-
-attempts++;
-
-if(attempts>=5){
-
-alert("تم فتح وضع الأدمن السري");
-
-adminPanel.classList.remove("hidden");
-
-}
-
+}else{
+alert("كود غير صحيح");
 }
 
 }
