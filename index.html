@@ -4,63 +4,42 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ZOUINE CHOP</title><link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700;900&family=Tajawal:wght@400;700&display=swap" rel="stylesheet"><style>
 
-:root{
---dark:#04133a;
---primary:#0b2cff;
---light:#ffffff;
---card:#071b55;
---accent:#2c66ff;
-}
-
-*{box-sizing:border-box}
-
 body{
 margin:0;
 font-family:'Tajawal',sans-serif;
-background:linear-gradient(180deg,var(--dark),#000c2e);
+background:#061b4a;
 color:white;
 }
 
 header{
 font-family:'Cairo';
-font-size:32px;
-font-weight:900;
 text-align:center;
+font-size:32px;
 padding:20px;
-background:linear-gradient(90deg,#001ea1,#0047ff);
-box-shadow:0 0 25px #000;
+background:#0b2cff;
 }
 
 .container{
-max-width:430px;
+max-width:420px;
 margin:auto;
 padding:15px;
 }
 
-.section{
-background:var(--card);
-padding:22px;
+.card{
+background:#0a2472;
+padding:20px;
 border-radius:20px;
 margin-top:20px;
-box-shadow:0 0 20px rgba(0,0,0,.6);
-}
-
-.title{
-font-family:'Cairo';
-font-size:24px;
-text-align:center;
-margin-bottom:15px;
 }
 
 input{
 width:100%;
 padding:14px;
-margin:8px 0;
-border-radius:14px;
+margin-top:10px;
 border:none;
-background:#020a2e;
+border-radius:12px;
+background:#04133a;
 color:white;
-font-size:15px;
 }
 
 button{
@@ -68,202 +47,95 @@ width:100%;
 padding:14px;
 margin-top:12px;
 border:none;
-border-radius:14px;
-background:linear-gradient(90deg,#003cff,#2c66ff);
+border-radius:12px;
+background:#2c66ff;
 color:white;
-font-weight:bold;
 font-size:16px;
 cursor:pointer;
-transition:.25s;
 }
 
-button:hover{
-transform:scale(1.04);
-}
-
-.card{
-background:#020a2e;
-padding:15px;
-border-radius:16px;
-margin-bottom:15px;
-}
-
-.card img{
-width:100%;
+.product{
+background:#04133a;
+padding:12px;
+margin-top:12px;
 border-radius:12px;
-}
-
-.price{
-color:#66aaff;
-font-weight:bold;
-margin:8px 0;
-}
-
-.chatbox{
-height:220px;
-overflow:auto;
-background:#020a2e;
-padding:10px;
-border-radius:14px;
-margin-bottom:10px;
-}
-
-.message{
-background:#0a2472;
-padding:8px;
-margin:5px 0;
-border-radius:8px;
 }
 
 .hidden{display:none}
 
-footer{
-text-align:center;
-padding:25px;
-opacity:.6;
-font-size:13px;
-}
+</style></head><body><header>ZOUINE CHOP</header><div class="container"><!-- LOGIN --><div id="loginPage" class="card">
+<h2>إنشاء حساب أو تسجيل الدخول</h2><input id="username" placeholder="اسم المستخدم">
+<input id="password" placeholder="كلمة المرور" type="password"><button onclick="register()">إنشاء حساب</button> <button onclick="login()">تسجيل الدخول</button>
 
-</style></head><body><header>ZOUINE CHOP</header><div class="container"><!-- LOGIN --><div id="loginBox" class="section">
-<div class="title">تسجيل الدخول أو إنشاء حساب</div><input id="firstName" placeholder="الاسم">
-<input id="lastName" placeholder="النسب">
-<input id="phone" placeholder="رقم الهاتف">
-<input id="password" type="password" placeholder="كلمة المرور"><button onclick="registerUser()">إنشاء حساب</button> <button onclick="loginUser()">تسجيل الدخول</button>
+</div><!-- STORE --><div id="storePage" class="card hidden">
+<h2>مرحبا بك في متجر ZOUINE CHOP 👑</h2><div class="product">
+حساب Free Fire أسطوري - 150 MAD
+<button onclick="order('حساب Free Fire أسطوري - 150 MAD')">طلب الحساب</button>
+</div><div class="product">
+حساب Free Fire نادر - 90 MAD
+<button onclick="order('حساب Free Fire نادر - 90 MAD')">طلب الحساب</button>
+</div><div class="product">
+حساب Free Fire مبتدئ - 40 MAD
+<button onclick="order('حساب Free Fire مبتدئ - 40 MAD')">طلب الحساب</button>
+</div><button onclick="logout()">تسجيل الخروج</button>
 
-</div><!-- STORE --><div id="storeBox" class="section hidden">
-<div class="title">مرحبا بك في المتجر 👑</div>
-<div id="products"></div>
-</div><!-- CHAT --><div id="chatBox" class="section hidden">
-<div class="title">الدردشة</div>
-<div class="chatbox" id="chatMessages"></div>
-<input id="chatInput" placeholder="اكتب رسالة">
-<button onclick="sendMessage()">إرسال</button>
-</div><!-- ADMIN --><div id="adminBox" class="section hidden">
-<div class="title">لوحة الأدمن</div><input id="adminCode" placeholder="أدخل كود الأدمن">
-<button onclick="unlockAdmin()">فتح الأدمن</button><div id="adminPanel" class="hidden"><input id="productName" placeholder="اسم الحساب">
-<input id="productPrice" placeholder="الثمن">
-<input id="productImage" placeholder="رابط الصورة"><button onclick="addProduct()">إضافة الحساب</button>
+</div></div><script>
 
-</div>
-</div></div><footer>ZOUINE CHOP © 2026</footer><script>
+function register(){
 
-const loginBox=document.getElementById("loginBox")
-const storeBox=document.getElementById("storeBox")
-const chatBox=document.getElementById("chatBox")
-const adminBox=document.getElementById("adminBox")
-const adminPanel=document.getElementById("adminPanel")
-const chatMessages=document.getElementById("chatMessages")
-const productsDiv=document.getElementById("products")
+let user=document.getElementById("username").value
+let pass=document.getElementById("password").value
 
-let users=JSON.parse(localStorage.getItem("users"))||[]
-let products=JSON.parse(localStorage.getItem("products"))||[]
-let messages=JSON.parse(localStorage.getItem("messages"))||[]
-
-function registerUser(){
-
-let first=firstName.value
-let last=lastName.value
-let phone=phone.value
-let pass=password.value
-
-if(!first||!last||!phone||!pass){
-alert("عمر جميع المعلومات ⚠️")
+if(user==""||pass==""){
+alert("دخل اسم المستخدم وكلمة المرور")
 return
 }
 
-users.push({first,last,phone,pass})
-localStorage.setItem("users",JSON.stringify(users))
+localStorage.setItem("user",user)
+localStorage.setItem("pass",pass)
 
-alert("تم إنشاء الحساب بنجاح ✅ يمكنك تسجيل الدخول الآن")
+alert("تم إنشاء الحساب ✅ دابا دير تسجيل الدخول")
+
 }
 
-function loginUser(){
+function login(){
 
-let first=firstName.value
-let last=lastName.value
-let pass=password.value
+let user=document.getElementById("username").value
+let pass=document.getElementById("password").value
 
-let found=users.find(u=>u.first===first && u.last===last && u.pass===pass)
+let savedUser=localStorage.getItem("user")
+let savedPass=localStorage.getItem("pass")
 
-if(found){
+if(user==savedUser && pass==savedPass){
 
-loginBox.classList.add("hidden")
-storeBox.classList.remove("hidden")
-chatBox.classList.remove("hidden")
-adminBox.classList.remove("hidden")
-
-loadProducts()
-loadMessages()
+loginPage.classList.add("hidden")
+storePage.classList.remove("hidden")
 
 }else{
-alert("المعلومات غير صحيحة ❌")
-}
-}
-
-function addProduct(){
-
-let name=productName.value
-let price=productPrice.value
-let image=productImage.value
-
-if(!name||!price||!image){
-alert("عمر جميع الخانات")
-return
+alert("المعلومات غير صحيحة")
 }
 
-products.push({name,price,image})
-localStorage.setItem("products",JSON.stringify(products))
-
-loadProducts()
 }
 
-function loadProducts(){
+function logout(){
 
-productsDiv.innerHTML=""
+storePage.classList.add("hidden")
+loginPage.classList.remove("hidden")
 
-products.forEach(p=>{
-productsDiv.innerHTML+=`
-<div class="card">
-<img src="${p.image}">
-<h3>${p.name}</h3>
-<div class="price">${p.price} MAD</div>
-<button onclick="orderProduct('${p.name}')">طلب الحساب</button>
-</div>`
-})
 }
 
-function orderProduct(name){
-messages.push("طلب حساب: "+name)
-localStorage.setItem("messages",JSON.stringify(messages))
-loadMessages()
-}
+function order(productName){
 
-function sendMessage(){
+let username=localStorage.getItem("user")
 
-if(!chatInput.value)return
+let message="طلب جديد من موقع ZOUINE CHOP:%0A"+
+"اسم المستخدم: "+username+"%0A"+
+"المنتج: "+productName
 
-messages.push(chatInput.value)
-localStorage.setItem("messages",JSON.stringify(messages))
+let phone="212644404084"
 
-chatInput.value=""
-loadMessages()
-}
+window.location.href="https://wa.me/"+phone+"?text="+message
 
-function loadMessages(){
-chatMessages.innerHTML=""
-
-messages.forEach(m=>{
-chatMessages.innerHTML+=`<div class='message'>${m}</div>`
-})
-}
-
-function unlockAdmin(){
-
-if(adminCode.value=="197803"){
-adminPanel.classList.remove("hidden")
-}else{
-alert("كود غير صحيح")
-}
 }
 
 </script></body>
