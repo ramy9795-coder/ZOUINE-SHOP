@@ -2,70 +2,61 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ZOUINE CHOP</title><!-- Arabic gaming-style fonts --><link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700;900&family=Tajawal:wght@400;700&display=swap" rel="stylesheet"><style>
+<title>ZOUINE CHOP</title><link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700;900&family=Tajawal:wght@400;700&display=swap" rel="stylesheet"><style>
 
 :root{
---blue:#071a52;
---blue2:#0a2472;
---white:#ffffff;
---card:#0d1b5c;
---accent:#2f6bff;
+--dark:#04133a;
+--primary:#0b2cff;
+--light:#ffffff;
+--card:#071b55;
+--accent:#2c66ff;
 }
 
-*{
-box-sizing:border-box;
-}
+*{box-sizing:border-box}
 
 body{
 margin:0;
 font-family:'Tajawal',sans-serif;
-background:linear-gradient(160deg,var(--blue),#020a2e);
+background:linear-gradient(180deg,var(--dark),#000c2e);
 color:white;
 }
 
 header{
 font-family:'Cairo';
+font-size:32px;
 font-weight:900;
-font-size:30px;
-padding:20px;
 text-align:center;
-background:linear-gradient(90deg,#001f7a,#0044ff);
-letter-spacing:2px;
-box-shadow:0 0 20px black;
-}
-
-.subtitle{
-font-size:14px;
-opacity:.8;
-margin-top:5px;
+padding:20px;
+background:linear-gradient(90deg,#001ea1,#0047ff);
+box-shadow:0 0 25px #000;
 }
 
 .container{
-max-width:420px;
+max-width:430px;
 margin:auto;
 padding:15px;
 }
 
 .section{
 background:var(--card);
-padding:20px;
-border-radius:18px;
-margin-bottom:18px;
-box-shadow:0 0 20px rgba(0,0,0,.5);
+padding:22px;
+border-radius:20px;
+margin-top:20px;
+box-shadow:0 0 20px rgba(0,0,0,.6);
 }
 
-.section-title{
+.title{
 font-family:'Cairo';
-font-size:22px;
-margin-bottom:12px;
+font-size:24px;
 text-align:center;
+margin-bottom:15px;
 }
 
 input{
 width:100%;
 padding:14px;
-margin:6px 0;
-border-radius:12px;
+margin:8px 0;
+border-radius:14px;
 border:none;
 background:#020a2e;
 color:white;
@@ -75,15 +66,15 @@ font-size:15px;
 button{
 width:100%;
 padding:14px;
-margin-top:10px;
+margin-top:12px;
 border:none;
 border-radius:14px;
-background:linear-gradient(90deg,#0044ff,#2f6bff);
+background:linear-gradient(90deg,#003cff,#2c66ff);
 color:white;
 font-weight:bold;
-font-size:15px;
+font-size:16px;
 cursor:pointer;
-transition:.3s;
+transition:.25s;
 }
 
 button:hover{
@@ -93,210 +84,186 @@ transform:scale(1.04);
 .card{
 background:#020a2e;
 padding:15px;
-border-radius:15px;
-margin-bottom:12px;
+border-radius:16px;
+margin-bottom:15px;
 }
 
 .card img{
 width:100%;
 border-radius:12px;
-margin-bottom:8px;
 }
 
 .price{
-color:#4da3ff;
+color:#66aaff;
 font-weight:bold;
-margin-bottom:8px;
+margin:8px 0;
 }
 
 .chatbox{
-height:200px;
+height:220px;
 overflow:auto;
 background:#020a2e;
 padding:10px;
-border-radius:12px;
+border-radius:14px;
 margin-bottom:10px;
 }
 
 .message{
 background:#0a2472;
 padding:8px;
-margin:6px 0;
+margin:5px 0;
 border-radius:8px;
 }
 
-.hidden{
-display:none;
-}
+.hidden{display:none}
 
 footer{
 text-align:center;
-padding:20px;
-font-size:12px;
-opacity:.7;
+padding:25px;
+opacity:.6;
+font-size:13px;
 }
 
-</style></head><body><header>
-ZOUINE CHOP
-<div class="subtitle">متجر الحسابات والخدمات الرقمية</div>
-</header><div class="container"><!-- LOGIN --><div class="section" id="authSection">
-<div class="section-title">تسجيل الدخول أو إنشاء حساب</div><input id="firstName" placeholder="الاسم">
+</style></head><body><header>ZOUINE CHOP</header><div class="container"><!-- LOGIN --><div id="loginBox" class="section">
+<div class="title">تسجيل الدخول أو إنشاء حساب</div><input id="firstName" placeholder="الاسم">
 <input id="lastName" placeholder="النسب">
 <input id="phone" placeholder="رقم الهاتف">
-<input id="password" type="password" placeholder="كلمة المرور"><button onclick="register()">إنشاء حساب</button> <button onclick="login()">تسجيل الدخول</button>
+<input id="password" type="password" placeholder="كلمة المرور"><button onclick="registerUser()">إنشاء حساب</button> <button onclick="loginUser()">تسجيل الدخول</button>
 
-</div><!-- STORE --><div class="section hidden" id="storeSection">
-<div class="section-title">الحسابات المتوفرة</div>
+</div><!-- STORE --><div id="storeBox" class="section hidden">
+<div class="title">مرحبا بك في المتجر 👑</div>
 <div id="products"></div>
-</div><!-- CHAT --><div class="section hidden" id="chatSection">
-<div class="section-title">الدردشة</div>
-<div class="chatbox" id="chatbox"></div>
+</div><!-- CHAT --><div id="chatBox" class="section hidden">
+<div class="title">الدردشة</div>
+<div class="chatbox" id="chatMessages"></div>
 <input id="chatInput" placeholder="اكتب رسالة">
 <button onclick="sendMessage()">إرسال</button>
-</div><!-- ADMIN --><div class="section hidden" id="adminSection">
-<div class="section-title">لوحة الأدمن</div><input id="adminCode" placeholder="كود الأدمن">
+</div><!-- ADMIN --><div id="adminBox" class="section hidden">
+<div class="title">لوحة الأدمن</div><input id="adminCode" placeholder="أدخل كود الأدمن">
 <button onclick="unlockAdmin()">فتح الأدمن</button><div id="adminPanel" class="hidden"><input id="productName" placeholder="اسم الحساب">
 <input id="productPrice" placeholder="الثمن">
 <input id="productImage" placeholder="رابط الصورة"><button onclick="addProduct()">إضافة الحساب</button>
 
 </div>
-</div></div><footer>
-ZOUINE CHOP © 2026
-</footer><script>
+</div></div><footer>ZOUINE CHOP © 2026</footer><script>
 
-let users = JSON.parse(localStorage.getItem("users")) || [];
-let productsData = JSON.parse(localStorage.getItem("products")) || [];
-let chat = JSON.parse(localStorage.getItem("chat")) || [];
+const loginBox=document.getElementById("loginBox")
+const storeBox=document.getElementById("storeBox")
+const chatBox=document.getElementById("chatBox")
+const adminBox=document.getElementById("adminBox")
+const adminPanel=document.getElementById("adminPanel")
+const chatMessages=document.getElementById("chatMessages")
+const productsDiv=document.getElementById("products")
 
-function register(){
+let users=JSON.parse(localStorage.getItem("users"))||[]
+let products=JSON.parse(localStorage.getItem("products"))||[]
+let messages=JSON.parse(localStorage.getItem("messages"))||[]
 
-if(!firstName.value || !lastName.value || !phone.value || !password.value){
-alert("عمر جميع الخانات");
-return;
+function registerUser(){
+
+let first=firstName.value
+let last=lastName.value
+let phone=phone.value
+let pass=password.value
+
+if(!first||!last||!phone||!pass){
+alert("عمر جميع المعلومات ⚠️")
+return
 }
 
-let user={
-firstName:firstName.value,
-lastName:lastName.value,
-phone:phone.value,
-password:password.value
-};
+users.push({first,last,phone,pass})
+localStorage.setItem("users",JSON.stringify(users))
 
-users.push(user);
-localStorage.setItem("users",JSON.stringify(users));
-
-alert("تم إنشاء الحساب بنجاح");
-
+alert("تم إنشاء الحساب بنجاح ✅ يمكنك تسجيل الدخول الآن")
 }
 
-function login(){
+function loginUser(){
 
-let found = users.find(u=>
+let first=firstName.value
+let last=lastName.value
+let pass=password.value
 
-u.firstName==firstName.value &&
-
-u.lastName==lastName.value &&
-
-u.password==password.value
-
-);
+let found=users.find(u=>u.first===first && u.last===last && u.pass===pass)
 
 if(found){
 
-alert("مرحبا بك");
+loginBox.classList.add("hidden")
+storeBox.classList.remove("hidden")
+chatBox.classList.remove("hidden")
+adminBox.classList.remove("hidden")
 
- authSection.classList.add("hidden");
- storeSection.classList.remove("hidden");
- chatSection.classList.remove("hidden");
- adminSection.classList.remove("hidden");
-
- loadProducts();
- loadChat();
+loadProducts()
+loadMessages()
 
 }else{
-
-alert("المعلومات غير صحيحة أو الحساب غير موجود");
-
+alert("المعلومات غير صحيحة ❌")
 }
-
 }
 
 function addProduct(){
 
-if(!productName.value || !productPrice.value || !productImage.value){
-alert("عمر جميع الخانات");
-return;
+let name=productName.value
+let price=productPrice.value
+let image=productImage.value
+
+if(!name||!price||!image){
+alert("عمر جميع الخانات")
+return
 }
 
-let product={
-name:productName.value,
-price:productPrice.value,
-image:productImage.value
-};
+products.push({name,price,image})
+localStorage.setItem("products",JSON.stringify(products))
 
-productsData.push(product);
-localStorage.setItem("products",JSON.stringify(productsData));
-
-loadProducts();
-
+loadProducts()
 }
 
 function loadProducts(){
 
-products.innerHTML="";
+productsDiv.innerHTML=""
 
-productsData.forEach(p=>{
-
-products.innerHTML+=`
+products.forEach(p=>{
+productsDiv.innerHTML+=`
 <div class="card">
 <img src="${p.image}">
 <h3>${p.name}</h3>
 <div class="price">${p.price} MAD</div>
 <button onclick="orderProduct('${p.name}')">طلب الحساب</button>
-</div>`;
-
-});
-
+</div>`
+})
 }
 
 function orderProduct(name){
-
-chat.push("طلب حساب: "+name);
-localStorage.setItem("chat",JSON.stringify(chat));
-loadChat();
-
+messages.push("طلب حساب: "+name)
+localStorage.setItem("messages",JSON.stringify(messages))
+loadMessages()
 }
 
 function sendMessage(){
 
-if(!chatInput.value) return;
+if(!chatInput.value)return
 
-chat.push(chatInput.value);
-localStorage.setItem("chat",JSON.stringify(chat));
+messages.push(chatInput.value)
+localStorage.setItem("messages",JSON.stringify(messages))
 
-loadChat();
-chatInput.value="";
-
+chatInput.value=""
+loadMessages()
 }
 
-function loadChat(){
+function loadMessages(){
+chatMessages.innerHTML=""
 
-chatbox.innerHTML="";
-
-chat.forEach(msg=>{
-chatbox.innerHTML+=`<div class="message">${msg}</div>`;
-});
-
+messages.forEach(m=>{
+chatMessages.innerHTML+=`<div class='message'>${m}</div>`
+})
 }
 
 function unlockAdmin(){
 
 if(adminCode.value=="197803"){
-adminPanel.classList.remove("hidden");
+adminPanel.classList.remove("hidden")
 }else{
-alert("كود غير صحيح");
+alert("كود غير صحيح")
 }
-
 }
 
 </script></body>
