@@ -4,32 +4,65 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ZOUINE CHOP</title><link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700;900&family=Tajawal:wght@400;700&display=swap" rel="stylesheet"><style>
 
+:root{
+--main:#0a2fff;
+--dark:#061a5e;
+--card:#0c1f6d;
+}
+
 body{
 margin:0;
 font-family:'Tajawal',sans-serif;
-background:#061b4a;
+background:linear-gradient(180deg,#061a5e,#020a30);
 color:white;
 }
 
 header{
 font-family:'Cairo';
+font-size:34px;
 text-align:center;
-font-size:32px;
-padding:20px;
-background:#0b2cff;
+padding:25px;
+background:var(--main);
+box-shadow:0 5px 20px rgba(0,0,0,.5);
+letter-spacing:2px;
 }
 
 .container{
 max-width:420px;
 margin:auto;
-padding:15px;
+padding:20px;
 }
 
 .card{
-background:#0a2472;
-padding:20px;
-border-radius:20px;
-margin-top:20px;
+background:var(--card);
+padding:25px;
+border-radius:25px;
+margin-top:25px;
+box-shadow:0 10px 30px rgba(0,0,0,.6);
+}
+
+h2{
+font-family:'Cairo';
+text-align:center;
+margin-bottom:20px;
+}
+
+.product{
+background:#030d40;
+padding:15px;
+margin-top:15px;
+border-radius:18px;
+box-shadow:0 6px 18px rgba(0,0,0,.5);
+}
+
+.product-title{
+font-size:18px;
+margin-bottom:8px;
+}
+
+.price{
+color:#7fa8ff;
+margin-bottom:10px;
 }
 
 input{
@@ -38,7 +71,7 @@ padding:14px;
 margin-top:10px;
 border:none;
 border-radius:12px;
-background:#04133a;
+background:#020a30;
 color:white;
 }
 
@@ -48,93 +81,44 @@ padding:14px;
 margin-top:12px;
 border:none;
 border-radius:12px;
-background:#2c66ff;
+background:linear-gradient(45deg,#2c6bff,#0a2fff);
 color:white;
 font-size:16px;
+font-weight:bold;
 cursor:pointer;
+transition:.3s;
 }
 
-.product{
-background:#04133a;
-padding:12px;
-margin-top:12px;
-border-radius:12px;
+button:hover{
+transform:scale(1.05);
 }
 
-.hidden{display:none}
-
-</style></head><body><header>ZOUINE CHOP</header><div class="container"><!-- LOGIN --><div id="loginPage" class="card">
-<h2>إنشاء حساب أو تسجيل الدخول</h2><input id="username" placeholder="اسم المستخدم">
-<input id="password" placeholder="كلمة المرور" type="password"><button onclick="register()">إنشاء حساب</button> <button onclick="login()">تسجيل الدخول</button>
-
-</div><!-- STORE --><div id="storePage" class="card hidden">
-<h2>مرحبا بك في متجر ZOUINE CHOP 👑</h2><div class="product">
-حساب Free Fire أسطوري - 150 MAD
-<button onclick="order('حساب Free Fire أسطوري - 150 MAD')">طلب الحساب</button>
+</style></head><body><header>ZOUINE CHOP</header><div class="container"><div class="card"><h2>🔥 حسابات Free Fire</h2><input id="username" placeholder="اكتب اسمك لإرسال الطلب"><div class="product">
+<div class="product-title">حساب أسطوري</div>
+<div class="price">150 MAD</div>
+<button onclick="order('حساب أسطوري')">طلب الحساب</button>
 </div><div class="product">
-حساب Free Fire نادر - 90 MAD
-<button onclick="order('حساب Free Fire نادر - 90 MAD')">طلب الحساب</button>
+<div class="product-title">حساب نادر</div>
+<div class="price">90 MAD</div>
+<button onclick="order('حساب نادر')">طلب الحساب</button>
 </div><div class="product">
-حساب Free Fire مبتدئ - 40 MAD
-<button onclick="order('حساب Free Fire مبتدئ - 40 MAD')">طلب الحساب</button>
-</div><button onclick="logout()">تسجيل الخروج</button>
+<div class="product-title">حساب مبتدئ</div>
+<div class="price">40 MAD</div>
+<button onclick="order('حساب مبتدئ')">طلب الحساب</button>
+</div></div></div><script>
 
-</div></div><script>
-
-function register(){
+function order(product){
 
 let user=document.getElementById("username").value
-let pass=document.getElementById("password").value
 
-if(user==""||pass==""){
-alert("دخل اسم المستخدم وكلمة المرور")
+if(user==""){
+alert("دخل اسمك باش نصيفط الطلب")
 return
 }
 
-localStorage.setItem("user",user)
-localStorage.setItem("pass",pass)
+let message="طلب جديد من ZOUINE CHOP:%0Aاسم المستخدم: "+user+"%0Aالمنتج: "+product
 
-alert("تم إنشاء الحساب ✅ دابا دير تسجيل الدخول")
-
-}
-
-function login(){
-
-let user=document.getElementById("username").value
-let pass=document.getElementById("password").value
-
-let savedUser=localStorage.getItem("user")
-let savedPass=localStorage.getItem("pass")
-
-if(user==savedUser && pass==savedPass){
-
-loginPage.classList.add("hidden")
-storePage.classList.remove("hidden")
-
-}else{
-alert("المعلومات غير صحيحة")
-}
-
-}
-
-function logout(){
-
-storePage.classList.add("hidden")
-loginPage.classList.remove("hidden")
-
-}
-
-function order(productName){
-
-let username=localStorage.getItem("user")
-
-let message="طلب جديد من موقع ZOUINE CHOP:%0A"+
-"اسم المستخدم: "+username+"%0A"+
-"المنتج: "+productName
-
-let phone="212644404084"
-
-window.location.href="https://wa.me/"+phone+"?text="+message
+window.location.href="https://wa.me/212644404084?text="+message
 
 }
 
