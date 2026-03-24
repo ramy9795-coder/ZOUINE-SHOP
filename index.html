@@ -4,88 +4,108 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ZOUINE CHOP</title><link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700;900&family=Tajawal:wght@400;700&display=swap" rel="stylesheet"><style>
 
+/* ===== GAMING BLUE STYLE ===== */
+
 :root{
---main:#0a2fff;
---dark:#061a5e;
---card:#0c1f6d;
+--neon:#0066ff;
+--dark:#020c2c;
+--card:#081c5c;
+--light:#e8f0ff;
+}
+
+*{
+box-sizing:border-box;
+margin:0;
+padding:0;
 }
 
 body{
-margin:0;
 font-family:'Tajawal',sans-serif;
-background:linear-gradient(180deg,#061a5e,#020a30);
+background:radial-gradient(circle at top,#071a66,#01051c);
 color:white;
+overflow-x:hidden;
 }
 
 header{
+height:90px;
+display:flex;
+align-items:center;
+justify-content:center;
 font-family:'Cairo';
-font-size:34px;
-text-align:center;
-padding:25px;
-background:var(--main);
-box-shadow:0 5px 20px rgba(0,0,0,.5);
-letter-spacing:2px;
+font-size:38px;
+letter-spacing:3px;
+background:linear-gradient(90deg,#003cff,#001a8a);
+box-shadow:0 0 40px #003cff;
+}
+
+.banner{
+height:180px;
+background:linear-gradient(45deg,#001a8a,#003cff);
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:28px;
+font-family:'Cairo';
+box-shadow:0 0 60px #003cff inset;
 }
 
 .container{
-max-width:420px;
+max-width:480px;
 margin:auto;
 padding:20px;
 }
 
-.card{
-background:var(--card);
-padding:25px;
-border-radius:25px;
+.products-grid{
+display:grid;
+grid-template-columns:1fr;
+gap:25px;
 margin-top:25px;
-box-shadow:0 10px 30px rgba(0,0,0,.6);
 }
 
-h2{
-font-family:'Cairo';
-text-align:center;
-margin-bottom:20px;
+.card{
+background:linear-gradient(160deg,#071a66,#020c2c);
+border-radius:25px;
+padding:20px;
+box-shadow:0 0 30px rgba(0,102,255,.6);
+transition:.4s;
+position:relative;
+overflow:hidden;
 }
 
-.product{
-background:#030d40;
-padding:15px;
-margin-top:15px;
-border-radius:18px;
-box-shadow:0 6px 18px rgba(0,0,0,.5);
+.card:hover{
+transform:translateY(-6px);
+box-shadow:0 0 50px #0066ff;
 }
 
-.product-title{
-font-size:18px;
+.card img{
+width:100%;
+border-radius:20px;
+margin-bottom:15px;
+}
+
+.title{
+font-size:20px;
 margin-bottom:8px;
+font-family:'Cairo';
 }
 
 .price{
-color:#7fa8ff;
-margin-bottom:10px;
-}
-
-input{
-width:100%;
-padding:14px;
-margin-top:10px;
-border:none;
-border-radius:12px;
-background:#020a30;
-color:white;
+color:#7fb3ff;
+margin-bottom:15px;
+font-size:18px;
 }
 
 button{
 width:100%;
 padding:14px;
-margin-top:12px;
 border:none;
-border-radius:12px;
-background:linear-gradient(45deg,#2c6bff,#0a2fff);
+border-radius:15px;
+background:linear-gradient(45deg,#0051ff,#003cff);
 color:white;
 font-size:16px;
 font-weight:bold;
 cursor:pointer;
+box-shadow:0 0 25px #003cff;
 transition:.3s;
 }
 
@@ -93,30 +113,77 @@ button:hover{
 transform:scale(1.05);
 }
 
-</style></head><body><header>ZOUINE CHOP</header><div class="container"><div class="card"><h2>🔥 حسابات Free Fire</h2><input id="username" placeholder="اكتب اسمك لإرسال الطلب"><div class="product">
-<div class="product-title">حساب أسطوري</div>
+.username-box{
+margin-top:20px;
+}
+
+.username-box input{
+width:100%;
+padding:15px;
+border-radius:15px;
+border:none;
+background:#01051c;
+color:white;
+font-size:16px;
+box-shadow:0 0 15px #003cff inset;
+}
+
+footer{
+margin-top:40px;
+text-align:center;
+padding:20px;
+font-size:14px;
+color:#9bbcff;
+}
+
+.glow{
+position:absolute;
+width:150px;
+height:150px;
+background:#003cff;
+filter:blur(100px);
+top:-50px;
+right:-50px;
+}
+
+</style></head><body><header>
+ZOUINE CHOP
+</header><div class="banner">
+🔥 أفضل حسابات Free Fire في المغرب 🔥
+</div><div class="container"><div class="username-box">
+<input id="username" placeholder="كتب اسمك باش يصلك الحساب بسرعة">
+</div><div class="products-grid"><div class="card">
+<div class="glow"></div>
+<img src="https://i.imgur.com/qZ7QK9H.jpeg">
+<div class="title">حساب أسطوري Rare Bundle + Evo Gun</div>
 <div class="price">150 MAD</div>
-<button onclick="order('حساب أسطوري')">طلب الحساب</button>
-</div><div class="product">
-<div class="product-title">حساب نادر</div>
+<button onclick="order('Legend Account 150MAD')">اطلب الآن</button>
+</div><div class="card">
+<div class="glow"></div>
+<img src="https://i.imgur.com/K9KZQ5K.jpeg">
+<div class="title">حساب نادر Skins + Emotes</div>
 <div class="price">90 MAD</div>
-<button onclick="order('حساب نادر')">طلب الحساب</button>
-</div><div class="product">
-<div class="product-title">حساب مبتدئ</div>
+<button onclick="order('Rare Account 90MAD')">اطلب الآن</button>
+</div><div class="card">
+<div class="glow"></div>
+<img src="https://i.imgur.com/Yq6XKQp.jpeg">
+<div class="title">حساب مبتدئ مناسب للرانك</div>
 <div class="price">40 MAD</div>
-<button onclick="order('حساب مبتدئ')">طلب الحساب</button>
-</div></div></div><script>
+<button onclick="order('Starter Account 40MAD')">اطلب الآن</button>
+</div></div></div><footer>
+ZOUINE CHOP © 2026
+</footer><script>
 
 function order(product){
 
 let user=document.getElementById("username").value
 
 if(user==""){
-alert("دخل اسمك باش نصيفط الطلب")
+alert("دخل اسمك")
 return
 }
 
-let message="طلب جديد من ZOUINE CHOP:%0Aاسم المستخدم: "+user+"%0Aالمنتج: "+product
+let message="طلب جديد من ZOUINE CHOP:%0Aالاسم: "+user+"%0Aالمنتج: "+product
 
 window.location.href="https://wa.me/212644404084?text="+message
 
