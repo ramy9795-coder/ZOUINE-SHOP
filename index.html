@@ -1,225 +1,233 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ZOUINE SHOP</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ZOUINE Shop</title>
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800&display=swap');
 
 *{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:'Cairo',sans-serif;
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Cairo',sans-serif;
 }
 
 body{
-    background: radial-gradient(circle at top,#0a0aff,#050520,#020212);
-    color:white;
-    min-height:100vh;
-    overflow-x:hidden;
+  background: radial-gradient(circle at top, #1d1dff 0%, #09092d 40%, #030312 100%);
+  color:#fff;
+  min-height:100vh;
+  overflow-x:hidden;
 }
 
 body::before{
-    content:'';
-    position:fixed;
-    width:100%;
-    height:100%;
-    background:linear-gradient(120deg,transparent,rgba(0,119,255,0.15),transparent);
-    animation:shine 5s linear infinite;
-    pointer-events:none;
+  content:"";
+  position:fixed;
+  inset:0;
+  background:linear-gradient(120deg, transparent 20%, rgba(0,140,255,.15) 50%, transparent 80%);
+  animation:shine 6s linear infinite;
+  pointer-events:none;
 }
 
 @keyframes shine{
-    0%{transform:translateX(-100%)}
-    100%{transform:translateX(100%)}
+  from{transform:translateX(-100%)}
+  to{transform:translateX(100%)}
 }
 
-header{
-    text-align:center;
-    padding:30px 20px;
-    font-size:60px;
-    font-weight:800;
-    letter-spacing:3px;
-    color:white;
-    text-shadow:0 0 20px #0080ff;
+.wrapper{
+  max-width:1200px;
+  margin:auto;
+  padding:20px;
 }
 
-.hero{
-    text-align:center;
-    padding:20px;
-    font-size:35px;
-    font-weight:bold;
+.header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:30px;
 }
 
-.container{
-    width:90%;
-    margin:auto;
+.logo{
+  font-size:64px;
+  font-weight:800;
+  text-shadow:0 0 25px #00a2ff;
+}
+
+.shop{
+  color:#00a2ff;
+  font-style:italic;
+}
+
+.person{
+  width:220px;
+  border-radius:20px;
+  box-shadow:0 0 30px rgba(0,140,255,.5);
+}
+
+.title{
+  text-align:center;
+  font-size:42px;
+  font-weight:800;
+  margin:20px 0 40px;
+  text-shadow:0 0 15px #008cff;
 }
 
 .cards{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-    gap:25px;
-    margin-top:30px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:25px;
 }
 
 .card{
-    background:rgba(255,255,255,0.05);
-    border:1px solid rgba(0,153,255,0.4);
-    border-radius:20px;
-    padding:20px;
-    text-align:center;
-    box-shadow:0 0 20px rgba(0,153,255,0.25);
-    backdrop-filter:blur(8px);
-    transition:0.3s;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(0,140,255,.45);
+  border-radius:24px;
+  padding:20px;
+  box-shadow:0 0 25px rgba(0,140,255,.25);
+  backdrop-filter:blur(8px);
 }
 
-.card:hover{
-    transform:translateY(-5px);
-    box-shadow:0 0 30px rgba(0,153,255,0.6);
+.image-box{
+  height:220px;
+  border:2px dashed rgba(255,255,255,.3);
+  border-radius:18px;
+  position:relative;
+  overflow:hidden;
+  margin-bottom:16px;
+  background:rgba(0,0,0,.2);
 }
 
-.upload-box{
-    width:100%;
-    height:220px;
-    border:2px dashed rgba(255,255,255,0.4);
-    border-radius:15px;
-    position:relative;
-    overflow:hidden;
-    margin-bottom:15px;
-    cursor:pointer;
+.image-box img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:none;
 }
 
-.upload-box img{
-    position:absolute;
-    top:0;
-    left:0;
-    width:150px;
-    cursor:move;
-    resize:both;
-    overflow:auto;
+.upload-btn{
+  width:100%;
+  padding:12px;
+  border:none;
+  border-radius:12px;
+  background:linear-gradient(90deg,#005dff,#00a2ff);
+  color:#fff;
+  font-size:18px;
+  cursor:pointer;
+  margin-top:10px;
 }
 
-button{
-    background:linear-gradient(90deg,#0066ff,#00aaff);
-    border:none;
-    color:white;
-    padding:12px 25px;
-    border-radius:12px;
-    cursor:pointer;
-    font-size:18px;
-    margin-top:10px;
+.card h3{
+  font-size:28px;
+  margin-bottom:8px;
 }
 
-input[type=file]{
-    display:none;
+.card p{
+  opacity:.85;
+}
+
+.footer-icons{
+  margin-top:60px;
+  display:flex;
+  justify-content:center;
+  gap:20px;
+}
+
+.icon{
+  width:60px;
+  height:60px;
+  border-radius:16px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:28px;
+  border:1px solid rgba(0,140,255,.4);
+  box-shadow:0 0 15px rgba(0,140,255,.25);
 }
 </style>
 </head>
 <body>
 
-<header>ZOUINE Shop</header>
+<div class="wrapper">
 
-<section class="hero">
-أفضل حسابات Free Fire في العالم
-</section>
-
-<div class="container">
-    <div class="cards">
-
-        <div class="card">
-            <label class="upload-box" for="img1" id="box1">
-                <img id="preview1">
-            </label>
-            <input type="file" id="img1" accept="image/*">
-            <h3>اسم الحساب</h3>
-            <p>المستوى | التفاصيل</p>
-            <button>عرض الحساب</button>
-        </div>
-
-        <div class="card">
-            <label class="upload-box" for="img2" id="box2">
-                <img id="preview2">
-            </label>
-            <input type="file" id="img2" accept="image/*">
-            <h3>اسم الحساب</h3>
-            <p>المستوى | التفاصيل</p>
-            <button>عرض الحساب</button>
-        </div>
-
-        <div class="card">
-            <label class="upload-box" for="img3" id="box3">
-                <img id="preview3">
-            </label>
-            <input type="file" id="img3" accept="image/*">
-            <h3>اسم الحساب</h3>
-            <p>المستوى | التفاصيل</p>
-            <button>عرض الحساب</button>
-        </div>
-
+  <div class="header">
+    <div>
+      <div class="logo">ZOUINE <span class="shop">Shop</span></div>
+      <div class="title">أفضل حسابات Free Fire في العالم</div>
     </div>
+
+    <img class="person" src="https://via.placeholder.com/220x320" alt="person">
+  </div>
+
+  <div class="cards">
+
+    <div class="card">
+      <div class="image-box">
+        <img id="img1">
+      </div>
+      <input type="file" id="file1" hidden accept="image/*">
+      <button class="upload-btn" onclick="pickImage(1)">إضافة صورة الحساب</button>
+      <h3>اسم الحساب</h3>
+      <p>المستوى | التفاصيل</p>
+    </div>
+
+    <div class="card">
+      <div class="image-box">
+        <img id="img2">
+      </div>
+      <input type="file" id="file2" hidden accept="image/*">
+      <button class="upload-btn" onclick="pickImage(2)">إضافة صورة الحساب</button>
+      <h3>اسم الحساب</h3>
+      <p>المستوى | التفاصيل</p>
+    </div>
+
+    <div class="card">
+      <div class="image-box">
+        <img id="img3">
+      </div>
+      <input type="file" id="file3" hidden accept="image/*">
+      <button class="upload-btn" onclick="pickImage(3)">إضافة صورة الحساب</button>
+      <h3>اسم الحساب</h3>
+      <p>المستوى | التفاصيل</p>
+    </div>
+
+  </div>
+
+  <div class="footer-icons">
+    <div class="icon">🎵</div>
+    <div class="icon">▶</div>
+    <div class="icon">📷</div>
+    <div class="icon">f</div>
+  </div>
+
 </div>
 
 <script>
-function setupUpload(inputId, previewId) {
-    const input = document.getElementById(inputId);
-    const preview = document.getElementById(previewId);
-
-    const savedImage = localStorage.getItem(previewId);
-    const savedTop = localStorage.getItem(previewId + "_top");
-    const savedLeft = localStorage.getItem(previewId + "_left");
-    const savedWidth = localStorage.getItem(previewId + "_width");
-
-    if(savedImage){
-        preview.src = savedImage;
-        preview.style.top = savedTop || "0px";
-        preview.style.left = savedLeft || "0px";
-        preview.style.width = savedWidth || "150px";
-    }
-
-    input.addEventListener("change", function(){
-        const file = this.files[0];
-        const reader = new FileReader();
-
-        reader.onload = function(e){
-            preview.src = e.target.result;
-            localStorage.setItem(previewId,e.target.result);
-        }
-
-        reader.readAsDataURL(file);
-    });
-
-    let isDragging = false;
-    let offsetX, offsetY;
-
-    preview.addEventListener("mousedown", function(e){
-        isDragging = true;
-        offsetX = e.offsetX;
-        offsetY = e.offsetY;
-    });
-
-    document.addEventListener("mousemove", function(e){
-        if(isDragging){
-            preview.style.left = (e.pageX - preview.parentElement.offsetLeft - offsetX) + "px";
-            preview.style.top = (e.pageY - preview.parentElement.offsetTop - offsetY) + "px";
-
-            localStorage.setItem(previewId+"_left",preview.style.left);
-            localStorage.setItem(previewId+"_top",preview.style.top);
-        }
-    });
-
-    document.addEventListener("mouseup", function(){
-        isDragging = false;
-        localStorage.setItem(previewId+"_width",preview.style.width);
-    });
+function pickImage(id){
+  document.getElementById('file'+id).click();
 }
 
-setupUpload("img1","preview1");
-setupUpload("img2","preview2");
-setupUpload("img3","preview3");
+for(let i=1;i<=3;i++){
+  const file=document.getElementById('file'+i);
+  const img=document.getElementById('img'+i);
+
+  const saved=localStorage.getItem('cardImg'+i);
+  if(saved){
+    img.src=saved;
+    img.style.display='block';
+  }
+
+  file.addEventListener('change',function(){
+    const reader=new FileReader();
+    reader.onload=function(e){
+      img.src=e.target.result;
+      img.style.display='block';
+      localStorage.setItem('cardImg'+i,e.target.result);
+    }
+    reader.readAsDataURL(this.files[0]);
+  });
+}
 </script>
 
 </body>
