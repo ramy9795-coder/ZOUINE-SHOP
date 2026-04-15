@@ -1,160 +1,226 @@
-<!DOCTYPE html><html lang="ar">
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ZOUINE SHOP</title>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet"><style>
-* {margin:0; padding:0; box-sizing:border-box;}
 
-body {
-  font-family: 'Cairo', sans-serif;
-  background: linear-gradient(135deg, #020617, #0a1f44);
-  color: white;
-}
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800&display=swap');
 
-header {
-  padding: 25px;
-  text-align: center;
-  font-size: 32px;
-  font-weight: bold;
-  background: rgba(0,0,0,0.6);
-  letter-spacing: 2px;
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Cairo',sans-serif;
 }
 
-.hero {
-  text-align:center;
-  padding:60px 20px;
+body{
+    background: radial-gradient(circle at top,#0a0aff,#050520,#020212);
+    color:white;
+    min-height:100vh;
+    overflow-x:hidden;
 }
 
-.hero h1 {
-  font-size:40px;
-  margin-bottom:10px;
+body::before{
+    content:'';
+    position:fixed;
+    width:100%;
+    height:100%;
+    background:linear-gradient(120deg,transparent,rgba(0,119,255,0.15),transparent);
+    animation:shine 5s linear infinite;
+    pointer-events:none;
 }
 
-.hero p {
-  opacity:0.8;
+@keyframes shine{
+    0%{transform:translateX(-100%)}
+    100%{transform:translateX(100%)}
 }
 
-.container {
-  padding: 40px;
+header{
+    text-align:center;
+    padding:30px 20px;
+    font-size:60px;
+    font-weight:800;
+    letter-spacing:3px;
+    color:white;
+    text-shadow:0 0 20px #0080ff;
 }
 
-.cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px,1fr));
-  gap: 25px;
+.hero{
+    text-align:center;
+    padding:20px;
+    font-size:35px;
+    font-weight:bold;
 }
 
-.card {
-  background: rgba(255,255,255,0.05);
-  border-radius: 20px;
-  padding: 15px;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 0 20px rgba(0,150,255,0.2);
-  transition: 0.4s;
+.container{
+    width:90%;
+    margin:auto;
 }
 
-.card:hover {
-  transform: translateY(-10px) scale(1.03);
-  box-shadow: 0 0 40px rgba(0,200,255,0.7);
+.cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:25px;
+    margin-top:30px;
 }
 
-.card img {
-  width: 100%;
-  border-radius: 15px;
-  margin-bottom: 10px;
+.card{
+    background:rgba(255,255,255,0.05);
+    border:1px solid rgba(0,153,255,0.4);
+    border-radius:20px;
+    padding:20px;
+    text-align:center;
+    box-shadow:0 0 20px rgba(0,153,255,0.25);
+    backdrop-filter:blur(8px);
+    transition:0.3s;
 }
 
-.price {
-  font-size: 22px;
-  color: #00eaff;
-  margin:10px 0;
+.card:hover{
+    transform:translateY(-5px);
+    box-shadow:0 0 30px rgba(0,153,255,0.6);
 }
 
-button {
-  width: 100%;
-  padding: 12px;
-  border: none;
-  border-radius: 10px;
-  background: linear-gradient(90deg,#00eaff,#007bff);
-  color: white;
-  font-weight: bold;
-  cursor: pointer;
-  transition:0.3s;
+.upload-box{
+    width:100%;
+    height:220px;
+    border:2px dashed rgba(255,255,255,0.4);
+    border-radius:15px;
+    position:relative;
+    overflow:hidden;
+    margin-bottom:15px;
+    cursor:pointer;
 }
 
-button:hover {
-  opacity:0.8;
+.upload-box img{
+    position:absolute;
+    top:0;
+    left:0;
+    width:150px;
+    cursor:move;
+    resize:both;
+    overflow:auto;
 }
 
-.chat-box {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  width: 320px;
-  background: #0b0f2a;
-  border-radius: 15px;
-  padding: 15px;
-  box-shadow: 0 0 20px rgba(0,200,255,0.5);
+button{
+    background:linear-gradient(90deg,#0066ff,#00aaff);
+    border:none;
+    color:white;
+    padding:12px 25px;
+    border-radius:12px;
+    cursor:pointer;
+    font-size:18px;
+    margin-top:10px;
 }
 
-.chat-box h3 {
-  text-align:center;
-  margin-bottom:10px;
+input[type=file]{
+    display:none;
+}
+</style>
+</head>
+<body>
+
+<header>ZOUINE Shop</header>
+
+<section class="hero">
+أفضل حسابات Free Fire في العالم
+</section>
+
+<div class="container">
+    <div class="cards">
+
+        <div class="card">
+            <label class="upload-box" for="img1" id="box1">
+                <img id="preview1">
+            </label>
+            <input type="file" id="img1" accept="image/*">
+            <h3>اسم الحساب</h3>
+            <p>المستوى | التفاصيل</p>
+            <button>عرض الحساب</button>
+        </div>
+
+        <div class="card">
+            <label class="upload-box" for="img2" id="box2">
+                <img id="preview2">
+            </label>
+            <input type="file" id="img2" accept="image/*">
+            <h3>اسم الحساب</h3>
+            <p>المستوى | التفاصيل</p>
+            <button>عرض الحساب</button>
+        </div>
+
+        <div class="card">
+            <label class="upload-box" for="img3" id="box3">
+                <img id="preview3">
+            </label>
+            <input type="file" id="img3" accept="image/*">
+            <h3>اسم الحساب</h3>
+            <p>المستوى | التفاصيل</p>
+            <button>عرض الحساب</button>
+        </div>
+
+    </div>
+</div>
+
+<script>
+function setupUpload(inputId, previewId) {
+    const input = document.getElementById(inputId);
+    const preview = document.getElementById(previewId);
+
+    const savedImage = localStorage.getItem(previewId);
+    const savedTop = localStorage.getItem(previewId + "_top");
+    const savedLeft = localStorage.getItem(previewId + "_left");
+    const savedWidth = localStorage.getItem(previewId + "_width");
+
+    if(savedImage){
+        preview.src = savedImage;
+        preview.style.top = savedTop || "0px";
+        preview.style.left = savedLeft || "0px";
+        preview.style.width = savedWidth || "150px";
+    }
+
+    input.addEventListener("change", function(){
+        const file = this.files[0];
+        const reader = new FileReader();
+
+        reader.onload = function(e){
+            preview.src = e.target.result;
+            localStorage.setItem(previewId,e.target.result);
+        }
+
+        reader.readAsDataURL(file);
+    });
+
+    let isDragging = false;
+    let offsetX, offsetY;
+
+    preview.addEventListener("mousedown", function(e){
+        isDragging = true;
+        offsetX = e.offsetX;
+        offsetY = e.offsetY;
+    });
+
+    document.addEventListener("mousemove", function(e){
+        if(isDragging){
+            preview.style.left = (e.pageX - preview.parentElement.offsetLeft - offsetX) + "px";
+            preview.style.top = (e.pageY - preview.parentElement.offsetTop - offsetY) + "px";
+
+            localStorage.setItem(previewId+"_left",preview.style.left);
+            localStorage.setItem(previewId+"_top",preview.style.top);
+        }
+    });
+
+    document.addEventListener("mouseup", function(){
+        isDragging = false;
+        localStorage.setItem(previewId+"_width",preview.style.width);
+    });
 }
 
-input, textarea {
-  width: 100%;
-  margin: 5px 0;
-  padding: 10px;
-  border-radius: 8px;
-  border: none;
-}
+setupUpload("img1","preview1");
+setupUpload("img2","preview2");
+setupUpload("img3","preview3");
+</script>
 
-footer {
-  text-align:center;
-  padding:20px;
-  opacity:0.6;
-}
-</style></head><body><header>
-💎 ZOUINE SHOP 💎
-</header><section class="hero">
-<h1>أفضل حسابات Free Fire في العالم 🔥</h1>
-<p>حسابات نادرة - جواهر 💎 - سكِنات أسطورية</p>
-</section><div class="container">
-<h2>🔥 الحسابات المميزة</h2><div class="cards"><div class="card">
-<img src="https://via.placeholder.com/300x200">
-<h3>حساب VIP 🔥</h3>
-<p>Level 80 | 5000 Diamonds 💎</p>
-<p class="price">$150</p>
-<button onclick="order('VIP Account')">شراء الآن</button>
-</div><div class="card">
-<img src="https://via.placeholder.com/300x200">
-<h3>حساب Sakura 🌸</h3>
-<p>Rare Skins | Level 70</p>
-<p class="price">$120</p>
-<button onclick="order('Sakura Account')">شراء الآن</button>
-</div><div class="card">
-<img src="https://via.placeholder.com/300x200">
-<h3>حساب أسطوري 💎</h3>
-<p>Full Skins | Max Level</p>
-<p class="price">$300</p>
-<button onclick="order('Legend Account')">شراء الآن</button>
-</div></div>
-</div><div class="chat-box">
-<h3>💬 تواصل معنا</h3>
-<input type="text" placeholder="اسمك">
-<textarea placeholder="اكتب رسالتك"></textarea>
-<button onclick="sendMessage()">إرسال</button>
-</div><footer>
-© 2026 ZOUINE SHOP - جميع الحقوق محفوظة
-</footer><script>
-function order(product) {
-  alert('تم اختيار: ' + product);
-}
-
-function sendMessage() {
-  alert('تم إرسال الرسالة');
-}
-</script></body>
+</body>
 </html>
