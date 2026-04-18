@@ -1,35 +1,432 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ZOUINE SHOP</title>
-<style>
-/* ألوان الموقع */
-body {
-    margin: 0;
-    font-family: "Arial", sans-serif;
-    background-color: #0a1a2f; /* أزرق داكن */
-    color: white;
-}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atlas Chicken - Restaurant</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-/* الهيدر */
-header {
-    text-align: center;
-    padding: 40px 20px;
-    background-color: #0a1a2f;
-}
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
 
-header h1 {
-    font-size: 50px;
-    margin: 10px 0;
-    color: #ffffff;
-}
+        .header {
+            background: linear-gradient(135deg, #ff6b35, #f7931e);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
 
-header p {
-    font-size: 18px;
-    color: #cce0ff;
-}
+        .restaurant-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
 
-/* الصورة الأساسية */
-.main-image {
+        .rating {
+            background: rgba(255,255,255,0.2);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .price-range {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .status {
+            background: #4CAF50;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .thumbnail {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, #ff6b35, #f7931e);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+        }
+
+        .tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .tab {
+            padding: 1rem 2rem;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .tab.active {
+            border-bottom-color: #ff6b35;
+            color: #ff6b35;
+            font-weight: 600;
+        }
+
+        .tab:hover {
+            background: white;
+        }
+
+        .content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        .overview-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .menu-item {
+            background: white;
+            border: 1px solid #e9ecef;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            transition: transform 0.2s ease;
+        }
+
+        .menu-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+        }
+
+        .menu-item h3 {
+            color: #ff6b35;
+            margin-bottom: 0.5rem;
+        }
+
+        .price {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #333;
+            margin-top: 0.5rem;
+        }
+
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .photo {
+            height: 200px;
+            background: linear-gradient(45deg, #ff9a9e, #fecfef);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .photo::before {
+            content: attr(data-label);
+            background: rgba(0,0,0,0.6);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .video-thumbnail {
+            height: 200px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border-radius: 12px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .play-button {
+            width: 60px;
+            height: 60px;
+            background: rgba(255,255,255,0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: #333;
+            margin-right: 10px;
+        }
+
+        .add-photos {
+            background: white;
+            border: 2px dashed #ddd;
+            border-radius: 12px;
+            height: 200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .add-photos:hover {
+            border-color: #ff6b35;
+            color: #ff6b35;
+            background: #fff5f2;
+        }
+
+        .stats {
+            display: flex;
+            gap: 2rem;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #ff6b35;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .tabs {
+                overflow-x: auto;
+            }
+
+            .overview-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="restaurant-info">
+            <div class="thumbnail">🍗</div>
+            <div>
+                <h1 style="font-size: 1.8rem; margin-bottom: 0.25rem;">Atlas Chicken</h1>
+                <div class="rating">4.3 (321)</div>
+                <div class="price-range">MAD 1–50</div>
+            </div>
+        </div>
+        <div class="status">Open</div>
+    </header>
+
+    <nav class="tabs">
+        <div class="tab active" data-tab="overview">Overview</div>
+        <div class="tab" data-tab="menu">Menu</div>
+        <div class="tab" data-tab="photos">Photos</div>
+        <div class="tab" data-tab="reviews">Reviews</div>
+        <div class="tab" data-tab="about">About</div>
+    </nav>
+
+    <main class="content">
+        <!-- Overview Section -->
+        <section id="overview" class="section active">
+            <div class="stats">
+                <div class="stat">
+                    <div class="stat-number">87+</div>
+                    <div>Photos</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">321</div>
+                    <div>Reviews</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">4.3</div>
+                    <div>Rating</div>
+                </div>
+            </div>
+            
+            <div class="overview-grid">
+                <div>
+                    <h2>About Atlas Chicken</h2>
+                    <p style="margin-top: 1rem; color: #666;">
+                        Welcome to Atlas Chicken, your go-to spot for the crispiest, juiciest chicken tenders in town! 
+                        We've been serving up happiness since 2015 with our secret family recipe that's been passed down 
+                        through generations. Come enjoy our mouthwatering chicken, golden french fries, and friendly service!
+                    </p>
+                </div>
+                <div>
+                    <h3>Hours</h3>
+                    <p>Monday - Sunday: 11AM - 11PM</p>
+                    <h3>Location</h3>
+                    <p>123 Chicken Street, Atlas City<br>Morocco</p>
+                    <h3>Delivery</h3>
+                    <p>Available via all major apps</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Menu Section -->
+        <section id="menu" class="section">
+            <h2 style="margin-bottom: 2rem;">Menu</h2>
+            <div class="menu-item">
+                <h3>🍗 Chicken Tenders</h3>
+                <p>Crispy golden chicken tenders made with our secret recipe. Served with your choice of dipping sauce.</p>
+                <div class="price">MAD 45</div>
+            </div>
+            <div class="menu-item">
+                <h3>🍟 French Fries</h3>
+                <p>Perfectly seasoned golden french fries. Available in regular or large.</p>
+                <div class="price">MAD 20</div>
+            </div>
+            <div class="menu-item">
+                <h3>🍔 Chicken Burger</h3>
+                <p>Juicy chicken patty with fresh lettuce, tomato, and our signature sauce.</p>
+                <div class="price">MAD 38</div>
+            </div>
+            <div class="menu-item">
+                <h3>🥤 Fresh Lemonade</h3>
+                <p>Refreshing house-made lemonade with real lemons.</p>
+                <div class="price">MAD 15</div>
+            </div>
+        </section>
+
+        <!-- Photos Section -->
+        <section id="photos" class="section">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                <h2>Photos (87+)</h2>
+                <div class="add-photos">
+                    ➕ Add photos
+                </div>
+            </div>
+            
+            <div class="photo-grid">
+                <div class="photo" data-label="Chicken Tenders"></div>
+                <div class="photo" data-label="French Fries"></div>
+                <div class="video-thumbnail">
+                    <div style="display: flex; align-items: center;">
+                        <div class="play-button">▶</div>
+                        <div>0:27</div>
+                    </div>
+                </div>
+                <div class="photo" data-label="Restaurant Interior"></div>
+                <div class="photo" data-label="Chicken Burger"></div>
+                <div class="photo" data-label="Dipping Sauces"></div>
+                <div class="photo" data-label="Outdoor Seating"></div>
+                <div class="photo" data-label="Fresh Lemonade"></div>
+                <div class="photo" data-label="Cooking Process"></div>
+            </div>
+        </section>
+
+        <!-- Reviews Section -->
+        <section id="reviews" class="section">
+            <div style="display: flex; gap: 1rem; margin-bottom: 2rem;">
+                <button class="tab active" style="padding: 0.75rem 1.5rem; border: 1px solid #ddd; background: white; border-radius: 25px;">All</button>
+                <button class="tab" style="padding: 0.75rem 1.5rem; border: 1px solid #ddd; background: white; border-radius: 25px;">Latest</button>
+            </div>
+            
+            <div class="menu-item">
+                <div style="display: flex; gap: 1rem;">
+                    <div style="width: 40px; height: 40px; background: #ff6b35; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">AA</div>
+                    <div>
+                        <h4 style="color: #ff6b35;">Ahmed A. ★★★★★</h4>
+                        <p>"Best chicken tenders in the city! Always crispy and perfectly seasoned."</p>
+                        <small>2 days ago</small>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="menu-item">
+                <div style="display: flex; gap: 1rem;">
+                    <div style="width: 40px; height: 40px; background: #4CAF50; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">SM</div>
+                    <div>
+                        <h4 style="color: #4CAF50;">Sara M. ★★★★☆</h4>
+                        <p>"Great fries and fast service. Chicken was delicious!"</p>
+                        <small>1 week ago</small>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="section">
+            <h2>About Atlas Chicken</h2>
+            <div style="margin-top: 2rem;">
+                <p style="font-size: 1.1rem; color: #666; max-width: 800px;">
+                    Atlas Chicken was founded in 2015 by chicken lovers for chicken lovers. Our mission is simple: 
+                    serve the best damn chicken tenders this side of the Atlas Mountains. We use only the freshest 
+                    ingredients, our secret spice blend, and a whole lot of love in every bite.
+                </p>
+                <p style="margin-top: 1.5rem; color: #666;">
+                    Join our 50,000+ happy customers who keep coming back for more. Whether you're dining in, 
+                    taking out, or getting delivery, we've got you covered!
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Tab functionality
+        const tabs = document.querySelectorAll('.tab[data-tab]');
+        const sections = document.querySelectorAll('.section');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all tabs and sections
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                sections.forEach(s => s.classList.remove('active'));
+                
+                // Add active class to clicked tab and corresponding section
+                tab.classList.add('active');
+                const targetSection = document.getElementById(tab.dataset.tab);
+                targetSection.classList.add('active');
+            });
+        });
+
+        // Reviews filter tabs
+        const reviewTabs = document.querySelectorAll('[id="reviews"] .tab');
+        reviewTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                reviewTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
