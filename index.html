@@ -2,59 +2,191 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Atlas Chicken</title>
-<style>
+<title>Atlas Chicken</title><style>
+
+:root{
+--red1:#c40000;
+--red2:#ff2d2d;
+--bg:#fff6f6;
+}
+
 body{
-font-family:Arial;
 margin:0;
-background:#fff5f5;
-}header{ background:linear-gradient(90deg,#d40000,#ff3b3b); color:white; text-align:center; padding:20px; }
+font-family:Segoe UI;
+background:var(--bg);
+}
 
-.logo{ font-size:30px; font-weight:bold; cursor:pointer; }
+header{
+background:linear-gradient(120deg,var(--red1),var(--red2));
+color:white;
+padding:25px;
+text-align:center;
+box-shadow:0 6px 20px rgba(0,0,0,.15);
+}
 
-.products{ display:flex; flex-wrap:wrap; justify-content:center; padding:20px; }
+.logo{
+font-size:34px;
+font-weight:bold;
+letter-spacing:1px;
+}
 
-.card{ background:white; border-radius:14px; margin:12px; width:220px; padding:10px; text-align:center; box-shadow:0 6px 18px rgba(0,0,0,0.08); }
+.hero{
+padding:40px;
+text-align:center;
+}
 
-.card img{ width:100%; height:140px; object-fit:cover; border-radius:10px; }
+.products{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:25px;
+padding:40px;
+}
 
-button{ background:linear-gradient(90deg,#d40000,#ff3b3b); color:white; border:none; padding:8px 14px; margin:4px; border-radius:7px; cursor:pointer; }
+.card{
+background:white;
+border-radius:18px;
+padding:15px;
+text-align:center;
+transition:.3s;
+box-shadow:0 10px 25px rgba(0,0,0,.08);
+}
 
-#cart{ position:fixed; top:0; right:0; width:300px; height:100%; background:white; box-shadow:-4px 0 15px rgba(0,0,0,0.15); padding:20px; display:none; overflow:auto; }
+.card:hover{
+transform:translateY(-10px) scale(1.03);
+}
 
-#adminPanel{ position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:white; padding:20px; border:3px solid red; display:none; }
+.card img{
+width:100%;
+height:150px;
+object-fit:cover;
+border-radius:14px;
+}
 
-.cartBtn{ position:fixed; bottom:20px; left:20px; background:#d40000; color:white; padding:15px; border-radius:50%; cursor:pointer; }
+button{
+background:linear-gradient(120deg,var(--red1),var(--red2));
+border:none;
+color:white;
+padding:10px 16px;
+border-radius:8px;
+cursor:pointer;
+margin:5px;
+}
 
-.whatsapp{ position:fixed; bottom:20px; right:20px; background:#25D366; color:white; padding:15px; border-radius:50%; text-decoration:none; }
+button:hover{opacity:.9}
 
-input{ margin:6px; padding:6px; width:95%; } </style>
+/* BURGER ADMIN BUTTON */
+#burgerAdmin{
+position:fixed;
+top:20px;
+right:20px;
+width:80px;
+cursor:pointer;
+animation:shake 2s infinite ease-in-out;
+}
 
-</head>
-<body><header>
-<div class="logo" onclick="secretClick()">ATLAS CHICKEN</div>
+@keyframes shake{
+0%{transform:rotate(0deg)}
+25%{transform:rotate(5deg)}
+50%{transform:rotate(0deg)}
+75%{transform:rotate(-5deg)}
+100%{transform:rotate(0deg)}
+}
+
+/* CART */
+#cart{
+position:fixed;
+top:0;
+right:-350px;
+width:320px;
+height:100%;
+background:white;
+padding:25px;
+transition:.4s;
+box-shadow:-6px 0 25px rgba(0,0,0,.2);
+}
+
+#cart.active{right:0}
+
+.cartBtn{
+position:fixed;
+bottom:20px;
+left:20px;
+background:linear-gradient(120deg,var(--red1),var(--red2));
+color:white;
+padding:16px;
+border-radius:50%;
+font-size:20px;
+cursor:pointer;
+}
+
+.whatsapp{
+position:fixed;
+bottom:20px;
+right:20px;
+background:#25D366;
+color:white;
+padding:16px;
+border-radius:50%;
+font-size:20px;
+text-decoration:none;
+}
+
+/* ADMIN PANEL */
+#adminPanel{
+position:fixed;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+background:white;
+padding:25px;
+border-radius:15px;
+box-shadow:0 10px 30px rgba(0,0,0,.25);
+display:none;
+width:300px;
+}
+
+input{
+width:95%;
+padding:8px;
+margin:6px 0;
+border-radius:8px;
+border:1px solid #ddd;
+}
+
+</style></head><body><header>
+<div class="logo">ATLAS CHICKEN</div>
 <p>Livraison gratuit à partir de 70 DH</p>
 <p>📞 06 99 00 74 51</p>
-</header><!-- 3D Tacos Animation Hero --><section style="text-align:center;padding:40px">
-<img src="https://cdn-icons-png.flaticon.com/512/1046/1046784.png" id="taco3d" style="width:140px;filter:drop-shadow(0px 10px 15px rgba(0,0,0,0.2));">
-<h2 style="color:#d40000">Bienvenue chez Atlas Chicken</h2>
-<p style="opacity:.7">Meilleurs Tacos à Casablanca</p>
+</header><!-- BURGER ADMIN SECRET BUTTON --><img id="burgerAdmin" src="https://cdn-icons-png.flaticon.com/512/3075/3075977.png" title="Admin secret button"><section class="hero">
+<h2 style="color:#c40000">Best Tacos in Casablanca</h2>
 </section><section class="products" id="products"></section><!-- CART --><div id="cart">
-<h3>🛒 Panier</h3>
+<h2>🛒 Panier</h2>
 <div id="cartItems"></div>
 <button onclick="sendOrder()">Commander via WhatsApp</button>
-<button onclick="closeCart()">Fermer</button>
 </div><!-- ADMIN PANEL --><div id="adminPanel">
 <h3>Admin Panel</h3>
-<input id="name" placeholder="Nom produit">
-<input id="price" placeholder="Prix produit">
+<input id="nameInput" placeholder="Nom produit">
+<input id="priceInput" placeholder="Prix produit">
 <input type="file" id="imageInput" accept="image/*">
 <button onclick="addProduct()">Ajouter produit</button>
 <button onclick="closeAdmin()">Fermer</button>
-</div><!-- FLOAT BUTTONS --><div class="cartBtn" onclick="openCart()">🛒</div>
+</div><div class="cartBtn" onclick="toggleCart()">🛒</div>
 <a class="whatsapp" href="https://wa.me/212699007451" target="_blank">💬</a><script>
-let clicks=0;
-let cart=[];
+
+let adminClicks=0;
+let cartItemsArray=[];
+
+const burgerBtn=document.getElementById("burgerAdmin");
+const adminPanel=document.getElementById("adminPanel");
+const cartPanel=document.getElementById("cart");
+
+burgerBtn.onclick=function(){
+adminClicks++;
+if(adminClicks===5){
+adminPanel.style.display="block";
+adminClicks=0;
+}
+}
 
 if(!localStorage.getItem("products")){
 localStorage.setItem("products",JSON.stringify([]));
@@ -63,6 +195,7 @@ localStorage.setItem("products",JSON.stringify([]));
 function displayProducts(){
 let container=document.getElementById("products");
 container.innerHTML="";
+
 let products=JSON.parse(localStorage.getItem("products"));
 
 products.forEach((p,i)=>{
@@ -78,9 +211,9 @@ container.innerHTML+=`
 }
 
 function addProduct(){
-let name=document.getElementById("name").value;
-let price=document.getElementById("price").value;
-let file=document.getElementById("imageInput").files[0];
+let name=nameInput.value;
+let price=priceInput.value;
+let file=imageInput.files[0];
 
 if(!file)return alert("Choisir image");
 
@@ -89,17 +222,6 @@ reader.onload=function(){
 let products=JSON.parse(localStorage.getItem("products"));
 products.push({name,price,image:reader.result});
 localStorage.setItem("products",JSON.stringify(products));
-// 3D animation tacos
-let taco=document.getElementById("taco3d");
-if(taco){
-let angle=0;
-setInterval(()=>{
-angle+=2;
-taco.style.transform=`rotateY(${angle}deg) rotateX(${Math.sin(angle/20)*10}deg)`;
-},30);
-}
-
-
 displayProducts();
 };
 reader.readAsDataURL(file);
@@ -113,44 +235,33 @@ displayProducts();
 }
 
 function addToCart(name){
-cart.push(name);
+cartItemsArray.push(name);
 updateCart();
 }
 
 function updateCart(){
 let list=document.getElementById("cartItems");
 list.innerHTML="";
-cart.forEach(item=>{
+cartItemsArray.forEach(item=>{
 list.innerHTML+=`<p>• ${item}</p>`;
 });
 }
 
-function openCart(){
-document.getElementById("cart").style.display="block";
-}
-
-function closeCart(){
-document.getElementById("cart").style.display="none";
+function toggleCart(){
+cartPanel.classList.toggle("active");
 }
 
 function sendOrder(){
-let msg="Bonjour je veux commander: " + cart.join(", ");
+let msg="Bonjour je veux commander: "+cartItemsArray.join(", ");
 window.open("https://wa.me/212699007451?text="+encodeURIComponent(msg));
 }
 
-function secretClick(){
-clicks++;
-if(clicks==5){
-document.getElementById("adminPanel").style.display="block";
-clicks=0;
-}
-}
-
 function closeAdmin(){
-document.getElementById("adminPanel").style.display="none";
+adminPanel.style.display="none";
 }
 
 
 displayProducts();
+
 </script></body>
 </html>
