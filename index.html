@@ -1,795 +1,629 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Khourda Games | متجر الألعاب في المغرب</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Khourda Games — المتجر الأول للألعاب في المغرب</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Cairo:wght@400;600;700;900&family=Tajawal:wght@400;700;900&family=Playfair+Display:ital,wght@1,700;1,900&display=swap" rel="stylesheet"/>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#080f1a;--bg2:#0d1726;--panel:rgba(0,230,118,0.04);
-  --green:#00e676;--green2:#00c853;--border:rgba(0,230,118,0.2);
-  --text:#ffffff;--muted:#7a9ab0;--red:#ef5350;
+  --g:#00e676;--gd:#00b050;--gg:rgba(0,230,118,.35);--gl:rgba(0,230,118,.09);
+  --bg:#060c18;--bg2:#0a1120;--bg3:#0f1a2e;--card:rgba(10,20,40,.88);
+  --w:#fff;--mu:rgba(255,255,255,.55);--br:rgba(0,230,118,.22);
 }
-body{background:var(--bg);color:var(--text);font-family:'Cairo',sans-serif;min-height:100vh;overflow-x:hidden;}
-.orbitron{font-family:'Orbitron',sans-serif;}
+html,body{min-height:100vh;background:var(--bg);color:var(--w);font-family:'Cairo',sans-serif;overflow-x:hidden}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg2)}::-webkit-scrollbar-thumb{background:var(--gd);border-radius:3px}
+body::before{content:'';position:fixed;top:-180px;left:50%;transform:translateX(-50%);width:800px;height:500px;background:radial-gradient(ellipse,rgba(0,230,118,.13) 0%,transparent 70%);pointer-events:none;z-index:0}
 
-/* NAVBAR */
-nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(8,15,26,0.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:12px 24px;display:flex;align-items:center;justify-content:space-between;}
-.nav-logo{display:flex;align-items:center;gap:6px;cursor:pointer;text-decoration:none;}
-.nav-logo-khourda{font-family:'Orbitron',sans-serif;font-weight:900;font-size:1.5rem;color:var(--green);text-shadow:0 0 12px rgba(0,230,118,0.6);letter-spacing:2px;}
-.nav-logo-games{font-family:'Orbitron',sans-serif;font-weight:700;font-size:1.2rem;color:#fff;letter-spacing:1px;}
-.nav-logo canvas{display:block;}
-.nav-actions{display:flex;align-items:center;gap:12px;}
-.btn{border:none;cursor:pointer;font-family:'Cairo',sans-serif;font-weight:700;border-radius:10px;transition:all .2s;}
-.btn-ghost{background:transparent;color:var(--green);border:1px solid var(--border);padding:8px 18px;font-size:.95rem;}
-.btn-ghost:hover{background:rgba(0,230,118,.1);border-color:var(--green);}
-.btn-primary{background:var(--green);color:#080f1a;padding:8px 20px;font-size:.95rem;}
-.btn-primary:hover{background:var(--green2);box-shadow:0 0 20px rgba(0,230,118,.4);}
-.btn-danger{background:rgba(239,83,80,.15);color:var(--red);border:1px solid rgba(239,83,80,.3);padding:6px 14px;font-size:.9rem;}
-.btn-danger:hover{background:var(--red);color:#fff;}
-.btn-sm{padding:5px 12px;font-size:.85rem;}
-.cart-btn{position:relative;background:rgba(0,230,118,.08);border:1px solid var(--border);color:var(--green);padding:8px 16px;border-radius:10px;cursor:pointer;font-family:'Cairo',sans-serif;font-weight:700;font-size:.95rem;display:flex;align-items:center;gap:6px;}
-.cart-btn:hover{background:rgba(0,230,118,.15);}
-.cart-count{position:absolute;top:-6px;right:-6px;background:var(--green);color:#080f1a;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:900;}
+/* ── TOAST ── */
+#toast{position:fixed;top:22px;left:50%;transform:translateX(-50%) translateY(-120px);background:linear-gradient(135deg,#0f2a1a,#1a3a2a);border:1px solid var(--g);color:var(--g);font-family:'Cairo',sans-serif;font-size:.95rem;font-weight:700;padding:12px 28px;border-radius:50px;box-shadow:0 0 28px var(--gg);z-index:9999;transition:transform .4s cubic-bezier(.34,1.56,.64,1)}
+#toast.show{transform:translateX(-50%) translateY(0)}
 
-/* HERO */
-.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;padding:100px 24px 60px;overflow:hidden;}
-.hero-bg{position:absolute;inset:0;background:url('') center/cover no-repeat;opacity:.12;transition:opacity .5s;}
-.hero-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(8,15,26,.5),rgba(8,15,26,.85),var(--bg));}
-.hero-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:700px;height:700px;background:radial-gradient(circle,rgba(0,230,118,.12) 0%,transparent 70%);pointer-events:none;}
-.hero-content{position:relative;z-index:2;text-align:center;max-width:800px;}
-.hero-logo{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:32px;}
-.hero-khourda{font-family:'Orbitron',sans-serif;font-weight:900;font-size:clamp(2.5rem,8vw,5rem);color:var(--green);text-shadow:0 0 30px rgba(0,230,118,.7),0 0 60px rgba(0,230,118,.4);letter-spacing:4px;}
-.hero-games{font-family:'Orbitron',sans-serif;font-weight:700;font-size:clamp(2rem,6vw,4rem);color:#fff;letter-spacing:2px;}
-.hero-canvas{align-self:center;}
-.hero-sub{font-size:clamp(1rem,2.5vw,1.4rem);color:var(--muted);margin-bottom:40px;line-height:1.8;}
-.hero-morocco{font-size:1.1rem;color:var(--green);font-weight:700;margin-bottom:32px;opacity:.9;}
+/* ── PAGES ── */
+.page{display:none;min-height:100vh;position:relative;z-index:1}
+.page.active{display:block}
 
-/* GLASS PANEL */
-.glass{background:var(--panel);border:1px solid var(--border);border-radius:16px;backdrop-filter:blur(12px);}
+/* ── NAVBAR ── */
+nav{position:sticky;top:0;z-index:200;background:rgba(6,12,24,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--br);padding:0 28px;display:flex;align-items:center;justify-content:space-between;height:66px;gap:12px}
+.logo-nav{display:flex;align-items:center;gap:6px;cursor:pointer;user-select:none}
+.logo-k{font-family:'Orbitron',sans-serif;font-weight:900;font-size:1.5rem;color:var(--g);text-shadow:0 0 18px var(--gg);letter-spacing:2px;text-transform:uppercase}
+.logo-g{font-family:'Playfair Display',serif;font-style:italic;font-weight:700;font-size:1.5rem;color:var(--w)}
+.logo-dot{width:8px;height:8px;background:var(--g);border-radius:50%;box-shadow:0 0 10px var(--g);animation:pulse-dot 1.5s ease-in-out infinite;flex-shrink:0}
+@keyframes pulse-dot{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.6);opacity:.6}}
+.nav-links{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.nb{background:none;border:1px solid var(--br);color:var(--w);font-family:'Cairo',sans-serif;font-size:.85rem;font-weight:600;padding:7px 16px;border-radius:50px;cursor:pointer;transition:all .2s;white-space:nowrap}
+.nb:hover{background:var(--gl);border-color:var(--g);color:var(--g)}
+.nb.on{background:var(--g);color:#000;border-color:var(--g);font-weight:800}
+.cart-btn{position:relative}
+.cart-count{position:absolute;top:-6px;left:-6px;background:#f44336;color:#fff;font-size:.65rem;font-weight:900;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;display:none}
+.cart-count.show{display:flex}
 
-/* SECTIONS */
-section{padding:60px 24px;max-width:1200px;margin:0 auto;width:100%;}
-.section-title{font-size:2rem;font-weight:900;color:#fff;margin-bottom:32px;display:flex;align-items:center;gap:16px;}
-.section-title::after{content:'';flex:1;height:1px;background:var(--border);}
+/* ── HERO ── */
+.hero{min-height:88vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:50px 20px 36px;position:relative;overflow:hidden}
+.ring{position:absolute;border-radius:50%;border:1px solid rgba(0,230,118,.14);animation:spin3d 20s linear infinite;top:50%;left:50%}
+.r1{width:580px;height:580px}
+.r2{width:400px;height:400px;border-color:rgba(0,230,118,.09);animation-duration:14s;animation-direction:reverse}
+.r3{width:240px;height:240px;border-color:rgba(0,230,118,.2);animation-duration:9s}
+@keyframes spin3d{from{transform:translate(-50%,-50%) rotateX(70deg) rotateZ(0)}to{transform:translate(-50%,-50%) rotateX(70deg) rotateZ(360deg)}}
 
-/* GAMES GRID */
-.games-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:24px;}
-.game-card{background:var(--panel);border:1px solid var(--border);border-radius:16px;overflow:hidden;cursor:pointer;transition:transform .3s,box-shadow .3s;position:relative;}
-.game-card:hover{transform:translateY(-6px) perspective(600px) rotateX(3deg);box-shadow:0 16px 40px rgba(0,230,118,.15),0 0 20px rgba(0,230,118,.1);}
-.game-img{width:100%;aspect-ratio:1;object-fit:cover;display:block;background:#0d1726;}
-.game-img-placeholder{width:100%;aspect-ratio:1;display:flex;align-items:center;justify-content:center;background:#0d1726;color:var(--muted);font-size:3rem;}
-.game-info{padding:16px;}
-.game-title{font-size:1.1rem;font-weight:700;color:#fff;margin-bottom:8px;}
-.game-meta{display:flex;align-items:center;justify-content:space-between;}
-.game-platform{font-size:.8rem;color:var(--muted);}
-.game-price{font-size:1.4rem;font-weight:900;color:var(--green);text-shadow:0 0 8px rgba(0,230,118,.4);}
-.game-price span{font-size:.85rem;font-weight:700;}
-.add-to-cart-btn{width:100%;background:rgba(0,230,118,.1);border:1px solid var(--border);color:var(--green);padding:10px;border-radius:0 0 14px 14px;cursor:pointer;font-family:'Cairo',sans-serif;font-weight:700;font-size:.95rem;transition:all .2s;margin-top:4px;}
-.add-to-cart-btn:hover{background:var(--green);color:#080f1a;}
+/* ── HERO LOGO (big centered) ── */
+.hero-logo-wrap{display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:36px;flex-wrap:wrap}
+.hero-k{font-family:'Orbitron',sans-serif;font-weight:900;font-size:clamp(2.2rem,7vw,5rem);color:var(--g);text-shadow:0 0 40px var(--gg),0 0 80px rgba(0,230,118,.2);letter-spacing:4px;text-transform:uppercase;animation:fadeUp .6s ease both}
+.hero-g{font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(2.2rem,7vw,5rem);color:var(--w);text-shadow:0 2px 20px rgba(0,0,0,.5);animation:fadeUp .6s ease .15s both}
+#logo-canvas{border-radius:12px;display:block;animation:fadeUp .6s ease .08s both}
 
-/* PACKAGES SECTION */
-.packages-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:24px;}
-.pkg-card{background:linear-gradient(135deg,rgba(0,230,118,.08),rgba(0,200,83,.04));border:1px solid rgba(0,230,118,.3);border-radius:16px;padding:24px;position:relative;overflow:hidden;}
-.pkg-card::before{content:'';position:absolute;top:-50%;right:-50%;width:100%;height:100%;background:radial-gradient(circle,rgba(0,230,118,.05) 0%,transparent 70%);}
-.pkg-name{font-size:1.3rem;font-weight:900;color:var(--green);margin-bottom:8px;}
-.pkg-desc{font-size:.9rem;color:var(--muted);margin-bottom:16px;line-height:1.7;}
-.pkg-price{font-size:1.8rem;font-weight:900;color:#fff;}
-.pkg-price span{font-size:1rem;color:var(--muted);}
+.hero-badge{display:inline-block;background:var(--gl);border:1px solid var(--br);color:var(--g);font-size:.82rem;font-weight:700;padding:5px 18px;border-radius:50px;letter-spacing:2px;margin-bottom:20px;animation:fadeUp .5s ease both}
+.hero-title{font-family:'Tajawal',sans-serif;font-size:clamp(1.8rem,5vw,4rem);font-weight:900;line-height:1.2;margin-bottom:20px;animation:fadeUp .7s ease .2s both}
+.hero-title .hl{color:var(--g);text-shadow:0 0 30px var(--gg)}
+.hero-sub{font-size:clamp(.9rem,2vw,1.15rem);color:var(--mu);max-width:520px;line-height:1.7;margin-bottom:40px;animation:fadeUp .8s ease .3s both}
+.hero-cta{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;animation:fadeUp .9s ease .4s both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+.btn-p{background:linear-gradient(135deg,var(--g),var(--gd));color:#000;font-family:'Cairo',sans-serif;font-weight:800;font-size:1rem;padding:13px 36px;border:none;border-radius:50px;cursor:pointer;box-shadow:0 0 28px var(--gg);transition:all .3s}
+.btn-p:hover{transform:translateY(-3px) scale(1.04);box-shadow:0 8px 36px var(--gg)}
+.btn-o{background:none;color:var(--w);font-family:'Cairo',sans-serif;font-weight:700;font-size:1rem;padding:13px 36px;border:1px solid rgba(255,255,255,.28);border-radius:50px;cursor:pointer;transition:all .3s}
+.btn-o:hover{border-color:var(--g);color:var(--g);background:var(--gl)}
 
-/* SITE IMAGE */
-.site-img-section{width:100%;max-height:400px;overflow:hidden;border-radius:16px;margin:20px 0;}
-.site-img-section img{width:100%;height:400px;object-fit:cover;border-radius:16px;}
+/* ── STATS ── */
+.stats-bar{display:flex;justify-content:center;background:var(--bg3);border-top:1px solid var(--br);border-bottom:1px solid var(--br);padding:24px 20px;flex-wrap:wrap;gap:0}
+.stat{flex:1;min-width:130px;text-align:center;padding:0 20px;border-left:1px solid var(--br)}
+.stat:last-child{border-left:none}
+.sn{font-family:'Tajawal',sans-serif;font-size:2rem;font-weight:900;color:var(--g);display:block}
+.sl{color:var(--mu);font-size:.85rem;margin-top:3px}
 
-/* FOOTER */
-footer{border-top:1px solid var(--border);background:rgba(8,15,26,.9);padding:48px 24px;margin-top:40px;}
-.footer-inner{max-width:1000px;margin:0 auto;text-align:center;}
-.footer-title{font-size:1.4rem;font-weight:700;color:#fff;margin-bottom:24px;}
-.payment-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:16px;}
-.pay-card{padding:14px 32px;border-radius:12px;font-weight:700;font-size:1.1rem;transition:all .3s;border:1px solid;}
-.pay-orange{color:#ff9800;border-color:rgba(255,152,0,.3);background:rgba(255,152,0,.08);}
-.pay-orange:hover{background:rgba(255,152,0,.2);box-shadow:0 0 20px rgba(255,152,0,.2);}
-.pay-inwi{color:#e040fb;border-color:rgba(224,64,251,.3);background:rgba(224,64,251,.08);}
-.pay-inwi:hover{background:rgba(224,64,251,.2);box-shadow:0 0 20px rgba(224,64,251,.2);}
-.pay-cash-plus{color:#ffc107;border-color:rgba(255,193,7,.3);background:rgba(255,193,7,.08);}
-.pay-cash-plus:hover{background:rgba(255,193,7,.2);}
-.pay-cash{color:var(--green);border-color:var(--border);background:rgba(0,230,118,.08);}
-.pay-cash:hover{background:rgba(0,230,118,.2);}
-.footer-copy{margin-top:24px;color:var(--muted);font-size:.85rem;}
+/* ── SECTION ── */
+.sec{padding:64px 28px}
+.sec-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:40px}
+.sec-t{font-family:'Tajawal',sans-serif;font-size:1.8rem;font-weight:900;position:relative}
+.sec-t::after{content:'';display:block;width:50px;height:3px;background:var(--g);border-radius:2px;margin-top:7px;box-shadow:0 0 10px var(--gg)}
 
-/* MODALS */
-.overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px);}
-.modal{background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:32px;width:100%;max-width:480px;max-height:90vh;overflow-y:auto;position:relative;}
-.modal-title{font-size:1.5rem;font-weight:900;color:#fff;text-align:center;margin-bottom:24px;}
-.modal-close{position:absolute;top:16px;left:16px;background:rgba(239,83,80,.15);border:none;color:var(--red);width:32px;height:32px;border-radius:8px;cursor:pointer;font-size:1.2rem;display:flex;align-items:center;justify-content:center;}
-.modal-close:hover{background:var(--red);color:#fff;}
+/* ── GAME CARDS ── */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:20px}
+.gcard{background:var(--card);border:1px solid var(--br);border-radius:14px;overflow:hidden;transition:all .3s;cursor:pointer;position:relative;backdrop-filter:blur(10px);box-shadow:0 4px 18px rgba(0,0,0,.3)}
+.gcard:hover{transform:perspective(1000px) rotateX(-2deg) translateY(-6px);box-shadow:0 18px 50px rgba(0,230,118,.18),0 0 0 1px rgba(0,230,118,.28);border-color:rgba(0,230,118,.45)}
+.gcard img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block}
+.gcard-ph{width:100%;aspect-ratio:16/9;background:linear-gradient(135deg,#0a1a0f,#0f2a1a);display:flex;align-items:center;justify-content:center}
+.gcard-ph svg{width:48px;height:48px;opacity:.5}
+.gbadge{position:absolute;top:10px;right:10px;background:var(--g);color:#000;font-weight:800;font-size:.7rem;padding:3px 10px;border-radius:50px}
+.gbody{padding:16px}
+.gtitle{font-family:'Tajawal',sans-serif;font-size:1.05rem;font-weight:900;margin-bottom:4px}
+.gmeta{color:var(--mu);font-size:.8rem;margin-bottom:12px}
+.gfoot{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--br);padding-top:12px}
+.gprice{font-family:'Tajawal',sans-serif;font-size:1.3rem;font-weight:900;color:var(--g);text-shadow:0 0 12px var(--gg)}
+.gprice .cur{font-size:.8rem;margin-right:3px}
+.btn-buy{background:var(--gl);border:1px solid var(--g);color:var(--g);font-family:'Cairo',sans-serif;font-weight:700;font-size:.82rem;padding:7px 18px;border-radius:50px;cursor:pointer;transition:all .2s}
+.btn-buy:hover{background:var(--g);color:#000}
 
-/* TABS */
-.tabs{display:flex;background:rgba(0,0,0,.3);border-radius:12px;padding:4px;margin-bottom:24px;gap:4px;}
-.tab{flex:1;padding:10px;text-align:center;border-radius:8px;cursor:pointer;font-weight:700;color:var(--muted);transition:all .2s;font-family:'Cairo',sans-serif;border:none;background:transparent;}
-.tab.active{background:var(--green);color:#080f1a;}
+/* ── PACKAGES ── */
+.pkg-card{background:linear-gradient(135deg,rgba(0,230,118,.08),rgba(0,100,50,.12));border:1px solid rgba(0,230,118,.35);border-radius:16px;padding:24px;position:relative;overflow:hidden}
+.pkg-card::before{content:'';position:absolute;top:0;right:0;width:120px;height:120px;background:radial-gradient(circle,rgba(0,230,118,.15),transparent);border-radius:50%}
+.pkg-name{font-family:'Tajawal',sans-serif;font-size:1.3rem;font-weight:900;color:var(--g);margin-bottom:8px}
+.pkg-games{color:var(--mu);font-size:.88rem;margin-bottom:14px;line-height:1.6}
+.pkg-price{font-family:'Tajawal',sans-serif;font-size:1.8rem;font-weight:900;color:var(--g)}
+.pkg-orig{text-decoration:line-through;color:var(--mu);font-size:.9rem;margin-right:8px}
 
-/* FORM */
-.form-group{margin-bottom:16px;}
-.form-label{display:block;font-size:.9rem;font-weight:700;color:var(--muted);margin-bottom:6px;}
-.form-input{width:100%;background:rgba(0,0,0,.3);border:1px solid var(--border);border-radius:10px;padding:12px 16px;color:#fff;font-family:'Cairo',sans-serif;font-size:1rem;outline:none;transition:border .2s;}
-.form-input:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(0,230,118,.1);}
-.form-input::placeholder{color:rgba(122,154,176,.6);}
-.form-error{color:var(--red);font-size:.85rem;margin-top:4px;}
+/* ── SITE IMAGE SECTIONS ── */
+.site-img-sec{width:100%;max-height:300px;overflow:hidden;position:relative}
+.site-img-sec img{width:100%;height:100%;object-fit:cover;display:block}
+.site-img-placeholder{width:100%;height:180px;background:var(--bg3);border:1px dashed var(--br);display:none;align-items:center;justify-content:center;color:var(--mu);font-size:.9rem}
 
-/* CART MODAL */
-.cart-item{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border);}
-.cart-item-img{width:52px;height:52px;border-radius:8px;object-fit:cover;background:#0d1726;}
-.cart-item-info{flex:1;}
-.cart-item-name{font-weight:700;font-size:.95rem;color:#fff;}
-.cart-item-price{font-size:.85rem;color:var(--green);}
-.cart-item-remove{background:rgba(239,83,80,.15);border:none;color:var(--red);width:28px;height:28px;border-radius:6px;cursor:pointer;font-size:1rem;}
-.cart-item-remove:hover{background:var(--red);color:#fff;}
-.cart-total-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;font-weight:700;}
-.coupon-row{display:flex;gap:8px;margin:16px 0;}
-.coupon-row input{flex:1;}
-.coupon-row button{white-space:nowrap;}
-.coupon-applied{color:var(--green);font-size:.85rem;font-weight:700;margin-top:-8px;margin-bottom:8px;}
+/* ── PAYMENT ── */
+.pay-sec{background:var(--bg3);border-top:1px solid var(--br);padding:50px 28px;text-align:center}
+.pay-title{font-family:'Tajawal',sans-serif;font-size:1.7rem;font-weight:900;margin-bottom:6px}
+.pay-sub{color:var(--mu);font-size:.9rem;margin-bottom:36px}
+.pay-methods{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+.pcard{background:var(--card);border-radius:14px;padding:20px 28px;min-width:130px;border:1px solid transparent;transition:all .3s}
+.pcard:hover{transform:translateY(-4px)}
+.pcard.or{border-color:rgba(255,120,0,.32)}.pcard.or:hover{box-shadow:0 8px 36px rgba(255,120,0,.22)}
+.pcard.iw{border-color:rgba(160,0,255,.32)}.pcard.iw:hover{box-shadow:0 8px 36px rgba(160,0,255,.22)}
+.pcard.cp{border-color:rgba(255,195,0,.32)}.pcard.cp:hover{box-shadow:0 8px 36px rgba(255,195,0,.22)}
+.pcard.ca{border-color:rgba(0,230,118,.32)}.pcard.ca:hover{box-shadow:0 8px 36px rgba(0,230,118,.22)}
+.picon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:.85rem;font-weight:900;font-family:'Orbitron',sans-serif}
+.picon.or{background:rgba(255,120,0,.15);color:#ff7800}
+.picon.iw{background:rgba(160,0,255,.15);color:#a000ff}
+.picon.cp{background:rgba(255,195,0,.15);color:#ffc300}
+.picon.ca{background:rgba(0,230,118,.15);color:var(--g)}
+.pname{font-family:'Cairo',sans-serif;font-weight:800;font-size:.9rem}
+.pname.or{color:#ff7800}.pname.iw{color:#a000ff}.pname.cp{color:#ffc300}.pname.ca{color:var(--g)}
 
-/* ADMIN PANEL */
-.admin-overlay{position:fixed;inset:0;background:var(--bg);z-index:300;overflow-y:auto;}
-.admin-nav{background:rgba(8,15,26,.95);border-bottom:1px solid var(--border);padding:16px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10;}
-.admin-content{max-width:1100px;margin:0 auto;padding:32px 24px;}
-.admin-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:32px;}
-.admin-tab{padding:10px 20px;border-radius:10px;cursor:pointer;font-weight:700;color:var(--muted);border:1px solid var(--border);background:transparent;font-family:'Cairo',sans-serif;transition:all .2s;}
-.admin-tab.active{background:var(--green);color:#080f1a;border-color:var(--green);}
+/* ── FOOTER ── */
+footer{background:var(--bg);border-top:1px solid var(--br);padding:20px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.fl{font-family:'Orbitron',sans-serif;font-size:1rem;font-weight:900;letter-spacing:2px}.fl span{color:var(--g)}
+.fc{color:var(--mu);font-size:.8rem}
 
-/* TABLE */
-.tbl{width:100%;border-collapse:collapse;}
-.tbl th{text-align:right;padding:12px 16px;font-size:.9rem;color:var(--green);border-bottom:1px solid var(--border);font-weight:700;}
-.tbl td{padding:12px 16px;border-bottom:1px solid rgba(0,230,118,.08);font-size:.9rem;}
-.tbl tr:hover td{background:rgba(0,230,118,.03);}
-.tbl-img{width:44px;height:44px;border-radius:8px;object-fit:cover;background:#0d1726;}
-.empty-state{text-align:center;padding:48px;color:var(--muted);}
+/* ── LOGIN ── */
+.login-body{min-height:calc(100vh - 66px);display:flex;align-items:center;justify-content:center;padding:36px 20px;background:radial-gradient(ellipse at 50% 0%,rgba(0,230,118,.11) 0%,transparent 60%)}
+.login-card{background:rgba(10,20,40,.93);border:1px solid var(--br);border-radius:22px;padding:44px 40px;width:100%;max-width:460px;backdrop-filter:blur(20px);box-shadow:0 0 70px rgba(0,230,118,.1),0 36px 70px rgba(0,0,0,.4);animation:float3d 6s ease-in-out infinite}
+@keyframes float3d{0%,100%{transform:perspective(1200px) rotateX(2deg) translateY(0)}50%{transform:perspective(1200px) rotateX(-1deg) translateY(-7px)}}
+.l-icon{width:66px;height:66px;background:var(--gl);border:1px solid var(--g);border-radius:18px;display:flex;align-items:center;justify-content:center;margin:0 auto 22px;box-shadow:0 0 26px var(--gg)}
+.l-icon svg{width:32px;height:32px}
+.l-title{font-family:'Tajawal',sans-serif;font-size:1.6rem;font-weight:900;text-align:center;margin-bottom:5px}
+.l-sub{color:var(--mu);text-align:center;font-size:.9rem;margin-bottom:28px}
+.l-tabs{display:flex;gap:0;margin-bottom:28px;border-radius:12px;overflow:hidden;border:1px solid var(--br)}
+.l-tab{flex:1;background:none;border:none;color:var(--mu);font-family:'Cairo',sans-serif;font-size:.9rem;font-weight:700;padding:12px;cursor:pointer;transition:all .2s;border-left:1px solid var(--br)}
+.l-tab:last-child{border-left:none}
+.l-tab.on{background:var(--g);color:#000}
+.fg{margin-bottom:17px}
+.fl-{display:block;font-weight:700;font-size:.9rem;margin-bottom:7px;color:rgba(255,255,255,.85)}
+.fi{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14);border-radius:11px;color:var(--w);font-family:'Cairo',sans-serif;font-size:.95rem;padding:13px 16px;outline:none;transition:all .2s;direction:rtl}
+.fi:focus{border-color:var(--g);background:var(--gl);box-shadow:0 0 0 3px rgba(0,230,118,.13)}
+.btn-submit{width:100%;background:linear-gradient(135deg,var(--g),var(--gd));color:#000;font-family:'Cairo',sans-serif;font-weight:800;font-size:1rem;padding:15px;border:none;border-radius:11px;cursor:pointer;box-shadow:0 0 26px var(--gg);transition:all .3s;margin-top:6px}
+.btn-submit:hover{transform:translateY(-2px);box-shadow:0 8px 36px var(--gg)}
+.l-success{display:none;background:rgba(0,230,118,.1);border:1px solid var(--g);border-radius:11px;padding:18px;text-align:center;margin-top:18px}
+.l-success.show{display:block}
+.l-success p{color:var(--g);font-weight:700}
 
-/* ADMIN CODE MODAL */
-.code-input{text-align:center;font-size:1.5rem;letter-spacing:8px;font-family:'Orbitron',sans-serif;}
+/* ── CART PAGE ── */
+.cart-page{min-height:calc(100vh - 66px);padding:40px 28px}
+.cart-title{font-family:'Tajawal',sans-serif;font-size:1.8rem;font-weight:900;margin-bottom:30px}
+.cart-grid{display:grid;grid-template-columns:1fr 340px;gap:28px;align-items:start}
+@media(max-width:768px){.cart-grid{grid-template-columns:1fr}}
+.cart-items{display:flex;flex-direction:column;gap:14px}
+.cart-item{background:var(--card);border:1px solid var(--br);border-radius:14px;padding:16px;display:flex;align-items:center;gap:14px}
+.ci-img{width:80px;height:52px;object-fit:cover;border-radius:8px;flex-shrink:0}
+.ci-ph{width:80px;height:52px;background:var(--bg3);border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.ci-info{flex:1}
+.ci-name{font-family:'Tajawal',sans-serif;font-weight:900;font-size:1rem}
+.ci-price{color:var(--g);font-family:'Tajawal',sans-serif;font-weight:800;font-size:.95rem;margin-top:3px}
+.ci-del{background:rgba(255,60,60,.12);border:1px solid rgba(255,60,60,.3);color:#ff6060;font-family:'Cairo',sans-serif;font-size:.8rem;font-weight:700;padding:5px 12px;border-radius:8px;cursor:pointer;flex-shrink:0}
+.ci-del:hover{background:rgba(255,60,60,.25)}
+.cart-summary{background:var(--card);border:1px solid var(--br);border-radius:16px;padding:24px;position:sticky;top:80px}
+.cs-title{font-family:'Tajawal',sans-serif;font-size:1.2rem;font-weight:900;margin-bottom:20px;color:var(--g)}
+.cs-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;font-size:.9rem;color:var(--mu)}
+.cs-row.total{color:var(--w);font-weight:800;font-size:1.1rem;border-top:1px solid var(--br);padding-top:14px;margin-top:14px}
+.cs-row.total .price{color:var(--g);font-family:'Tajawal',sans-serif;font-size:1.3rem;font-weight:900}
+.coupon-row{display:flex;gap:8px;margin:16px 0}
+.coupon-input{flex:1;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14);border-radius:10px;color:var(--w);font-family:'Cairo',sans-serif;font-size:.9rem;padding:10px 14px;outline:none;direction:rtl;transition:all .2s}
+.coupon-input:focus{border-color:var(--g);background:var(--gl)}
+.btn-coupon{background:var(--gl);border:1px solid var(--g);color:var(--g);font-family:'Cairo',sans-serif;font-weight:700;font-size:.85rem;padding:10px 16px;border-radius:10px;cursor:pointer;white-space:nowrap}
+.btn-coupon:hover{background:var(--g);color:#000}
+.coupon-ok{display:none;color:var(--g);font-size:.85rem;font-weight:700;margin-bottom:8px}
+.coupon-ok.show{display:block}
+.checkout-form{margin-top:16px;border-top:1px solid var(--br);padding-top:18px}
+.checkout-label{display:block;font-weight:700;font-size:.88rem;margin-bottom:6px;color:rgba(255,255,255,.85)}
+.checkout-input{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14);border-radius:10px;color:var(--w);font-family:'Cairo',sans-serif;font-size:.9rem;padding:11px 14px;outline:none;direction:rtl;transition:all .2s;margin-bottom:14px}
+.checkout-input:focus{border-color:var(--g);background:var(--gl)}
+.btn-checkout{width:100%;background:linear-gradient(135deg,var(--g),var(--gd));color:#000;font-family:'Cairo',sans-serif;font-weight:800;font-size:1rem;padding:14px;border:none;border-radius:11px;cursor:pointer;box-shadow:0 0 24px var(--gg);transition:all .3s}
+.btn-checkout:hover{transform:translateY(-2px)}
+.empty-cart{text-align:center;padding:60px 20px;color:var(--mu)}
+.empty-cart svg{width:64px;height:64px;margin-bottom:16px;opacity:.5}
 
-/* ORDER BADGE */
-.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:.8rem;font-weight:700;}
-.badge-green{background:rgba(0,230,118,.15);color:var(--green);}
-.badge-gold{background:rgba(255,193,7,.15);color:#ffc107;}
+/* ── ADMIN ── */
+.adm-hdr{background:var(--bg3);border-bottom:1px solid var(--br);padding:26px 28px;display:flex;align-items:center;gap:16px}
+.adm-badge{background:var(--g);color:#000;font-weight:800;font-size:.78rem;padding:4px 12px;border-radius:50px;font-family:'Orbitron',sans-serif}
+.adm-h1{font-family:'Tajawal',sans-serif;font-size:1.5rem;font-weight:900}
+.adm-tabs{display:flex;gap:0;padding:0 28px;border-bottom:1px solid var(--br);overflow-x:auto}
+.tab-b{background:none;border:none;color:var(--mu);font-family:'Cairo',sans-serif;font-size:.88rem;font-weight:700;padding:14px 20px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .2s;white-space:nowrap}
+.tab-b.on{color:var(--g);border-bottom-color:var(--g)}
+.tab-c{display:none;padding:32px 28px}
+.tab-c.on{display:block}
+.adm-tbl{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--br);border-radius:12px;overflow:hidden}
+.adm-tbl th{background:var(--bg3);color:var(--g);font-weight:700;padding:12px 16px;text-align:right;border-bottom:1px solid var(--br);font-size:.85rem}
+.adm-tbl td{padding:12px 16px;border-bottom:1px solid rgba(255,255,255,.05);font-size:.88rem;color:rgba(255,255,255,.85)}
+.adm-tbl tr:last-child td{border-bottom:none}
+.adm-tbl tr:hover td{background:var(--gl)}
+.btn-del{background:rgba(255,60,60,.1);border:1px solid rgba(255,60,60,.28);color:#ff6060;font-family:'Cairo',sans-serif;font-weight:700;font-size:.8rem;padding:5px 13px;border-radius:7px;cursor:pointer;transition:all .2s}
+.btn-del:hover{background:rgba(255,60,60,.22)}
+.adm-form{background:var(--card);border:1px solid var(--br);border-radius:14px;padding:28px;margin-bottom:28px}
+.adm-ft{font-family:'Tajawal',sans-serif;font-size:1.1rem;font-weight:900;color:var(--g);margin-bottom:20px}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.ffull{grid-column:1/-1}
+.btn-add-adm{background:var(--g);color:#000;font-family:'Cairo',sans-serif;font-weight:800;font-size:.95rem;padding:12px 28px;border:none;border-radius:11px;cursor:pointer;transition:all .2s;margin-top:6px}
+.btn-add-adm:hover{transform:translateY(-2px);box-shadow:0 6px 28px var(--gg)}
+.up-area{border:2px dashed var(--br);border-radius:11px;padding:24px;text-align:center;cursor:pointer;transition:all .2s}
+.up-area:hover{border-color:var(--g);background:var(--gl)}
+.up-icon{font-size:2rem;margin-bottom:6px;color:var(--g)}
+.up-text{color:var(--mu);font-size:.85rem}
+.up-prev{width:100%;max-height:180px;object-fit:cover;border-radius:8px;margin-top:10px;display:none}
+.empty-s{text-align:center;padding:50px 20px;color:var(--mu)}
 
-/* TOAST */
-.toast-container{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:9999;display:flex;flex-direction:column;gap:8px;align-items:center;}
-.toast{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:12px 24px;font-weight:700;font-size:.95rem;box-shadow:0 8px 24px rgba(0,0,0,.4);animation:slideUp .3s ease;display:flex;align-items:center;gap:8px;}
-.toast.success{border-color:rgba(0,230,118,.4);color:var(--green);}
-.toast.error{border-color:rgba(239,83,80,.4);color:var(--red);}
-.toast.info{border-color:var(--border);color:#fff;}
-@keyframes slideUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+/* ── ADMIN PASSWORD SCREEN ── */
+.adm-lock{min-height:calc(100vh - 66px);display:flex;align-items:center;justify-content:center;padding:30px 20px}
+.lock-card{background:var(--card);border:1px solid var(--br);border-radius:20px;padding:40px;max-width:380px;width:100%;text-align:center;box-shadow:0 0 60px rgba(0,230,118,.1)}
+.lock-icon{font-size:3rem;margin-bottom:16px;color:var(--g)}
+.lock-t{font-family:'Tajawal',sans-serif;font-size:1.4rem;font-weight:900;margin-bottom:8px}
+.lock-s{color:var(--mu);font-size:.9rem;margin-bottom:24px}
+.lock-input{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14);border-radius:11px;color:var(--w);font-family:'Orbitron',sans-serif;font-size:1.2rem;padding:14px;text-align:center;letter-spacing:6px;outline:none;transition:all .2s;direction:ltr;margin-bottom:14px}
+.lock-input:focus{border-color:var(--g);background:var(--gl)}
+.lock-err{color:#ff6060;font-size:.85rem;font-weight:700;margin-bottom:10px;display:none}
+.lock-err.show{display:block}
 
-/* RESPONSIVE */
+/* ── SITE IMAGES ADMIN ── */
+.img-slot{background:var(--card);border:1px solid var(--br);border-radius:12px;padding:18px;margin-bottom:14px}
+.img-slot-name{font-family:'Tajawal',sans-serif;font-weight:700;color:var(--g);margin-bottom:12px;font-size:.95rem}
+.img-slot-preview{width:100%;height:100px;object-fit:cover;border-radius:8px;display:none;margin-bottom:8px}
+.img-slot-preview.show{display:block}
+
+/* ── RESPONSIVE ── */
 @media(max-width:600px){
-  .hero-khourda{font-size:2rem;}
-  .hero-games{font-size:1.6rem;}
-  .admin-tabs{gap:4px;}
-  .admin-tab{padding:8px 12px;font-size:.85rem;}
+  nav{padding:0 14px;height:60px}
+  .logo-k,.logo-g{font-size:1.2rem}
+  .nb{font-size:.78rem;padding:6px 12px}
+  .hero{padding:36px 14px 24px}
+  .hero-k,.hero-g{font-size:2rem}
+  #logo-canvas{width:80px;height:60px}
+  .sec{padding:40px 14px}
+  .stats-bar{padding:18px 14px}
+  .stat{min-width:100px;padding:0 10px}
+  .sn{font-size:1.5rem}
+  .pay-sec{padding:36px 14px}
+  footer{padding:16px 14px}
+  .login-card{padding:28px 18px}
+  .adm-hdr,.tab-c{padding-left:14px;padding-right:14px}
+  .fgrid{grid-template-columns:1fr}
+  .cart-page{padding:28px 14px}
+  .adm-tbl th,.adm-tbl td{padding:9px 10px;font-size:.78rem}
 }
-
-/* Scrollbar */
-::-webkit-scrollbar{width:6px;}
-::-webkit-scrollbar-track{background:var(--bg);}
-::-webkit-scrollbar-thumb{background:rgba(0,230,118,.3);border-radius:3px;}
-::-webkit-scrollbar-thumb:hover{background:rgba(0,230,118,.5);}
 </style>
 </head>
 <body>
 
-<!-- NAVBAR -->
-<nav id="navbar">
-  <div class="nav-logo" onclick="scrollToTop()">
-    <span class="nav-logo-khourda">KHOURDA</span>
-    <canvas id="navCanvas" width="60" height="36" class="nav-logo-canvas"></canvas>
-    <span class="nav-logo-games">GAMES</span>
-  </div>
-  <div class="nav-actions">
-    <button class="cart-btn" onclick="openCart()">
-      🛒 السلة
-      <span class="cart-count" id="cartCount" style="display:none">0</span>
-    </button>
-    <button class="btn btn-ghost" id="loginNavBtn" onclick="openLoginModal()">تسجيل الدخول</button>
-    <button class="btn btn-primary" id="adminNavBtn" onclick="openAdminCode()" style="display:none">الإدارة</button>
-  </div>
-</nav>
+<!-- TOAST -->
+<div id="toast"></div>
 
-<!-- HERO -->
-<div class="hero" id="heroSection">
-  <div class="hero-bg" id="heroBg"></div>
-  <div class="hero-overlay"></div>
-  <div class="hero-glow"></div>
-  <div class="hero-content">
-    <div class="hero-logo">
-      <span class="hero-khourda">KHOURDA</span>
-      <canvas id="heroCanvas" width="120" height="80" class="hero-canvas"></canvas>
-      <span class="hero-games">GAMES</span>
+<!-- ═══════════════════════════════════════
+     HOME PAGE
+═══════════════════════════════════════ -->
+<div id="page-home" class="page active">
+  <nav>
+    <div class="logo-nav" id="logo-nav-home">
+      <span class="logo-k">Khourda</span>
+      <div class="logo-dot"></div>
+      <span class="logo-g">Games</span>
     </div>
-    <p class="hero-morocco">🇲🇦 المتجر الأول للألعاب في المغرب</p>
-    <p class="hero-sub">اكتشف أحدث وأفضل الألعاب بأسعار لا تقبل المنافسة<br>وبطرق دفع محلية آمنة — الدفع بالدرهم المغربي</p>
-    <button class="btn btn-primary" style="font-size:1.1rem;padding:14px 36px;" onclick="scrollToGames()">تصفح الألعاب ▼</button>
+    <div class="nav-links">
+      <button class="nb on" onclick="showPage('home')">الرئيسية</button>
+      <button class="nb" onclick="showPage('login')">دخول</button>
+      <button class="nb cart-btn" onclick="showPage('cart')" id="cart-nav-btn">
+        🛒 السلة
+        <span class="cart-count" id="cart-count-home">0</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- SITE IMAGE: HERO BANNER -->
+  <div class="site-img-sec" id="site-img-hero" style="display:none">
+    <img id="site-img-hero-img" src="" alt=""/>
   </div>
-</div>
 
-<!-- MAIN CONTENT -->
-<div id="mainContent">
-
-  <!-- MID IMAGE -->
-  <div id="midImgSection" style="padding:0 24px;max-width:1200px;margin:0 auto;display:none;">
-    <div class="site-img-section"><img id="midImg" src="" alt=""></div>
-  </div>
-
-  <!-- GAMES -->
-  <section id="gamesSection">
-    <h2 class="section-title">🎮 الألعاب المميزة</h2>
-    <div class="games-grid" id="gamesGrid">
-      <div class="empty-state" style="grid-column:1/-1">جاري التحميل...</div>
+  <section class="hero">
+    <div class="ring r1"></div><div class="ring r2"></div><div class="ring r3"></div>
+    <span class="hero-badge">🇲🇦 المتجر الأول للألعاب في المغرب</span>
+    <!-- BIG LOGO WITH ANIMATION -->
+    <div class="hero-logo-wrap">
+      <span class="hero-k">KHOURDA</span>
+      <canvas id="logo-canvas" width="120" height="80"></canvas>
+      <span class="hero-g">Games</span>
+    </div>
+    <h1 class="hero-title">المتجر الأول <span class="hl">للألعاب</span><br>في المغرب</h1>
+    <p class="hero-sub">اكتشف أحدث وأفضل الألعاب بأسعار مناسبة وبطرق دفع محلية آمنة.</p>
+    <div class="hero-cta">
+      <button class="btn-p" onclick="document.getElementById('games-sec').scrollIntoView({behavior:'smooth'})">تصفح الألعاب</button>
+      <button class="btn-o" onclick="showPage('login')">تسجيل الدخول</button>
     </div>
   </section>
+
+  <div class="stats-bar">
+    <div class="stat"><span class="sn">+٥٠٠</span><div class="sl">لعبة متوفرة</div></div>
+    <div class="stat"><span class="sn">+٢٠٠٠</span><div class="sl">زبون راضٍ</div></div>
+    <div class="stat"><span class="sn">٤</span><div class="sl">طرق دفع محلية</div></div>
+    <div class="stat"><span class="sn">٢٤/٧</span><div class="sl">دعم فني</div></div>
+  </div>
+
+  <!-- SITE IMAGE: BETWEEN SECTIONS -->
+  <div class="site-img-sec" id="site-img-mid" style="display:none">
+    <img id="site-img-mid-img" src="" alt=""/>
+  </div>
 
   <!-- PACKAGES -->
-  <section id="packagesSection" style="display:none;">
-    <h2 class="section-title">📦 الباقات المميزة</h2>
-    <div class="packages-grid" id="packagesGrid"></div>
+  <section class="sec" id="pkg-sec" style="display:none">
+    <div class="sec-hdr"><h2 class="sec-t">الحزم الخاصة</h2></div>
+    <div class="grid" id="pkg-grid"></div>
   </section>
 
-  <!-- BTM IMAGE -->
-  <div id="btmImgSection" style="padding:0 24px;max-width:1200px;margin:0 auto;display:none;">
-    <div class="site-img-section"><img id="btmImg" src="" alt=""></div>
+  <!-- GAMES -->
+  <section class="sec" id="games-sec">
+    <div class="sec-hdr"><h2 class="sec-t">الألعاب المميزة</h2></div>
+    <div class="grid" id="games-grid"></div>
+  </section>
+
+  <!-- SITE IMAGE: BEFORE PAYMENT -->
+  <div class="site-img-sec" id="site-img-btm" style="display:none">
+    <img id="site-img-btm-img" src="" alt=""/>
   </div>
 
+  <div class="pay-sec">
+    <h2 class="pay-title">طرق الدفع</h2>
+    <p class="pay-sub">ادفع بالطريقة التي تناسبك بأمان وسرعة</p>
+    <div class="pay-methods">
+      <div class="pcard or"><div class="picon or">OR</div><div class="pname or">Orange</div></div>
+      <div class="pcard iw"><div class="picon iw">IW</div><div class="pname iw">Inwi</div></div>
+      <div class="pcard cp"><div class="picon cp">CP</div><div class="pname cp">Cash Plus</div></div>
+      <div class="pcard ca"><div class="picon ca">CA</div><div class="pname ca">Cash</div></div>
+    </div>
+  </div>
+  <footer>
+    <div class="fl"><span>KHOURDA</span> GAMES</div>
+    <div class="fc">© ٢٠٢٦ Khourda Games — المغرب. جميع الحقوق محفوظة</div>
+  </footer>
 </div>
 
-<!-- FOOTER -->
-<footer>
-  <div class="footer-inner">
-    <div class="footer-title">طرق الدفع المتاحة</div>
-    <div class="payment-grid">
-      <div class="pay-card pay-orange">🟠 Orange Money</div>
-      <div class="pay-card pay-inwi">💜 Inwi Money</div>
-      <div class="pay-card pay-cash-plus">💛 Cash Plus</div>
-      <div class="pay-card pay-cash">💚 كاش</div>
+<!-- ═══════════════════════════════════════
+     LOGIN PAGE
+═══════════════════════════════════════ -->
+<div id="page-login" class="page">
+  <nav>
+    <div class="logo-nav" onclick="showPage('home')" style="cursor:pointer">
+      <span class="logo-k">Khourda</span><div class="logo-dot"></div><span class="logo-g">Games</span>
     </div>
-    <p class="footer-copy">© 2025 Khourda Games — جميع الحقوق محفوظة 🇲🇦</p>
-  </div>
-</footer>
-
-<!-- TOAST CONTAINER -->
-<div class="toast-container" id="toastContainer"></div>
-
-<!-- =================== MODALS =================== -->
-
-<!-- LOGIN MODAL -->
-<div class="overlay" id="loginOverlay" style="display:none;" onclick="closeLoginIfOutside(event)">
-  <div class="modal" onclick="event.stopPropagation()">
-    <button class="modal-close" onclick="closeLogin()">✕</button>
-    <div class="modal-title">🎮 Khourda Games</div>
-    <div class="tabs">
-      <button class="tab active" id="tab-existing" onclick="switchLoginTab('existing')">لدي حساب</button>
-      <button class="tab" id="tab-new" onclick="switchLoginTab('new')">إنشاء حساب</button>
+    <div class="nav-links">
+      <button class="nb" onclick="showPage('home')">الرئيسية</button>
+      <button class="nb on">دخول</button>
     </div>
-
-    <!-- EXISTING ACCOUNT -->
-    <div id="form-existing">
-      <div class="form-group">
-        <label class="form-label">رقم الهاتف</label>
-        <input class="form-input" id="loginPhone" type="tel" placeholder="0612345678" dir="ltr">
-        <div class="form-error" id="loginPhoneErr"></div>
+  </nav>
+  <div class="login-body">
+    <div class="login-card">
+      <div class="l-icon">
+        <svg viewBox="0 0 32 32" fill="none" stroke="#00e676" stroke-width="2">
+          <circle cx="16" cy="10" r="5"/><path d="M6 28c0-5.5 4.5-10 10-10s10 4.5 10 10"/>
+        </svg>
       </div>
-      <div class="form-group">
-        <label class="form-label">كلمة المرور</label>
-        <input class="form-input" id="loginPass" type="password" placeholder="••••••••">
-        <div class="form-error" id="loginPassErr"></div>
+      <h2 class="l-title">مرحباً بك</h2>
+      <p class="l-sub">سجّل دخولك للاستمتاع بأفضل الألعاب في المغرب</p>
+      <div class="l-tabs">
+        <button class="l-tab on" id="tab-existing" onclick="switchLoginTab('existing')">لدي حساب</button>
+        <button class="l-tab" id="tab-new" onclick="switchLoginTab('new')">إنشاء حساب</button>
       </div>
-      <button class="btn btn-primary" style="width:100%;padding:14px;font-size:1rem;margin-top:8px;" onclick="doLogin()">دخول</button>
-    </div>
-
-    <!-- NEW ACCOUNT -->
-    <div id="form-new" style="display:none;">
-      <div class="form-group">
-        <label class="form-label">الاسم الكامل</label>
-        <input class="form-input" id="regName" type="text" placeholder="محمد الأمين">
-        <div class="form-error" id="regNameErr"></div>
+      <!-- EXISTING ACCOUNT -->
+      <form id="form-existing" onsubmit="loginExisting(event)">
+        <div class="fg"><label class="fl-">رقم الهاتف</label><input type="tel" id="ex-phone" class="fi" placeholder="06XXXXXXXX" required/></div>
+        <div class="fg"><label class="fl-">كلمة السر</label><input type="password" id="ex-pass" class="fi" placeholder="••••••••" required/></div>
+        <button type="submit" class="btn-submit">دخول</button>
+      </form>
+      <!-- NEW ACCOUNT -->
+      <form id="form-new" style="display:none" onsubmit="registerNew(event)">
+        <div class="fg"><label class="fl-">الاسم الكامل</label><input type="text" id="nw-name" class="fi" placeholder="أدخل اسمك" required/></div>
+        <div class="fg"><label class="fl-">رقم الهاتف</label><input type="tel" id="nw-phone" class="fi" placeholder="06XXXXXXXX" required/></div>
+        <div class="fg"><label class="fl-">كلمة السر</label><input type="password" id="nw-pass" class="fi" placeholder="اختر كلمة سر" required/></div>
+        <button type="submit" class="btn-submit">إنشاء الحساب</button>
+      </form>
+      <div class="l-success" id="l-success">
+        <p id="l-success-msg">تم تسجيل الدخول بنجاح!</p>
       </div>
-      <div class="form-group">
-        <label class="form-label">رقم الهاتف</label>
-        <input class="form-input" id="regPhone" type="tel" placeholder="0612345678" dir="ltr">
-        <div class="form-error" id="regPhoneErr"></div>
-      </div>
-      <div class="form-group">
-        <label class="form-label">كلمة المرور</label>
-        <input class="form-input" id="regPass" type="password" placeholder="••••••••">
-        <div class="form-error" id="regPassErr"></div>
-      </div>
-      <div class="form-group">
-        <label class="form-label">تأكيد كلمة المرور</label>
-        <input class="form-input" id="regPass2" type="password" placeholder="••••••••">
-        <div class="form-error" id="regPass2Err"></div>
-      </div>
-      <button class="btn btn-primary" style="width:100%;padding:14px;font-size:1rem;margin-top:8px;" onclick="doRegister()">إنشاء الحساب</button>
     </div>
   </div>
+  <div class="pay-sec"><h2 class="pay-title">طرق الدفع</h2><p class="pay-sub">ادفع بالطريقة التي تناسبك</p>
+    <div class="pay-methods">
+      <div class="pcard or"><div class="picon or">OR</div><div class="pname or">Orange</div></div>
+      <div class="pcard iw"><div class="picon iw">IW</div><div class="pname iw">Inwi</div></div>
+      <div class="pcard cp"><div class="picon cp">CP</div><div class="pname cp">Cash Plus</div></div>
+      <div class="pcard ca"><div class="picon ca">CA</div><div class="pname ca">Cash</div></div>
+    </div>
+  </div>
+  <footer><div class="fl"><span>KHOURDA</span> GAMES</div><div class="fc">© ٢٠٢٦ Khourda Games — المغرب</div></footer>
 </div>
 
-<!-- CART MODAL -->
-<div class="overlay" id="cartOverlay" style="display:none;" onclick="closeCartIfOutside(event)">
-  <div class="modal" style="max-width:520px;" onclick="event.stopPropagation()">
-    <button class="modal-close" onclick="closeCart()">✕</button>
-    <div class="modal-title">🛒 سلة المشتريات</div>
-    <div id="cartItems"></div>
-    <div id="cartEmpty" style="display:none;" class="empty-state">السلة فارغة 😅</div>
-
-    <div id="cartFooter" style="margin-top:16px;">
-      <div class="coupon-row">
-        <input class="form-input" id="couponInput" placeholder="أدخل رمز الكوبون" dir="ltr" style="text-align:center;letter-spacing:4px;">
-        <button class="btn btn-ghost" onclick="applyCoupon()">تطبيق</button>
-      </div>
-      <div class="coupon-applied" id="couponMsg" style="display:none;">✅ كوبون 777 — خصم 10% تم تطبيقه!</div>
-
-      <div class="cart-total-row" style="border-top:1px solid var(--border);padding-top:12px;margin-top:8px;">
-        <span style="color:var(--muted)">الإجمالي قبل الخصم:</span>
-        <span id="cartSubtotal" style="color:#fff;font-size:1.1rem;"></span>
-      </div>
-      <div class="cart-total-row" id="discountRow" style="display:none;">
-        <span style="color:var(--muted)">الخصم (10%):</span>
-        <span id="cartDiscount" style="color:var(--red);"></span>
-      </div>
-      <div class="cart-total-row" style="font-size:1.2rem;">
-        <span>الإجمالي النهائي:</span>
-        <span id="cartTotal" style="color:var(--green);text-shadow:0 0 8px rgba(0,230,118,.4);"></span>
-      </div>
-
-      <div style="margin-top:16px;" id="checkoutForm">
-        <div class="form-group">
-          <label class="form-label">اسمك</label>
-          <input class="form-input" id="checkoutName" placeholder="محمد الأمين">
+<!-- ═══════════════════════════════════════
+     CART / PURCHASE PAGE
+═══════════════════════════════════════ -->
+<div id="page-cart" class="page">
+  <nav>
+    <div class="logo-nav" onclick="showPage('home')" style="cursor:pointer">
+      <span class="logo-k">Khourda</span><div class="logo-dot"></div><span class="logo-g">Games</span>
+    </div>
+    <div class="nav-links">
+      <button class="nb" onclick="showPage('home')">الرئيسية</button>
+      <button class="nb" onclick="showPage('login')">دخول</button>
+      <button class="nb on">🛒 السلة</button>
+    </div>
+  </nav>
+  <div class="cart-page">
+    <h1 class="cart-title">سلة المشتريات</h1>
+    <div id="cart-empty" class="empty-cart" style="display:none">
+      <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="32" cy="32" r="28"/><path d="M20 32h24M32 20v24"/>
+      </svg>
+      <p>السلة فارغة — أضف ألعاباً من المتجر</p>
+      <button class="btn-p" style="margin-top:20px" onclick="showPage('home')">تصفح الألعاب</button>
+    </div>
+    <div class="cart-grid" id="cart-content">
+      <div class="cart-items" id="cart-items-list"></div>
+      <div class="cart-summary">
+        <div class="cs-title">ملخص الطلب</div>
+        <div class="cs-row"><span>المجموع الجزئي</span><span id="subtotal-val">٠ د.م</span></div>
+        <div class="cs-row" id="discount-row" style="display:none"><span>خصم الكوبون (٪١٠)</span><span id="discount-val" style="color:#ff6b6b">-٠ د.م</span></div>
+        <div class="cs-row total"><span>الإجمالي</span><span class="price" id="total-val">٠ د.م</span></div>
+        <div style="margin:16px 0">
+          <div class="coupon-row">
+            <input class="coupon-input" id="coupon-input" placeholder="رمز الكوبون" maxlength="10"/>
+            <button class="btn-coupon" onclick="applyCoupon()">تطبيق</button>
+          </div>
+          <div class="coupon-ok" id="coupon-ok">تم تطبيق خصم ١٠٪ ✓</div>
         </div>
-        <div class="form-group">
-          <label class="form-label">رقم هاتفك</label>
-          <input class="form-input" id="checkoutPhone" type="tel" placeholder="0612345678" dir="ltr">
+        <div class="checkout-form">
+          <label class="checkout-label">رقم الهاتف للتأكيد</label>
+          <input type="tel" class="checkout-input" id="co-phone" placeholder="06XXXXXXXX"/>
+          <button class="btn-checkout" onclick="placeOrder()">تأكيد الطلب</button>
         </div>
-        <button class="btn btn-primary" style="width:100%;padding:14px;font-size:1rem;" onclick="doCheckout()">✅ تأكيد الطلب</button>
       </div>
     </div>
   </div>
+  <footer><div class="fl"><span>KHOURDA</span> GAMES</div><div class="fc">© ٢٠٢٦ Khourda Games — المغرب</div></footer>
 </div>
 
-<!-- ADMIN CODE MODAL -->
-<div class="overlay" id="adminCodeOverlay" style="display:none;" onclick="closeAdminCodeIfOutside(event)">
-  <div class="modal" style="max-width:360px;text-align:center;" onclick="event.stopPropagation()">
-    <button class="modal-close" onclick="closeAdminCode()">✕</button>
-    <div style="font-size:3rem;margin-bottom:16px;">🔒</div>
-    <div class="modal-title">لوحة الإدارة</div>
-    <p style="color:var(--muted);margin-bottom:20px;">أدخل الرمز السري للوصول</p>
-    <input class="form-input code-input" id="adminCodeInput" type="password" placeholder="• • • • • •" maxlength="6" oninput="checkAdminCode()">
-    <div class="form-error" id="adminCodeErr" style="text-align:center;margin-top:8px;"></div>
-  </div>
-</div>
-
-<!-- ADMIN PANEL -->
-<div class="admin-overlay" id="adminPanel" style="display:none;">
-  <div class="admin-nav">
-    <div style="display:flex;align-items:center;gap:8px;">
-      <span class="orbitron" style="color:var(--green);font-weight:900;font-size:1.2rem;">KHOURDA</span>
-      <span style="color:var(--muted);font-size:.9rem;">| لوحة الإدارة</span>
+<!-- ═══════════════════════════════════════
+     ADMIN — LOCK SCREEN
+═══════════════════════════════════════ -->
+<div id="page-admin" class="page">
+  <nav>
+    <div class="logo-nav" onclick="showPage('home')" style="cursor:pointer">
+      <span class="logo-k">Khourda</span><div class="logo-dot"></div><span class="logo-g">Games</span>
     </div>
-    <button class="btn btn-danger btn-sm" onclick="closeAdmin()">✕ إغلاق</button>
+    <div class="nav-links">
+      <button class="nb" onclick="showPage('home')">الرئيسية</button>
+    </div>
+  </nav>
+
+  <!-- LOCK -->
+  <div class="adm-lock" id="adm-lock">
+    <div class="lock-card">
+      <div class="lock-icon">🔐</div>
+      <h2 class="lock-t">لوحة الإدارة</h2>
+      <p class="lock-s">أدخل الرمز السري للوصول</p>
+      <input type="password" class="lock-input" id="lock-input" placeholder="••••••" maxlength="10" onkeydown="if(event.key==='Enter')checkAdminCode()"/>
+      <div class="lock-err" id="lock-err">رمز خاطئ، حاول مجدداً</div>
+      <button class="btn-submit" onclick="checkAdminCode()">دخول</button>
+    </div>
   </div>
 
-  <div class="admin-content">
-    <div class="admin-tabs">
-      <button class="admin-tab active" onclick="adminTab('games')">🎮 الألعاب</button>
-      <button class="admin-tab" onclick="adminTab('users')">👥 المستخدمون</button>
-      <button class="admin-tab" onclick="adminTab('orders')">📋 الطلبات</button>
-      <button class="admin-tab" onclick="adminTab('packages')">📦 الباقات</button>
-      <button class="admin-tab" onclick="adminTab('siteimgs')">🖼️ صور الموقع</button>
+  <!-- ADMIN PANEL -->
+  <div id="adm-panel" style="display:none">
+    <div class="adm-hdr">
+      <span class="adm-badge">ADMIN</span>
+      <h1 class="adm-h1">لوحة الإدارة — Khourda Games</h1>
+    </div>
+    <div class="adm-tabs">
+      <button class="tab-b on" onclick="swTab('accounts',this)">الحسابات</button>
+      <button class="tab-b" onclick="swTab('orders',this)">الطلبات</button>
+      <button class="tab-b" onclick="swTab('games',this)">الألعاب</button>
+      <button class="tab-b" onclick="swTab('packages',this)">الحزم</button>
+      <button class="tab-b" onclick="swTab('images',this)">صور الموقع</button>
     </div>
 
-    <!-- GAMES TAB -->
-    <div id="admin-games">
-      <div style="display:grid;grid-template-columns:1fr 2fr;gap:24px;align-items:start;">
-        <div class="glass" style="padding:24px;">
-          <h3 style="font-size:1.2rem;font-weight:700;color:#fff;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border);">إضافة لعبة جديدة</h3>
-          <div class="form-group">
-            <label class="form-label">الاسم العربي</label>
-            <input class="form-input" id="g-titleAr" placeholder="سبايدرمان">
-          </div>
-          <div class="form-group">
-            <label class="form-label">الاسم الأجنبي</label>
-            <input class="form-input" id="g-title" placeholder="Spider-Man" dir="ltr">
-          </div>
-          <div class="form-group">
-            <label class="form-label">السعر (د.م)</label>
-            <input class="form-input" id="g-price" type="number" placeholder="299" dir="ltr">
-          </div>
-          <div class="form-group">
-            <label class="form-label">رابط الصورة</label>
-            <input class="form-input" id="g-img" placeholder="https://..." dir="ltr">
-          </div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-            <div class="form-group">
-              <label class="form-label">الفئة</label>
-              <input class="form-input" id="g-cat" placeholder="مغامرة">
+    <!-- TAB: ACCOUNTS -->
+    <div id="tab-accounts" class="tab-c on">
+      <div id="accounts-tbl"></div>
+    </div>
+
+    <!-- TAB: ORDERS -->
+    <div id="tab-orders" class="tab-c">
+      <div id="orders-tbl"></div>
+    </div>
+
+    <!-- TAB: GAMES -->
+    <div id="tab-games" class="tab-c">
+      <div class="adm-form">
+        <div class="adm-ft">إضافة لعبة جديدة</div>
+        <div class="fgrid">
+          <div class="fg"><label class="fl-">الاسم بالعربية *</label><input id="g-ar" class="fi" placeholder="ببجي موبايل"/></div>
+          <div class="fg"><label class="fl-">Nom *</label><input id="g-fr" class="fi" placeholder="PUBG Mobile" style="direction:ltr"/></div>
+          <div class="fg"><label class="fl-">السعر (د.م) *</label><input id="g-price" class="fi" type="number" placeholder="150"/></div>
+          <div class="fg"><label class="fl-">التصنيف</label><input id="g-cat" class="fi" placeholder="إطلاق نار"/></div>
+          <div class="fg"><label class="fl-">المنصة</label><input id="g-plat" class="fi" placeholder="موبايل"/></div>
+          <div class="fg"><label class="fl-">رابط الصورة</label><input id="g-url" class="fi" type="url" placeholder="https://..." style="direction:ltr"/></div>
+          <div class="fg ffull">
+            <label class="fl-">رفع صورة من الجهاز</label>
+            <div class="up-area" onclick="document.getElementById('g-file').click()">
+              <input type="file" id="g-file" accept="image/*" style="display:none" onchange="prevImg(event,'g-prev','gUpImg')"/>
+              <div class="up-icon">📷</div>
+              <div class="up-text">انقر لاختيار صورة من هاتفك</div>
+              <img id="g-prev" class="up-prev"/>
             </div>
-            <div class="form-group">
-              <label class="form-label">المنصة</label>
-              <input class="form-input" id="g-plat" placeholder="PS5" dir="ltr">
-            </div>
           </div>
-          <button class="btn btn-primary" style="width:100%;padding:12px;" onclick="adminAddGame()">➕ إضافة اللعبة</button>
         </div>
-        <div class="glass" style="overflow:hidden;">
-          <table class="tbl">
-            <thead><tr><th>صورة</th><th>الاسم</th><th>السعر</th><th>المنصة</th><th>حذف</th></tr></thead>
-            <tbody id="adminGamesTable"></tbody>
-          </table>
-        </div>
+        <button class="btn-add-adm" onclick="addGame()">إضافة اللعبة</button>
       </div>
+      <div id="games-adm-tbl"></div>
     </div>
 
-    <!-- USERS TAB -->
-    <div id="admin-users" style="display:none;">
-      <div class="glass" style="overflow:hidden;">
-        <table class="tbl">
-          <thead><tr><th>#</th><th>الاسم</th><th>الهاتف</th><th>تاريخ التسجيل</th><th>حذف</th></tr></thead>
-          <tbody id="adminUsersTable"></tbody>
-        </table>
+    <!-- TAB: PACKAGES -->
+    <div id="tab-packages" class="tab-c">
+      <div class="adm-form">
+        <div class="adm-ft">إضافة حزمة جديدة</div>
+        <div class="fgrid">
+          <div class="fg"><label class="fl-">اسم الحزمة *</label><input id="p-name" class="fi" placeholder="حزمة المحترفين"/></div>
+          <div class="fg"><label class="fl-">السعر الجديد (د.م) *</label><input id="p-price" class="fi" type="number" placeholder="350"/></div>
+          <div class="fg ffull"><label class="fl-">الألعاب المضمنة (فصل بفاصلة)</label><input id="p-games" class="fi" placeholder="PUBG Mobile, Free Fire, COD Mobile"/></div>
+          <div class="fg ffull"><label class="fl-">الوصف</label><input id="p-desc" class="fi" placeholder="وصف الحزمة..."/></div>
+        </div>
+        <button class="btn-add-adm" onclick="addPkg()">إضافة الحزمة</button>
       </div>
+      <div id="pkg-adm-tbl"></div>
     </div>
 
-    <!-- ORDERS TAB -->
-    <div id="admin-orders" style="display:none;">
-      <div class="glass" style="overflow:hidden;">
-        <table class="tbl">
-          <thead><tr><th>#</th><th>الاسم</th><th>الهاتف</th><th>الألعاب</th><th>المبلغ</th><th>كوبون</th><th>التاريخ</th></tr></thead>
-          <tbody id="adminOrdersTable"></tbody>
-        </table>
-      </div>
+    <!-- TAB: SITE IMAGES -->
+    <div id="tab-images" class="tab-c">
+      <p style="color:var(--mu);font-size:.9rem;margin-bottom:24px">اختر موضع الصورة في الموقع وارفع صورتك مباشرة</p>
+      <div id="img-slots-container"></div>
     </div>
-
-    <!-- PACKAGES TAB -->
-    <div id="admin-packages" style="display:none;">
-      <div style="display:grid;grid-template-columns:1fr 2fr;gap:24px;align-items:start;">
-        <div class="glass" style="padding:24px;">
-          <h3 style="font-size:1.2rem;font-weight:700;color:#fff;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border);">إضافة باقة</h3>
-          <div class="form-group">
-            <label class="form-label">اسم الباقة</label>
-            <input class="form-input" id="pk-name" placeholder="باقة المحترف">
-          </div>
-          <div class="form-group">
-            <label class="form-label">الوصف</label>
-            <textarea class="form-input" id="pk-desc" placeholder="3 ألعاب مختارة بخصم..." rows="3" style="resize:none;"></textarea>
-          </div>
-          <div class="form-group">
-            <label class="form-label">السعر (د.م)</label>
-            <input class="form-input" id="pk-price" type="number" placeholder="699" dir="ltr">
-          </div>
-          <button class="btn btn-primary" style="width:100%;padding:12px;" onclick="adminAddPackage()">➕ إضافة الباقة</button>
-        </div>
-        <div class="glass" style="overflow:hidden;">
-          <table class="tbl">
-            <thead><tr><th>الاسم</th><th>الوصف</th><th>السعر</th><th>حذف</th></tr></thead>
-            <tbody id="adminPackagesTable"></tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <!-- SITE IMAGES TAB -->
-    <div id="admin-siteimgs" style="display:none;">
-      <div class="glass" style="padding:32px;max-width:600px;">
-        <h3 style="font-size:1.2rem;font-weight:700;color:#fff;margin-bottom:24px;">تحديد صور الموقع</h3>
-        <div class="form-group">
-          <label class="form-label">🖼️ صورة الهيرو (الخلفية العلوية)</label>
-          <div style="display:flex;gap:8px;">
-            <input class="form-input" id="img-hero" placeholder="https://..." dir="ltr">
-            <button class="btn btn-ghost" onclick="setSiteImg('hero')" style="white-space:nowrap;">حفظ</button>
-          </div>
-          <div id="hero-img-preview" style="margin-top:8px;border-radius:8px;overflow:hidden;height:80px;display:none;"><img id="hero-img-prev-el" style="width:100%;height:100%;object-fit:cover;"></div>
-        </div>
-        <div class="form-group" style="margin-top:20px;">
-          <label class="form-label">🖼️ صورة وسط الصفحة</label>
-          <div style="display:flex;gap:8px;">
-            <input class="form-input" id="img-mid" placeholder="https://..." dir="ltr">
-            <button class="btn btn-ghost" onclick="setSiteImg('mid')" style="white-space:nowrap;">حفظ</button>
-          </div>
-          <div id="mid-img-preview" style="margin-top:8px;border-radius:8px;overflow:hidden;height:80px;display:none;"><img id="mid-img-prev-el" style="width:100%;height:100%;object-fit:cover;"></div>
-        </div>
-        <div class="form-group" style="margin-top:20px;">
-          <label class="form-label">🖼️ صورة أسفل الصفحة</label>
-          <div style="display:flex;gap:8px;">
-            <input class="form-input" id="img-btm" placeholder="https://..." dir="ltr">
-            <button class="btn btn-ghost" onclick="setSiteImg('btm')" style="white-space:nowrap;">حفظ</button>
-          </div>
-          <div id="btm-img-preview" style="margin-top:8px;border-radius:8px;overflow:hidden;height:80px;display:none;"><img id="btm-img-prev-el" style="width:100%;height:100%;object-fit:cover;"></div>
-        </div>
-        <button class="btn btn-danger" style="margin-top:24px;" onclick="clearAllSiteImgs()">🗑️ مسح جميع الصور</button>
-      </div>
-    </div>
-
   </div>
+  <footer><div class="fl"><span>KHOURDA</span> GAMES</div><div class="fc">© ٢٠٢٦ Khourda Games — الإدارة</div></footer>
 </div>
 
-<!-- =================== SCRIPTS =================== -->
 <script>
-// ============ STORAGE HELPERS ============
-const store = {
-  get: (k, def=[]) => { try { return JSON.parse(localStorage.getItem(k)) ?? def; } catch { return def; } },
-  set: (k, v) => localStorage.setItem(k, JSON.stringify(v)),
+/* ═══════════════════════════════════
+   STORAGE KEYS
+═══════════════════════════════════ */
+const SK={
+  games:'kg_games', accounts:'kg_accounts', orders:'kg_orders',
+  cart:'kg_cart', packages:'kg_pkgs', siteImgs:'kg_siteimgs'
 };
 
-const KEYS = { games:'kg_games', accounts:'kg_accounts', orders:'kg_orders', cart:'kg_cart', packages:'kg_packages', siteimgs:'kg_siteimgs', loggedIn:'kg_loggedIn' };
+/* ═══════════════════════════════════
+   DEFAULT DATA
+═══════════════════════════════════ */
+const DEF_GAMES=[
+  {id:1,ar:'ببجي موبايل',fr:'PUBG Mobile',price:150,cat:'باتل رويال',plat:'موبايل',img:'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=600&h=340&fit=crop',date:Date.now()},
+  {id:2,ar:'كول أوف ديوتي موبايل',fr:'Call of Duty Mobile',price:200,cat:'إطلاق نار',plat:'موبايل',img:'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=600&h=340&fit=crop',date:Date.now()},
+  {id:3,ar:'فري فاير',fr:'Free Fire',price:80,cat:'باتل رويال',plat:'موبايل',img:'https://images.unsplash.com/photo-1493711662062-fa541adb3fc8?w=600&h=340&fit=crop',date:Date.now()},
+  {id:4,ar:'ماين كرافت',fr:'Minecraft',price:120,cat:'مغامرة',plat:'موبايل',img:'https://images.unsplash.com/photo-1486711457069-a6ccce2f9bc7?w=600&h=340&fit=crop',date:Date.now()},
+  {id:5,ar:'فيفا موبايل',fr:'FIFA Mobile',price:90,cat:'رياضة',plat:'موبايل',img:'https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?w=600&h=340&fit=crop',date:Date.now()},
+  {id:6,ar:'كلاش أوف كلانس',fr:'Clash of Clans',price:60,cat:'استراتيجية',plat:'موبايل',img:'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600&h=340&fit=crop',date:Date.now()},
+];
 
-function getGames(){ return store.get(KEYS.games, []); }
-function setGames(d){ store.set(KEYS.games, d); }
-function getAccounts(){ return store.get(KEYS.accounts, []); }
-function setAccounts(d){ store.set(KEYS.accounts, d); }
-function getOrders(){ return store.get(KEYS.orders, []); }
-function setOrders(d){ store.set(KEYS.orders, d); }
-function getCart(){ return store.get(KEYS.cart, []); }
-function setCart(d){ store.set(KEYS.cart, d); }
-function getPackages(){ return store.get(KEYS.packages, []); }
-function setPackages(d){ store.set(KEYS.packages, d); }
-function getSiteImgs(){ return store.get(KEYS.siteimgs, {hero:'',mid:'',btm:''}); }
-function setSiteImgs(d){ store.set(KEYS.siteimgs, d); }
-function getLoggedIn(){ return store.get(KEYS.loggedIn, null); }
-function setLoggedIn(d){ store.set(KEYS.loggedIn, d); }
+/* ═══════════════════════════════════
+   STATE HELPERS
+═══════════════════════════════════ */
+function load(k,def){try{const v=localStorage.getItem(k);return v?JSON.parse(v):def;}catch{return def;}}
+function save(k,v){localStorage.setItem(k,JSON.stringify(v));}
+function getGames(){return load(SK.games,DEF_GAMES);}
+function getAccounts(){return load(SK.accounts,[]);}
+function getOrders(){return load(SK.orders,[]);}
+function getCart(){return load(SK.cart,[]);}
+function getPkgs(){return load(SK.packages,[]);}
+function getSiteImgs(){return load(SK.siteImgs,{hero:null,mid:null,btm:null});}
 
-// ============ DEFAULT DATA ============
-function initDefaults(){
-  if(!localStorage.getItem(KEYS.games)){
-    setGames([
-      {id:1,titleAr:'سبايدرمان 2',title:'Spider-Man 2',price:299,imageUrl:'https://upload.wikimedia.org/wikipedia/en/2/21/Spider-Man_2_cover.jpg',category:'مغامرة',platform:'PS5'},
-      {id:2,titleAr:'فيفا 25',title:'EA FC 25',price:249,imageUrl:'https://upload.wikimedia.org/wikipedia/en/a/aa/EA_Sports_FC_25_cover.jpg',category:'رياضة',platform:'متعدد'},
-      {id:3,titleAr:'كول أوف ديوتي',title:'Call of Duty',price:279,imageUrl:'https://upload.wikimedia.org/wikipedia/en/e/e3/Call_of_duty_mw3_2023.jpg',category:'إطلاق نار',platform:'متعدد'},
-    ]);
+/* ═══════════════════════════════════
+   ARABIC NUMERALS
+═══════════════════════════════════ */
+function ar(n){return String(n).replace(/\d/g,d=>'٠١٢٣٤٥٦٧٨٩'[d]);}
+function fmt(n){return ar(Number(n).toFixed(0))+' د.م';}
+
+/* ═══════════════════════════════════
+   TOAST
+═══════════════════════════════════ */
+let _tt;
+function toast(m,d=3000){
+  const t=document.getElementById('toast');
+  t.textContent=m;t.classList.add('show');
+  clearTimeout(_tt);_tt=setTimeout(()=>t.classList.remove('show'),d);
+}
+
+/* ═══════════════════════════════════
+   NAVIGATION
+═══════════════════════════════════ */
+function showPage(p){
+  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+  document.getElementById('page-'+p).classList.add('active');
+  window.scrollTo(0,0);
+  if(p==='home'){renderHome();applyCartBadge();}
+  if(p==='cart')renderCart();
+  if(p==='admin'){document.getElementById('adm-lock').style.display='flex';document.getElementById('adm-panel').style.display='none';document.getElementById('lock-input').value='';document.getElementById('lock-err').classList.remove('show');}
+  if(p==='login'){
+    document.getElementById('form-existing').style.display='block';
+    document.getElementById('form-new').style.display='none';
+    document.getElementById('tab-existing').classList.add('on');
+    document.getElementById('tab-new').classList.remove('on');
+    document.getElementById('l-success').classList.remove('show');
   }
 }
 
-// ============ CANVAS ANIMATION ============
-let animFrame = 0;
-function animateCanvas(canvas, scale){
-  const ctx = canvas.getContext('2d');
-  const w = canvas.width, h = canvas.height;
-  const cycle = 240;
-  animFrame = (animFrame + 1) % (cycle * 2);
-  const t = animFrame;
-  ctx.clearRect(0, 0, w, h);
-
-  if(t < cycle){
-    // PHASE 1: Trash bin with garbage
-    const p = t / cycle;
-    ctx.strokeStyle = `rgba(0,230,118,${0.7 + 0.3*Math.sin(t*0.1)})`;
-    ctx.lineWidth = scale;
-    ctx.shadowColor = '#00e676';
-    ctx.shadowBlur = 4*scale;
-
-    // Lid
-    const lidOff = p < 0.3 ? -(p/0.3)*h*0.15 : -h*0.15 + (p-0.3)*h*0.1;
-    ctx.beginPath();
-    ctx.roundRect(w*0.15, h*0.22 + lidOff, w*0.7, h*0.13*scale, 2*scale);
-    ctx.stroke();
-    // Handle on lid
-    ctx.beginPath();
-    ctx.arc(w*0.5, h*0.22 + lidOff, w*0.08, Math.PI, 0);
-    ctx.stroke();
-
-    // Body
-    ctx.beginPath();
-    ctx.roundRect(w*0.2, h*0.38, w*0.6, h*0.5, 3*scale);
-    ctx.stroke();
-    // Lines on body
-    ctx.lineWidth = 0.5*scale;
-    for(let i=0;i<3;i++){
-      ctx.beginPath();
-      const lx = w*(0.32 + i*0.12);
-      ctx.moveTo(lx, h*0.42); ctx.lineTo(lx, h*0.82);
-      ctx.stroke();
-    }
-
-    // Flying particles
-    ctx.lineWidth = scale;
-    const particles = [
-      {sx:w*0.3,sy:h*0.3,dx:-0.4,dy:-1.2,shape:'circle'},
-      {sx:w*0.5,sy:h*0.25,dx:0.0,dy:-1.5,shape:'star'},
-      {sx:w*0.7,sy:h*0.3,dx:0.4,dy:-1.0,shape:'circle'},
-      {sx:w*0.4,sy:h*0.28,dx:-0.6,dy:-0.8,shape:'rect'},
-    ];
-    particles.forEach((part,i) => {
-      const delay = i * 0.15;
-      const pp = Math.max(0, (p - delay));
-      if(pp <= 0) return;
-      const px = part.sx + part.dx * pp * h * 1.2;
-      const py = part.sy + part.dy * pp * h * 0.8 + pp * pp * h * 0.5;
-      const alpha = Math.max(0, 1 - pp*2);
-      ctx.fillStyle = `rgba(0,230,118,${alpha*0.8})`;
-      ctx.strokeStyle = `rgba(0,230,118,${alpha})`;
-      ctx.lineWidth = scale;
-      if(part.shape === 'circle'){
-        ctx.beginPath(); ctx.arc(px, py, 4*scale, 0, Math.PI*2);
-        ctx.fill();
-      } else if(part.shape === 'rect'){
-        ctx.fillRect(px-4*scale, py-3*scale, 8*scale, 6*scale);
-      } else {
-        // star
-        ctx.beginPath();
-        for(let k=0;k<5;k++){
-          const angle = (k*4*Math.PI/5) - Math.PI/2;
-          const r = k%2===0 ? 5*scale : 2*scale;
-          k===0 ? ctx.moveTo(px+r*Math.cos(angle), py+r*Math.sin(angle))
-                : ctx.lineTo(px+r*Math.cos(angle), py+r*Math.sin(angle));
-        }
-        ctx.closePath(); ctx.fill();
-      }
-    });
-
-  } else {
-    // PHASE 2: Gaming items appear with glow
-    const p = (t - cycle) / cycle;
-    const glow = 0.5 + 0.5*Math.sin(t * 0.12);
-    ctx.shadowColor = '#00e676';
-    ctx.shadowBlur = 10*scale*glow;
-    ctx.strokeStyle = `rgba(0,230,118,${0.7 + 0.3*glow})`;
-    ctx.lineWidth = 1.2*scale;
-
-    // Draw controller
-    const cx = w*0.5, cy = h*0.5;
-    const appear = Math.min(1, p*2);
-
-    // Body
-    ctx.globalAlpha = appear;
-    ctx.beginPath();
-    ctx.ellipse(cx, cy+h*0.05, w*0.28*appear, h*0.22*appear, 0, 0, Math.PI*2);
-    ctx.stroke();
-
-    // D-pad
-    ctx.lineWidth = 1.5*scale;
-    ctx.beginPath();
-    ctx.moveTo(cx-w*0.18, cy-h*0.05); ctx.lineTo(cx-w*0.06, cy-h*0.05);
-    ctx.moveTo(cx-w*0.12, cy-h*0.12); ctx.lineTo(cx-w*0.12, cy+h*0.02);
-    ctx.stroke();
-
-    // Buttons (circles)
-    ctx.lineWidth = scale;
-    ctx.fillStyle = `rgba(0,230,118,${0.6*glow*appear})`;
-    [[cx+w*0.12, cy-h*0.08],[cx+w*0.18, cy-h*0.02],[cx+w*0.12, cy+h*0.04],[cx+w*0.06, cy-h*0.02]].forEach(([bx,by]) => {
-      ctx.beginPath(); ctx.arc(bx, by, 3*scale, 0, Math.PI*2); ctx.fill();
-      ctx.beginPath(); ctx.arc(bx, by, 3*scale, 0, Math.PI*2); ctx.stroke();
-    });
-
-    // Joysticks
-    ctx.fillStyle = 'transparent';
-    ctx.beginPath(); ctx.arc(cx-w*0.14, cy+h*0.1, 5*scale*appear, 0, Math.PI*2); ctx.stroke();
-    ctx.beginPath(); ctx.arc(cx+w*0.06, cy+h*0.1, 5*scale*appear, 0, Math.PI*2); ctx.stroke();
-
-    // Floating star/sparkles around controller
-    for(let s=0;s<4;s++){
-      const ang = (s/4)*Math.PI*2 + t*0.05;
-      const sr = w*0.38;
-      const sx = cx + Math.cos(ang)*sr;
-      const sy = cy + Math.sin(ang)*sr*0.5;
-      const sa = (0.5 + 0.5*Math.sin(t*0.1+s)) * appear;
-      ctx.globalAlpha = sa;
-      ctx.fillStyle = '#00e676';
-      ctx.beginPath(); ctx.arc(sx, sy, 2*scale, 0, Math.PI*2); ctx.fill();
-    }
-
-    ctx.globalAlpha = 1;
-  }
-  ctx.shadowBlur = 0;
-}
-
-function startCanvasAnimations(){
-  const navC = document.getElementById('navCanvas');
-  const heroC = document.getElementById('heroCanvas');
-  function loop(){
-    animateCanvas(navC, 0.8);
-    animateCanvas(heroC, 1.4);
-    requestAnimationFrame(loop);
-  }
-  loop();
-}
-
-// ============ TOAST ============
-function toast(msg, type='info', dur=3000){
-  const tc = document.getElementById('toastContainer');
-  const el = document.createElement('div');
-  el.className = `toast ${type}`;
-  el.innerHTML = (type==='success'?'✅ ':type==='error'?'❌ ':'ℹ️ ') + msg;
-  tc.appendChild(el);
-  setTimeout(()=>{ el.style.opacity='0'; el.style.transform='translateY(20px)'; el.style.transition='all .3s'; setTimeout(()=>el.remove(), 300); }, dur);
-}
-
-// ============ SCROLL HELPERS ============
-function scrollToTop(){ window.scrollTo({top:0,behavior:'smooth'}); }
-function scrollToGames(){ document.getElementById('gamesSection').scrollIntoView({behavior:'smooth'}); }
-
-// ============ GAMES RENDER ============
-function renderGames(){
-  const games = getGames();
-  const grid = document.getElementById('gamesGrid');
-  if(!games.length){ grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1">لا توجد ألعاب متاحة حالياً 😴</div>'; return; }
-  grid.innerHTML = games.map(g => `
-    <div class="game-card">
-      ${g.imageUrl ? `<img class="game-img" src="${g.imageUrl}" alt="${g.titleAr}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-      <div class="game-img-placeholder" style="display:none">🎮</div>` : `<div class="game-img-placeholder">🎮</div>`}
-      <div class="game-info">
-        <div class="game-title">${g.titleAr}</div>
-        <div class="game-meta">
-          <span class="game-platform">${g.platform||''}</span>
-          <span class="game-price">${g.price}<span> د.م</span></span>
-        </div>
-      </div>
-      <button class="add-to-cart-btn" onclick="addToCart(${g.id})">🛒 أضف للسلة</button>
-    </div>
-  `).join('');
-}
-
-// ============ PACKAGES RENDER ============
-function renderPackages(){
-  const pkgs = getPackages();
-  const sec = document.getElementById('packagesSection');
-  const grid = document.getElementById('packagesGrid');
-  if(!pkgs.length){ sec.style.display='none'; return; }
-  sec.style.display='block';
-  grid.innerHTML = pkgs.map(p => `
-    <div class="pkg-card">
-      <div class="pkg-name">📦 ${p.name}</div>
-      <div class="pkg-desc">${p.desc||''}</div>
-      <div class="pkg-price">${p.price}<span> د.م</span></div>
-    </div>
-  `).join('');
-}
-
-// ============ SITE IMAGES ============
-function applySiteImages(){
-  const imgs = getSiteImgs();
-  // Hero bg
-  const heroBg = document.getElementById('heroBg');
-  if(imgs.hero){ heroBg.style.backgroundImage = `url('${imgs.hero}')`; heroBg.style.opacity='0.2'; }
-  else { heroBg.style.backgroundImage = ''; }
-  // Mid image
-  const midSec = document.getElementById('midImgSection');
-  if(imgs.mid){ document.getElementById('midImg').src = imgs.mid; midSec.style.display='block'; }
-  else { midSec.style.display='none'; }
-  // Btm image
-  const btmSec = document.getElementById('btmImgSection');
-  if(imgs.btm){ document.getElementById('btmImg').src = imgs.btm; btmSec.style.display='block'; }
-  else { btmSec.style.display='none'; }
-}
-
-// ============ LOGIN ============
-function openLoginModal(){
-  const user = getLoggedIn();
-  if(user){
-    if(confirm(`أنت مسجل الدخول كـ ${user.name}\nهل تريد تسجيل الخروج؟`)){ doLogout(); } return;
-  }
-  document.getElementById('loginOverlay').style.display='flex';
-  clearLoginErrors();
-}
-function closeLogin(){ document.getElementById('loginOverlay').style.display='none'; clearLoginErrors(); }
-function closeLoginIfOutside(e){ if(e.target===document.getElementById('loginOverlay')) closeLogin(); }
-
-function switchLoginTab(tab){
-  document.getElementById('tab-existing').className = 'tab' + (tab==='existing'?' active':'');
-  document.getElementById('tab-new').className = 'tab' + (tab==='new'?' active':'');
-  document.getElementById('form-existing').style.display = tab==='existing' ? 'block' : 'none';
-  document.getElementById('form-new').style.display = tab==='new' ? 'block' : 'none';
-  clearLoginErrors();
-}
-
-function clearLoginErrors(){
-  ['loginPhoneErr','loginPassErr','regNameErr','regPhoneErr','regPassErr','regPass2Err'].forEach(id => { const el=document.getElementById(id); if(el) el.textContent=''; });
-}
-
-function doLogin(){
-  const phone = document.getElementById('loginPhone').value.trim(); **...**
+/* ═══════════════════════════════════
+   LOGIN
+═══════════════════════════════════ */
+function switchLoginTab(t){
+  document.getElementById( **...**
 
 _This response is too long to display in full._
