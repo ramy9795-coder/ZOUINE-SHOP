@@ -1,267 +1,146 @@
-<!DOCTYPE html><html lang="fr">
+<!DOCTYPE html>
+<html lang="ar">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Atlas Chicken</title><style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KHORDA GAMES</title>
 
-:root{
---red1:#c40000;
---red2:#ff2d2d;
---bg:#fff6f6;
-}
-
+<style>
 body{
-margin:0;
-font-family:Segoe UI;
-background:var(--bg);
+  margin:0;
+  font-family:sans-serif;
+  background:#0b1220;
+  color:white;
 }
 
+/* HEADER */
 header{
-background:linear-gradient(120deg,var(--red1),var(--red2));
-color:white;
-padding:25px;
-text-align:center;
-box-shadow:0 6px 20px rgba(0,0,0,.15);
+  background:#00c853;
+  padding:15px;
+  text-align:center;
+  font-weight:bold;
+  font-size:20px;
 }
 
-.logo{
-font-size:34px;
-font-weight:bold;
-letter-spacing:1px;
+/* GRID */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:15px;
+  padding:20px;
 }
 
-.hero{
-padding:40px;
-text-align:center;
-}
-
-.products{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-gap:25px;
-padding:40px;
-}
-
+/* CARD 3D */
 .card{
-background:white;
-border-radius:18px;
-padding:15px;
-text-align:center;
-transition:.3s;
-box-shadow:0 10px 25px rgba(0,0,0,.08);
+  background:#111a2e;
+  border-radius:15px;
+  overflow:hidden;
+  transition:0.3s;
+  transform:perspective(800px) rotateY(0deg);
 }
 
 .card:hover{
-transform:translateY(-10px) scale(1.03);
+  transform:perspective(800px) rotateY(8deg) scale(1.05);
 }
 
-.card img{
-width:100%;
-height:150px;
-object-fit:cover;
-border-radius:14px;
+img{
+  width:100%;
+  height:140px;
+  object-fit:cover;
 }
 
+/* BUTTON */
 button{
-background:linear-gradient(120deg,var(--red1),var(--red2));
-border:none;
-color:white;
-padding:10px 16px;
-border-radius:8px;
-cursor:pointer;
-margin:5px;
+  background:#00c853;
+  border:none;
+  padding:8px;
+  width:100%;
+  color:white;
+  cursor:pointer;
 }
 
-button:hover{opacity:.9}
-
-/* BURGER ADMIN BUTTON */
-#burgerAdmin{
-position:fixed;
-top:20px;
-right:20px;
-width:80px;
-cursor:pointer;
-animation:shake 2s infinite ease-in-out;
-}
-
-@keyframes shake{
-0%{transform:rotate(0deg)}
-25%{transform:rotate(5deg)}
-50%{transform:rotate(0deg)}
-75%{transform:rotate(-5deg)}
-100%{transform:rotate(0deg)}
-}
-
-/* CART */
-#cart{
-position:fixed;
-top:0;
-right:-350px;
-width:320px;
-height:100%;
-background:white;
-padding:25px;
-transition:.4s;
-box-shadow:-6px 0 25px rgba(0,0,0,.2);
-}
-
-#cart.active{right:0}
-
-.cartBtn{
-position:fixed;
-bottom:20px;
-left:20px;
-background:linear-gradient(120deg,var(--red1),var(--red2));
-color:white;
-padding:16px;
-border-radius:50%;
-font-size:20px;
-cursor:pointer;
-}
-
-.whatsapp{
-position:fixed;
-bottom:20px;
-right:20px;
-background:#25D366;
-color:white;
-padding:16px;
-border-radius:50%;
-font-size:20px;
-text-decoration:none;
-}
-
-/* ADMIN PANEL */
-#adminPanel{
-position:fixed;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
-background:white;
-padding:25px;
-border-radius:15px;
-box-shadow:0 10px 30px rgba(0,0,0,.25);
-display:none;
-width:300px;
+/* ADMIN */
+.admin{
+  padding:15px;
 }
 
 input{
-width:95%;
-padding:8px;
-margin:6px 0;
-border-radius:8px;
-border:1px solid #ddd;
+  padding:8px;
+  margin:5px;
+  width:200px;
+}
+</style>
+</head>
+
+<body>
+
+<header onclick="admin()">KHORDA GAMES 🎮</header>
+
+<div class="admin">
+  <input id="title" placeholder="Game name">
+  <input type="file" id="file">
+  <button onclick="addGame()">Add Game</button>
+</div>
+
+<div class="grid" id="games"></div>
+
+<script>
+
+// LOAD DATA
+let games = JSON.parse(localStorage.getItem("games")) || [];
+
+function render(){
+  let html="";
+  games.forEach((g,i)=>{
+    html+=`
+    <div class="card">
+      <img src="${g.img}">
+      <h3>${g.title}</h3>
+      <button onclick="del(${i})">Delete</button>
+    </div>
+    `;
+  });
+  document.getElementById("games").innerHTML=html;
 }
 
-</style></head><body><header>
-<div class="logo">ATLAS CHICKEN</div>
-<p>Livraison gratuit à partir de 70 DH</p>
-<p>📞 06 99 00 74 51</p>
-</header><!-- BURGER ADMIN SECRET BUTTON --><img id="burgerAdmin" src="https://cdn-icons-png.flaticon.com/512/3075/3075977.png" title="Admin secret button"><section class="hero">
-<h2 style="color:#c40000">Best Tacos in Casablanca</h2>
-</section><section class="products" id="products"></section><!-- CART --><div id="cart">
-<h2>🛒 Panier</h2>
-<div id="cartItems"></div>
-<button onclick="sendOrder()">Commander via WhatsApp</button>
-</div><!-- ADMIN PANEL --><div id="adminPanel">
-<h3>Admin Panel</h3>
-<input id="nameInput" placeholder="Nom produit">
-<input id="priceInput" placeholder="Prix produit">
-<input type="file" id="imageInput" accept="image/*">
-<button onclick="addProduct()">Ajouter produit</button>
-<button onclick="closeAdmin()">Fermer</button>
-</div><div class="cartBtn" onclick="toggleCart()">🛒</div>
-<a class="whatsapp" href="https://wa.me/212699007451" target="_blank">💬</a><script>
+// ADD GAME (with image upload)
+function addGame(){
+  let title = document.getElementById("title").value;
+  let file = document.getElementById("file").files[0];
 
-let adminClicks=0;
-let cartItemsArray=[];
+  let reader = new FileReader();
 
-const burgerBtn=document.getElementById("burgerAdmin");
-const adminPanel=document.getElementById("adminPanel");
-const cartPanel=document.getElementById("cart");
+  reader.onload = function(){
+    games.push({
+      title:title,
+      img:reader.result
+    });
 
-burgerBtn.onclick=function(){
-adminClicks++;
-if(adminClicks===5){
-adminPanel.style.display="block";
-adminClicks=0;
-}
+    localStorage.setItem("games",JSON.stringify(games));
+    render();
+  }
+
+  reader.readAsDataURL(file);
 }
 
-if(!localStorage.getItem("products")){
-localStorage.setItem("products",JSON.stringify([]));
+// DELETE
+function del(i){
+  games.splice(i,1);
+  localStorage.setItem("games",JSON.stringify(games));
+  render();
 }
 
-function displayProducts(){
-let container=document.getElementById("products");
-container.innerHTML="";
-
-let products=JSON.parse(localStorage.getItem("products"));
-
-products.forEach((p,i)=>{
-container.innerHTML+=`
-<div class="card">
-<img src="${p.image}">
-<h4>${p.name}</h4>
-<p>${p.price}</p>
-<button onclick="addToCart('${p.name}')">Ajouter au panier</button>
-<button onclick="deleteProduct(${i})">Supprimer</button>
-</div>`;
-});
+// ADMIN LOGIN
+function admin(){
+  let code = prompt("Enter admin code");
+  if(code=="4444"){
+    alert("Admin unlocked 🔓");
+  }
 }
 
-function addProduct(){
-let name=nameInput.value;
-let price=priceInput.value;
-let file=imageInput.files[0];
+render();
 
-if(!file)return alert("Choisir image");
+</script>
 
-let reader=new FileReader();
-reader.onload=function(){
-let products=JSON.parse(localStorage.getItem("products"));
-products.push({name,price,image:reader.result});
-localStorage.setItem("products",JSON.stringify(products));
-displayProducts();
-};
-reader.readAsDataURL(file);
-}
-
-function deleteProduct(i){
-let products=JSON.parse(localStorage.getItem("products"));
-products.splice(i,1);
-localStorage.setItem("products",JSON.stringify(products));
-displayProducts();
-}
-
-function addToCart(name){
-cartItemsArray.push(name);
-updateCart();
-}
-
-function updateCart(){
-let list=document.getElementById("cartItems");
-list.innerHTML="";
-cartItemsArray.forEach(item=>{
-list.innerHTML+=`<p>• ${item}</p>`;
-});
-}
-
-function toggleCart(){
-cartPanel.classList.toggle("active");
-}
-
-function sendOrder(){
-let msg="Bonjour je veux commander: "+cartItemsArray.join(", ");
-window.open("https://wa.me/212699007451?text="+encodeURIComponent(msg));
-}
-
-function closeAdmin(){
-adminPanel.style.display="none";
-}
-
-
-displayProducts();
-
-</script></body>
+</body>
 </html>
