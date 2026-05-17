@@ -1,728 +1,795 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Khourda Games</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Tajawal:wght@400;700;900&family=Playfair+Display:ital,wght@1,700;1,900&display=swap" rel="stylesheet" />
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --green: #00e676; --green-dark: #00b050;
-      --green-glow: rgba(0,230,118,0.35); --green-glass: rgba(0,230,118,0.08);
-      --bg: #060c18; --bg2: #0a1120; --bg3: #0f1a2e;
-      --card: rgba(10,20,40,0.85); --white: #ffffff;
-      --muted: rgba(255,255,255,0.55); --border: rgba(0,230,118,0.2);
-    }
-    html,body { min-height:100vh; background:var(--bg); color:var(--white); font-family:'Cairo',sans-serif; overflow-x:hidden; }
-    ::-webkit-scrollbar { width:6px; }
-    ::-webkit-scrollbar-track { background:var(--bg2); }
-    ::-webkit-scrollbar-thumb { background:var(--green-dark); border-radius:3px; }
-    body::before {
-      content:''; position:fixed; top:-200px; left:50%;
-      transform:translateX(-50%); width:900px; height:600px;
-      background:radial-gradient(ellipse at center,rgba(0,230,118,0.12) 0%,transparent 70%);
-      pointer-events:none; z-index:0;
-    }
-    #toast {
-      position:fixed; top:24px; left:50%;
-      transform:translateX(-50%) translateY(-120px);
-      background:linear-gradient(135deg,#0f2a1a,#1a3a2a);
-      border:1px solid var(--green); color:var(--green);
-      font-family:'Cairo',sans-serif; font-size:1rem; font-weight:700;
-      padding:14px 32px; border-radius:50px;
-      box-shadow:0 0 30px var(--green-glow); z-index:9999;
-      transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
-    }
-    #toast.show { transform:translateX(-50%) translateY(0); }
-    .page { display:none; min-height:100vh; position:relative; z-index:1; }
-    .page.active { display:block; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Khourda Games | متجر الألعاب في المغرب</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --bg:#080f1a;--bg2:#0d1726;--panel:rgba(0,230,118,0.04);
+  --green:#00e676;--green2:#00c853;--border:rgba(0,230,118,0.2);
+  --text:#ffffff;--muted:#7a9ab0;--red:#ef5350;
+}
+body{background:var(--bg);color:var(--text);font-family:'Cairo',sans-serif;min-height:100vh;overflow-x:hidden;}
+.orbitron{font-family:'Orbitron',sans-serif;}
 
-    /* NAV */
-    nav {
-      position:sticky; top:0; z-index:100;
-      background:rgba(6,12,24,0.9); backdrop-filter:blur(20px);
-      border-bottom:1px solid var(--border);
-      padding:0 40px; display:flex; align-items:center;
-      justify-content:space-between; height:70px;
-    }
-    .logo {
-      cursor:pointer; font-family:'Playfair Display',serif;
-      font-style:italic; font-size:1.9rem; font-weight:900;
-      user-select:none; transition:transform 0.2s;
-    }
-    .logo:active { transform:scale(0.95); }
-    .logo .k { color:var(--green); text-shadow:0 0 20px var(--green-glow); }
-    .logo .g { color:var(--white); }
-    .nav-links { display:flex; gap:8px; }
-    .nav-btn {
-      background:none; border:1px solid var(--border); color:var(--white);
-      font-family:'Cairo',sans-serif; font-size:0.95rem; font-weight:600;
-      padding:8px 22px; border-radius:50px; cursor:pointer; transition:all 0.2s;
-    }
-    .nav-btn:hover { background:var(--green-glass); border-color:var(--green); color:var(--green); }
-    .nav-btn.active { background:var(--green); color:#000; border-color:var(--green); }
+/* NAVBAR */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(8,15,26,0.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:12px 24px;display:flex;align-items:center;justify-content:space-between;}
+.nav-logo{display:flex;align-items:center;gap:6px;cursor:pointer;text-decoration:none;}
+.nav-logo-khourda{font-family:'Orbitron',sans-serif;font-weight:900;font-size:1.5rem;color:var(--green);text-shadow:0 0 12px rgba(0,230,118,0.6);letter-spacing:2px;}
+.nav-logo-games{font-family:'Orbitron',sans-serif;font-weight:700;font-size:1.2rem;color:#fff;letter-spacing:1px;}
+.nav-logo canvas{display:block;}
+.nav-actions{display:flex;align-items:center;gap:12px;}
+.btn{border:none;cursor:pointer;font-family:'Cairo',sans-serif;font-weight:700;border-radius:10px;transition:all .2s;}
+.btn-ghost{background:transparent;color:var(--green);border:1px solid var(--border);padding:8px 18px;font-size:.95rem;}
+.btn-ghost:hover{background:rgba(0,230,118,.1);border-color:var(--green);}
+.btn-primary{background:var(--green);color:#080f1a;padding:8px 20px;font-size:.95rem;}
+.btn-primary:hover{background:var(--green2);box-shadow:0 0 20px rgba(0,230,118,.4);}
+.btn-danger{background:rgba(239,83,80,.15);color:var(--red);border:1px solid rgba(239,83,80,.3);padding:6px 14px;font-size:.9rem;}
+.btn-danger:hover{background:var(--red);color:#fff;}
+.btn-sm{padding:5px 12px;font-size:.85rem;}
+.cart-btn{position:relative;background:rgba(0,230,118,.08);border:1px solid var(--border);color:var(--green);padding:8px 16px;border-radius:10px;cursor:pointer;font-family:'Cairo',sans-serif;font-weight:700;font-size:.95rem;display:flex;align-items:center;gap:6px;}
+.cart-btn:hover{background:rgba(0,230,118,.15);}
+.cart-count{position:absolute;top:-6px;right:-6px;background:var(--green);color:#080f1a;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:900;}
 
-    /* HERO */
-    .hero {
-      min-height:85vh; display:flex; flex-direction:column;
-      align-items:center; justify-content:center;
-      text-align:center; padding:60px 20px 40px;
-      position:relative; overflow:hidden;
-    }
-    .hero-3d-ring {
-      position:absolute; border-radius:50%;
-      border:1px solid rgba(0,230,118,0.15);
-      animation:spin3d 20s linear infinite;
-      top:50%; left:50%; transform-origin:center;
-    }
-    .r1 { width:600px; height:600px; }
-    .r2 { width:420px; height:420px; border-color:rgba(0,230,118,0.1); animation-duration:15s; animation-direction:reverse; }
-    .r3 { width:260px; height:260px; border-color:rgba(0,230,118,0.22); animation-duration:10s; }
-    @keyframes spin3d {
-      from { transform:translate(-50%,-50%) rotateX(70deg) rotateZ(0deg); }
-      to   { transform:translate(-50%,-50%) rotateX(70deg) rotateZ(360deg); }
-    }
-    .hero-badge {
-      display:inline-block; background:var(--green-glass); border:1px solid var(--border);
-      color:var(--green); font-size:0.85rem; font-weight:700;
-      padding:6px 20px; border-radius:50px; letter-spacing:2px;
-      margin-bottom:32px; animation:fadeUp 0.6s ease both;
-    }
-    .hero-title {
-      font-family:'Tajawal',sans-serif; font-size:clamp(2.5rem,7vw,5.5rem);
-      font-weight:900; line-height:1.15; margin-bottom:24px;
-      animation:fadeUp 0.7s ease 0.1s both;
-    }
-    .hero-title .hl { color:var(--green); text-shadow:0 0 40px var(--green-glow); }
-    .hero-sub {
-      font-size:clamp(1rem,2.5vw,1.25rem); color:var(--muted);
-      max-width:560px; line-height:1.7; margin-bottom:48px;
-      animation:fadeUp 0.8s ease 0.2s both;
-    }
-    .hero-cta { display:flex; gap:16px; flex-wrap:wrap; justify-content:center; animation:fadeUp 0.9s ease 0.3s both; }
-    .btn-primary {
-      background:linear-gradient(135deg,var(--green),var(--green-dark));
-      color:#000; font-family:'Cairo',sans-serif; font-weight:800; font-size:1.05rem;
-      padding:14px 40px; border:none; border-radius:50px; cursor:pointer;
-      box-shadow:0 0 30px var(--green-glow); transition:all 0.3s;
-    }
-    .btn-primary:hover { transform:translateY(-3px) scale(1.04); box-shadow:0 8px 40px var(--green-glow); }
-    .btn-outline {
-      background:none; color:var(--white); font-family:'Cairo',sans-serif;
-      font-weight:700; font-size:1.05rem; padding:14px 40px;
-      border:1px solid rgba(255,255,255,0.3); border-radius:50px; cursor:pointer; transition:all 0.3s;
-    }
-    .btn-outline:hover { border-color:var(--green); color:var(--green); background:var(--green-glass); }
-    @keyframes fadeUp {
-      from { opacity:0; transform:translateY(30px); }
-      to   { opacity:1; transform:translateY(0); }
-    }
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;padding:100px 24px 60px;overflow:hidden;}
+.hero-bg{position:absolute;inset:0;background:url('') center/cover no-repeat;opacity:.12;transition:opacity .5s;}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(8,15,26,.5),rgba(8,15,26,.85),var(--bg));}
+.hero-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:700px;height:700px;background:radial-gradient(circle,rgba(0,230,118,.12) 0%,transparent 70%);pointer-events:none;}
+.hero-content{position:relative;z-index:2;text-align:center;max-width:800px;}
+.hero-logo{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:32px;}
+.hero-khourda{font-family:'Orbitron',sans-serif;font-weight:900;font-size:clamp(2.5rem,8vw,5rem);color:var(--green);text-shadow:0 0 30px rgba(0,230,118,.7),0 0 60px rgba(0,230,118,.4);letter-spacing:4px;}
+.hero-games{font-family:'Orbitron',sans-serif;font-weight:700;font-size:clamp(2rem,6vw,4rem);color:#fff;letter-spacing:2px;}
+.hero-canvas{align-self:center;}
+.hero-sub{font-size:clamp(1rem,2.5vw,1.4rem);color:var(--muted);margin-bottom:40px;line-height:1.8;}
+.hero-morocco{font-size:1.1rem;color:var(--green);font-weight:700;margin-bottom:32px;opacity:.9;}
 
-    /* STATS */
-    .stats-bar {
-      display:flex; justify-content:center; background:var(--bg3);
-      border-top:1px solid var(--border); border-bottom:1px solid var(--border);
-      padding:28px 40px; flex-wrap:wrap;
-    }
-    .stat-item { flex:1; min-width:150px; text-align:center; padding:0 28px; border-left:1px solid var(--border); }
-    .stat-item:last-child { border-left:none; }
-    .stat-num { font-family:'Tajawal',sans-serif; font-size:2.2rem; font-weight:900; color:var(--green); display:block; }
-    .stat-label { color:var(--muted); font-size:0.9rem; margin-top:4px; }
+/* GLASS PANEL */
+.glass{background:var(--panel);border:1px solid var(--border);border-radius:16px;backdrop-filter:blur(12px);}
 
-    /* SECTION */
-    .section { padding:80px 40px; }
-    .section-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:48px; }
-    .section-title { font-family:'Tajawal',sans-serif; font-size:2rem; font-weight:900; position:relative; }
-    .section-title::after {
-      content:''; display:block; width:60px; height:3px;
-      background:var(--green); border-radius:2px; margin-top:8px;
-      box-shadow:0 0 12px var(--green-glow);
-    }
+/* SECTIONS */
+section{padding:60px 24px;max-width:1200px;margin:0 auto;width:100%;}
+.section-title{font-size:2rem;font-weight:900;color:#fff;margin-bottom:32px;display:flex;align-items:center;gap:16px;}
+.section-title::after{content:'';flex:1;height:1px;background:var(--border);}
 
-    /* GAME CARDS */
-    .games-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:24px; }
-    .game-card {
-      background:var(--card); border:1px solid var(--border);
-      border-radius:16px; overflow:hidden; transition:all 0.3s ease;
-      cursor:pointer; position:relative; backdrop-filter:blur(10px);
-      box-shadow:0 4px 20px rgba(0,0,0,0.3); animation:fadeUp 0.5s ease both;
-    }
-    .game-card:hover {
-      transform:perspective(1000px) rotateX(-3deg) translateY(-8px);
-      box-shadow:0 20px 60px rgba(0,230,118,0.2),0 0 0 1px rgba(0,230,118,0.3);
-      border-color:rgba(0,230,118,0.5);
-    }
-    .game-card-img { width:100%; aspect-ratio:16/9; object-fit:cover; display:block; }
-    .game-card-placeholder {
-      width:100%; aspect-ratio:16/9;
-      background:linear-gradient(135deg,#0a1a0f,#0f2a1a);
-      display:flex; align-items:center; justify-content:center; font-size:3rem;
-    }
-    .game-badge {
-      position:absolute; top:12px; right:12px;
-      background:var(--green); color:#000; font-weight:800; font-size:0.75rem;
-      padding:4px 12px; border-radius:50px;
-    }
-    .game-card-body { padding:20px; }
-    .game-title-ar { font-family:'Tajawal',sans-serif; font-size:1.15rem; font-weight:900; margin-bottom:6px; }
-    .game-meta { color:var(--muted); font-size:0.85rem; margin-bottom:14px; }
-    .game-footer { display:flex; align-items:center; justify-content:space-between; border-top:1px solid var(--border); padding-top:14px; }
-    .game-price { font-family:'Tajawal',sans-serif; font-size:1.4rem; font-weight:900; color:var(--green); text-shadow:0 0 15px var(--green-glow); }
-    .game-price .curr { font-size:0.9rem; margin-right:4px; }
-    .btn-buy {
-      background:var(--green-glass); border:1px solid var(--green);
-      color:var(--green); font-family:'Cairo',sans-serif;
-      font-weight:700; font-size:0.85rem;
-      padding:8px 20px; border-radius:50px; cursor:pointer; transition:all 0.2s;
-    }
-    .btn-buy:hover { background:var(--green); color:#000; }
+/* GAMES GRID */
+.games-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:24px;}
+.game-card{background:var(--panel);border:1px solid var(--border);border-radius:16px;overflow:hidden;cursor:pointer;transition:transform .3s,box-shadow .3s;position:relative;}
+.game-card:hover{transform:translateY(-6px) perspective(600px) rotateX(3deg);box-shadow:0 16px 40px rgba(0,230,118,.15),0 0 20px rgba(0,230,118,.1);}
+.game-img{width:100%;aspect-ratio:1;object-fit:cover;display:block;background:#0d1726;}
+.game-img-placeholder{width:100%;aspect-ratio:1;display:flex;align-items:center;justify-content:center;background:#0d1726;color:var(--muted);font-size:3rem;}
+.game-info{padding:16px;}
+.game-title{font-size:1.1rem;font-weight:700;color:#fff;margin-bottom:8px;}
+.game-meta{display:flex;align-items:center;justify-content:space-between;}
+.game-platform{font-size:.8rem;color:var(--muted);}
+.game-price{font-size:1.4rem;font-weight:900;color:var(--green);text-shadow:0 0 8px rgba(0,230,118,.4);}
+.game-price span{font-size:.85rem;font-weight:700;}
+.add-to-cart-btn{width:100%;background:rgba(0,230,118,.1);border:1px solid var(--border);color:var(--green);padding:10px;border-radius:0 0 14px 14px;cursor:pointer;font-family:'Cairo',sans-serif;font-weight:700;font-size:.95rem;transition:all .2s;margin-top:4px;}
+.add-to-cart-btn:hover{background:var(--green);color:#080f1a;}
 
-    /* PAYMENT */
-    .payment-section { background:var(--bg3); border-top:1px solid var(--border); padding:60px 40px; text-align:center; }
-    .payment-title { font-family:'Tajawal',sans-serif; font-size:1.8rem; font-weight:900; margin-bottom:8px; }
-    .payment-sub { color:var(--muted); font-size:0.95rem; margin-bottom:40px; }
-    .payment-methods { display:flex; gap:20px; justify-content:center; flex-wrap:wrap; }
-    .pay-card {
-      background:var(--card); border-radius:16px; padding:24px 36px;
-      min-width:150px; border:1px solid transparent; transition:all 0.3s;
-    }
-    .pay-card:hover { transform:translateY(-4px); }
-    .pay-card.orange { border-color:rgba(255,120,0,0.35); }
-    .pay-card.orange:hover { box-shadow:0 8px 40px rgba(255,120,0,0.25); }
-    .pay-card.inwi { border-color:rgba(180,0,255,0.35); }
-    .pay-card.inwi:hover { box-shadow:0 8px 40px rgba(180,0,255,0.25); }
-    .pay-card.cashplus { border-color:rgba(255,200,0,0.35); }
-    .pay-card.cashplus:hover { box-shadow:0 8px 40px rgba(255,200,0,0.25); }
-    .pay-card.cash { border-color:rgba(0,230,118,0.35); }
-    .pay-card.cash:hover { box-shadow:0 8px 40px rgba(0,230,118,0.25); }
-    .pay-icon {
-      width:48px; height:48px; border-radius:12px;
-      display:flex; align-items:center; justify-content:center;
-      font-size:1.6rem; font-weight:900; margin:0 auto 12px;
-    }
-    .pay-icon.orange { background:rgba(255,120,0,0.15); color:#ff7800; }
-    .pay-icon.inwi   { background:rgba(180,0,255,0.15); color:#b400ff; }
-    .pay-icon.cashplus{ background:rgba(255,200,0,0.15); color:#ffc800; }
-    .pay-icon.cash   { background:rgba(0,230,118,0.15); color:var(--green); }
-    .pay-name { font-family:'Cairo',sans-serif; font-weight:800; font-size:1rem; }
-    .pay-name.orange { color:#ff7800; }
-    .pay-name.inwi   { color:#b400ff; }
-    .pay-name.cashplus{ color:#ffc800; }
-    .pay-name.cash   { color:var(--green); }
+/* PACKAGES SECTION */
+.packages-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:24px;}
+.pkg-card{background:linear-gradient(135deg,rgba(0,230,118,.08),rgba(0,200,83,.04));border:1px solid rgba(0,230,118,.3);border-radius:16px;padding:24px;position:relative;overflow:hidden;}
+.pkg-card::before{content:'';position:absolute;top:-50%;right:-50%;width:100%;height:100%;background:radial-gradient(circle,rgba(0,230,118,.05) 0%,transparent 70%);}
+.pkg-name{font-size:1.3rem;font-weight:900;color:var(--green);margin-bottom:8px;}
+.pkg-desc{font-size:.9rem;color:var(--muted);margin-bottom:16px;line-height:1.7;}
+.pkg-price{font-size:1.8rem;font-weight:900;color:#fff;}
+.pkg-price span{font-size:1rem;color:var(--muted);}
 
-    /* FOOTER */
-    footer {
-      background:var(--bg); border-top:1px solid var(--border);
-      padding:24px 40px; display:flex; align-items:center;
-      justify-content:space-between; flex-wrap:wrap; gap:12px;
-    }
-    .foot-logo { font-family:'Playfair Display',serif; font-style:italic; font-size:1.3rem; font-weight:900; }
-    .foot-logo .k { color:var(--green); }
-    .foot-copy { color:var(--muted); font-size:0.85rem; }
+/* SITE IMAGE */
+.site-img-section{width:100%;max-height:400px;overflow:hidden;border-radius:16px;margin:20px 0;}
+.site-img-section img{width:100%;height:400px;object-fit:cover;border-radius:16px;}
 
-    /* LOGIN */
-    .login-body {
-      min-height:calc(100vh - 70px);
-      display:flex; align-items:center; justify-content:center;
-      padding:40px 20px;
-      background:radial-gradient(ellipse at 50% 0%,rgba(0,230,118,0.12) 0%,transparent 60%);
-    }
-    .login-card {
-      background:rgba(10,20,40,0.92); border:1px solid var(--border);
-      border-radius:24px; padding:50px 48px; width:100%; max-width:480px;
-      backdrop-filter:blur(20px);
-      box-shadow:0 0 80px rgba(0,230,118,0.12),0 40px 80px rgba(0,0,0,0.4);
-      animation:float3d 6s ease-in-out infinite;
-    }
-    @keyframes float3d {
-      0%,100% { transform:perspective(1200px) rotateX(2deg) translateY(0); }
-      50%      { transform:perspective(1200px) rotateX(-1deg) translateY(-8px); }
-    }
-    .login-icon {
-      width:72px; height:72px; background:var(--green-glass);
-      border:1px solid var(--green); border-radius:20px;
-      display:flex; align-items:center; justify-content:center;
-      font-size:2rem; margin:0 auto 24px; box-shadow:0 0 30px var(--green-glow);
-    }
-    .login-title { font-family:'Tajawal',sans-serif; font-size:1.8rem; font-weight:900; text-align:center; margin-bottom:6px; }
-    .login-sub { color:var(--muted); text-align:center; font-size:0.95rem; margin-bottom:36px; }
-    .form-group { margin-bottom:20px; }
-    .form-label { display:block; font-weight:700; font-size:0.95rem; margin-bottom:8px; color:rgba(255,255,255,0.85); }
-    .form-input {
-      width:100%; background:rgba(255,255,255,0.05);
-      border:1px solid rgba(255,255,255,0.15); border-radius:12px;
-      color:var(--white); font-family:'Cairo',sans-serif; font-size:1rem;
-      padding:14px 18px; outline:none; transition:all 0.2s; direction:rtl;
-    }
-    .form-input:focus { border-color:var(--green); background:var(--green-glass); box-shadow:0 0 0 3px rgba(0,230,118,0.15); }
-    .btn-login {
-      width:100%; background:linear-gradient(135deg,var(--green),var(--green-dark));
-      color:#000; font-family:'Cairo',sans-serif; font-weight:800; font-size:1.1rem;
-      padding:16px; border:none; border-radius:12px; cursor:pointer;
-      box-shadow:0 0 30px var(--green-glow); transition:all 0.3s; margin-top:8px;
-    }
-    .btn-login:hover { transform:translateY(-2px); box-shadow:0 8px 40px var(--green-glow); }
-    .login-success {
-      display:none; background:rgba(0,230,118,0.1); border:1px solid var(--green);
-      border-radius:12px; padding:20px; text-align:center; margin-top:20px;
-    }
-    .login-success.show { display:block; }
-    .login-success p { color:var(--green); font-weight:700; font-size:1rem; }
+/* FOOTER */
+footer{border-top:1px solid var(--border);background:rgba(8,15,26,.9);padding:48px 24px;margin-top:40px;}
+.footer-inner{max-width:1000px;margin:0 auto;text-align:center;}
+.footer-title{font-size:1.4rem;font-weight:700;color:#fff;margin-bottom:24px;}
+.payment-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:16px;}
+.pay-card{padding:14px 32px;border-radius:12px;font-weight:700;font-size:1.1rem;transition:all .3s;border:1px solid;}
+.pay-orange{color:#ff9800;border-color:rgba(255,152,0,.3);background:rgba(255,152,0,.08);}
+.pay-orange:hover{background:rgba(255,152,0,.2);box-shadow:0 0 20px rgba(255,152,0,.2);}
+.pay-inwi{color:#e040fb;border-color:rgba(224,64,251,.3);background:rgba(224,64,251,.08);}
+.pay-inwi:hover{background:rgba(224,64,251,.2);box-shadow:0 0 20px rgba(224,64,251,.2);}
+.pay-cash-plus{color:#ffc107;border-color:rgba(255,193,7,.3);background:rgba(255,193,7,.08);}
+.pay-cash-plus:hover{background:rgba(255,193,7,.2);}
+.pay-cash{color:var(--green);border-color:var(--border);background:rgba(0,230,118,.08);}
+.pay-cash:hover{background:rgba(0,230,118,.2);}
+.footer-copy{margin-top:24px;color:var(--muted);font-size:.85rem;}
 
-    /* ADMIN */
-    .admin-header {
-      background:var(--bg3); border-bottom:1px solid var(--border);
-      padding:30px 40px; display:flex; align-items:center; gap:20px;
-    }
-    .admin-badge { background:var(--green); color:#000; font-weight:800; font-size:0.8rem; padding:4px 14px; border-radius:50px; }
-    .admin-h1 { font-family:'Tajawal',sans-serif; font-size:1.6rem; font-weight:900; }
-    .admin-tabs { display:flex; gap:8px; padding:24px 40px 0; border-bottom:1px solid var(--border); }
-    .tab-btn {
-      background:none; border:none; color:var(--muted);
-      font-family:'Cairo',sans-serif; font-size:1rem; font-weight:700;
-      padding:12px 28px; cursor:pointer; border-bottom:2px solid transparent;
-      margin-bottom:-1px; transition:all 0.2s;
-    }
-    .tab-btn.active { color:var(--green); border-bottom-color:var(--green); }
-    .tab-content { display:none; padding:40px; }
-    .tab-content.active { display:block; }
-    .admin-table { width:100%; border-collapse:collapse; background:var(--card); border:1px solid var(--border); border-radius:12px; overflow:hidden; }
-    .admin-table th { background:var(--bg3); color:var(--green); font-weight:700; padding:14px 20px; text-align:right; border-bottom:1px solid var(--border); font-size:0.9rem; }
-    .admin-table td { padding:14px 20px; border-bottom:1px solid rgba(255,255,255,0.05); font-size:0.95rem; color:rgba(255,255,255,0.85); }
-    .admin-table tr:last-child td { border-bottom:none; }
-    .admin-table tr:hover td { background:var(--green-glass); }
-    .btn-delete {
-      background:rgba(255,60,60,0.1); border:1px solid rgba(255,60,60,0.3);
-      color:#ff6060; font-family:'Cairo',sans-serif; font-weight:700;
-      font-size:0.85rem; padding:6px 16px; border-radius:8px; cursor:pointer; transition:all 0.2s;
-    }
-    .btn-delete:hover { background:rgba(255,60,60,0.25); }
-    .admin-form { background:var(--card); border:1px solid var(--border); border-radius:16px; padding:32px; margin-bottom:32px; }
-    .admin-form-title { font-family:'Tajawal',sans-serif; font-size:1.2rem; font-weight:900; color:var(--green); margin-bottom:24px; }
-    .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
-    .form-full { grid-column:1/-1; }
-    .btn-add {
-      background:var(--green); color:#000; font-family:'Cairo',sans-serif;
-      font-weight:800; font-size:1rem; padding:14px 32px;
-      border:none; border-radius:12px; cursor:pointer; transition:all 0.2s; margin-top:8px;
-    }
-    .btn-add:hover { transform:translateY(-2px); box-shadow:0 6px 30px var(--green-glow); }
-    .img-upload-area {
-      border:2px dashed var(--border); border-radius:12px; padding:28px;
-      text-align:center; cursor:pointer; transition:all 0.2s; position:relative;
-    }
-    .img-upload-area:hover { border-color:var(--green); background:var(--green-glass); }
-    .img-upload-icon { font-size:2.5rem; margin-bottom:8px; }
-    .img-upload-text { color:var(--muted); font-size:0.9rem; }
-    .img-preview { width:100%; max-height:200px; object-fit:cover; border-radius:8px; margin-top:12px; display:none; }
-    .empty-state { text-align:center; padding:60px 20px; color:var(--muted); }
-    .empty-icon { font-size:3rem; margin-bottom:16px; }
+/* MODALS */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px);}
+.modal{background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:32px;width:100%;max-width:480px;max-height:90vh;overflow-y:auto;position:relative;}
+.modal-title{font-size:1.5rem;font-weight:900;color:#fff;text-align:center;margin-bottom:24px;}
+.modal-close{position:absolute;top:16px;left:16px;background:rgba(239,83,80,.15);border:none;color:var(--red);width:32px;height:32px;border-radius:8px;cursor:pointer;font-size:1.2rem;display:flex;align-items:center;justify-content:center;}
+.modal-close:hover{background:var(--red);color:#fff;}
 
-    @media(max-width:640px) {
-      nav { padding:0 16px; }
-      .logo { font-size:1.4rem; }
-      .section { padding:40px 16px; }
-      .stats-bar { padding:20px 16px; }
-      .stat-item { min-width:120px; padding:0 12px; }
-      .payment-section { padding:40px 16px; }
-      footer { padding:20px 16px; }
-      .login-card { padding:32px 20px; }
-      .admin-header,.admin-tabs,.tab-content { padding-right:16px; padding-left:16px; }
-      .form-grid { grid-template-columns:1fr; }
-      .admin-table { font-size:0.8rem; }
-      .admin-table th,.admin-table td { padding:10px 12px; }
-    }
-  </style>
+/* TABS */
+.tabs{display:flex;background:rgba(0,0,0,.3);border-radius:12px;padding:4px;margin-bottom:24px;gap:4px;}
+.tab{flex:1;padding:10px;text-align:center;border-radius:8px;cursor:pointer;font-weight:700;color:var(--muted);transition:all .2s;font-family:'Cairo',sans-serif;border:none;background:transparent;}
+.tab.active{background:var(--green);color:#080f1a;}
+
+/* FORM */
+.form-group{margin-bottom:16px;}
+.form-label{display:block;font-size:.9rem;font-weight:700;color:var(--muted);margin-bottom:6px;}
+.form-input{width:100%;background:rgba(0,0,0,.3);border:1px solid var(--border);border-radius:10px;padding:12px 16px;color:#fff;font-family:'Cairo',sans-serif;font-size:1rem;outline:none;transition:border .2s;}
+.form-input:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(0,230,118,.1);}
+.form-input::placeholder{color:rgba(122,154,176,.6);}
+.form-error{color:var(--red);font-size:.85rem;margin-top:4px;}
+
+/* CART MODAL */
+.cart-item{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border);}
+.cart-item-img{width:52px;height:52px;border-radius:8px;object-fit:cover;background:#0d1726;}
+.cart-item-info{flex:1;}
+.cart-item-name{font-weight:700;font-size:.95rem;color:#fff;}
+.cart-item-price{font-size:.85rem;color:var(--green);}
+.cart-item-remove{background:rgba(239,83,80,.15);border:none;color:var(--red);width:28px;height:28px;border-radius:6px;cursor:pointer;font-size:1rem;}
+.cart-item-remove:hover{background:var(--red);color:#fff;}
+.cart-total-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;font-weight:700;}
+.coupon-row{display:flex;gap:8px;margin:16px 0;}
+.coupon-row input{flex:1;}
+.coupon-row button{white-space:nowrap;}
+.coupon-applied{color:var(--green);font-size:.85rem;font-weight:700;margin-top:-8px;margin-bottom:8px;}
+
+/* ADMIN PANEL */
+.admin-overlay{position:fixed;inset:0;background:var(--bg);z-index:300;overflow-y:auto;}
+.admin-nav{background:rgba(8,15,26,.95);border-bottom:1px solid var(--border);padding:16px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10;}
+.admin-content{max-width:1100px;margin:0 auto;padding:32px 24px;}
+.admin-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:32px;}
+.admin-tab{padding:10px 20px;border-radius:10px;cursor:pointer;font-weight:700;color:var(--muted);border:1px solid var(--border);background:transparent;font-family:'Cairo',sans-serif;transition:all .2s;}
+.admin-tab.active{background:var(--green);color:#080f1a;border-color:var(--green);}
+
+/* TABLE */
+.tbl{width:100%;border-collapse:collapse;}
+.tbl th{text-align:right;padding:12px 16px;font-size:.9rem;color:var(--green);border-bottom:1px solid var(--border);font-weight:700;}
+.tbl td{padding:12px 16px;border-bottom:1px solid rgba(0,230,118,.08);font-size:.9rem;}
+.tbl tr:hover td{background:rgba(0,230,118,.03);}
+.tbl-img{width:44px;height:44px;border-radius:8px;object-fit:cover;background:#0d1726;}
+.empty-state{text-align:center;padding:48px;color:var(--muted);}
+
+/* ADMIN CODE MODAL */
+.code-input{text-align:center;font-size:1.5rem;letter-spacing:8px;font-family:'Orbitron',sans-serif;}
+
+/* ORDER BADGE */
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:.8rem;font-weight:700;}
+.badge-green{background:rgba(0,230,118,.15);color:var(--green);}
+.badge-gold{background:rgba(255,193,7,.15);color:#ffc107;}
+
+/* TOAST */
+.toast-container{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:9999;display:flex;flex-direction:column;gap:8px;align-items:center;}
+.toast{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:12px 24px;font-weight:700;font-size:.95rem;box-shadow:0 8px 24px rgba(0,0,0,.4);animation:slideUp .3s ease;display:flex;align-items:center;gap:8px;}
+.toast.success{border-color:rgba(0,230,118,.4);color:var(--green);}
+.toast.error{border-color:rgba(239,83,80,.4);color:var(--red);}
+.toast.info{border-color:var(--border);color:#fff;}
+@keyframes slideUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+
+/* RESPONSIVE */
+@media(max-width:600px){
+  .hero-khourda{font-size:2rem;}
+  .hero-games{font-size:1.6rem;}
+  .admin-tabs{gap:4px;}
+  .admin-tab{padding:8px 12px;font-size:.85rem;}
+}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:6px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:rgba(0,230,118,.3);border-radius:3px;}
+::-webkit-scrollbar-thumb:hover{background:rgba(0,230,118,.5);}
+</style>
 </head>
 <body>
 
-<div id="toast"></div>
-
-<!-- ═══════════════ HOME ═══════════════ -->
-<div id="page-home" class="page active">
-  <nav>
-    <div class="logo" id="logo-home">
-      <span class="k">Khourda</span> <span class="g">Games</span>
-    </div>
-    <div class="nav-links">
-      <button class="nav-btn active" onclick="showPage('home')">الرئيسية</button>
-      <button class="nav-btn" onclick="showPage('login')">تسجيل الدخول</button>
-    </div>
-  </nav>
-
-  <section class="hero">
-    <div class="hero-3d-ring r1"></div>
-    <div class="hero-3d-ring r2"></div>
-    <div class="hero-3d-ring r3"></div>
-    <span class="hero-badge">متجر الألعاب الأول</span>
-    <h1 class="hero-title">
-      المتجر الأول <span class="hl">للألعاب</span><br>في العالم العربي
-    </h1>
-    <p class="hero-sub">اكتشف أحدث وأفضل الألعاب بأسعار لا تقبل المنافسة وبطرق دفع محلية آمنة.</p>
-    <div class="hero-cta">
-      <button class="btn-primary" onclick="document.getElementById('games-sec').scrollIntoView({behavior:'smooth'})">تصفح الألعاب</button>
-      <button class="btn-outline" onclick="showPage('login')">تسجيل الدخول</button>
-    </div>
-  </section>
-
-  <div class="stats-bar">
-    <div class="stat-item"><span class="stat-num">+٥٠٠</span><div class="stat-label">لعبة متوفرة</div></div>
-    <div class="stat-item"><span class="stat-num">+١٠٠٠</span><div class="stat-label">مستخدم نشط</div></div>
-    <div class="stat-item"><span class="stat-num">٤</span><div class="stat-label">طرق دفع محلية</div></div>
-    <div class="stat-item"><span class="stat-num">٢٤/٧</span><div class="stat-label">دعم فني</div></div>
+<!-- NAVBAR -->
+<nav id="navbar">
+  <div class="nav-logo" onclick="scrollToTop()">
+    <span class="nav-logo-khourda">KHOURDA</span>
+    <canvas id="navCanvas" width="60" height="36" class="nav-logo-canvas"></canvas>
+    <span class="nav-logo-games">GAMES</span>
   </div>
-
-  <section class="section" id="games-sec">
-    <div class="section-header">
-      <h2 class="section-title">الألعاب المميزة</h2>
-    </div>
-    <div class="games-grid" id="games-grid"></div>
-  </section>
-
-  <div class="payment-section">
-    <h2 class="payment-title">طرق الدفع</h2>
-    <p class="payment-sub">ادفع بالطريقة التي تناسبك بأمان وسرعة</p>
-    <div class="payment-methods">
-      <div class="pay-card orange"><div class="pay-icon orange">💳</div><div class="pay-name orange">Orange</div></div>
-      <div class="pay-card inwi"><div class="pay-icon inwi">💜</div><div class="pay-name inwi">Inwi</div></div>
-      <div class="pay-card cashplus"><div class="pay-icon cashplus">⭐</div><div class="pay-name cashplus">Cash Plus</div></div>
-      <div class="pay-card cash"><div class="pay-icon cash">💵</div><div class="pay-name cash">Cash</div></div>
-    </div>
+  <div class="nav-actions">
+    <button class="cart-btn" onclick="openCart()">
+      🛒 السلة
+      <span class="cart-count" id="cartCount" style="display:none">0</span>
+    </button>
+    <button class="btn btn-ghost" id="loginNavBtn" onclick="openLoginModal()">تسجيل الدخول</button>
+    <button class="btn btn-primary" id="adminNavBtn" onclick="openAdminCode()" style="display:none">الإدارة</button>
   </div>
-  <footer>
-    <div class="foot-logo"><span class="k">Khourda</span> Games</div>
-    <div class="foot-copy">جميع الحقوق محفوظة &copy; ٢٠٢٦ Khourda Games</div>
-  </footer>
+</nav>
+
+<!-- HERO -->
+<div class="hero" id="heroSection">
+  <div class="hero-bg" id="heroBg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-content">
+    <div class="hero-logo">
+      <span class="hero-khourda">KHOURDA</span>
+      <canvas id="heroCanvas" width="120" height="80" class="hero-canvas"></canvas>
+      <span class="hero-games">GAMES</span>
+    </div>
+    <p class="hero-morocco">🇲🇦 المتجر الأول للألعاب في المغرب</p>
+    <p class="hero-sub">اكتشف أحدث وأفضل الألعاب بأسعار لا تقبل المنافسة<br>وبطرق دفع محلية آمنة — الدفع بالدرهم المغربي</p>
+    <button class="btn btn-primary" style="font-size:1.1rem;padding:14px 36px;" onclick="scrollToGames()">تصفح الألعاب ▼</button>
+  </div>
 </div>
 
-<!-- ═══════════════ LOGIN ═══════════════ -->
-<div id="page-login" class="page">
-  <nav>
-    <div class="logo" onclick="showPage('home')" style="cursor:pointer">
-      <span class="k">Khourda</span> <span class="g">Games</span>
+<!-- MAIN CONTENT -->
+<div id="mainContent">
+
+  <!-- MID IMAGE -->
+  <div id="midImgSection" style="padding:0 24px;max-width:1200px;margin:0 auto;display:none;">
+    <div class="site-img-section"><img id="midImg" src="" alt=""></div>
+  </div>
+
+  <!-- GAMES -->
+  <section id="gamesSection">
+    <h2 class="section-title">🎮 الألعاب المميزة</h2>
+    <div class="games-grid" id="gamesGrid">
+      <div class="empty-state" style="grid-column:1/-1">جاري التحميل...</div>
     </div>
-    <div class="nav-links">
-      <button class="nav-btn" onclick="showPage('home')">الرئيسية</button>
-      <button class="nav-btn active">تسجيل الدخول</button>
+  </section>
+
+  <!-- PACKAGES -->
+  <section id="packagesSection" style="display:none;">
+    <h2 class="section-title">📦 الباقات المميزة</h2>
+    <div class="packages-grid" id="packagesGrid"></div>
+  </section>
+
+  <!-- BTM IMAGE -->
+  <div id="btmImgSection" style="padding:0 24px;max-width:1200px;margin:0 auto;display:none;">
+    <div class="site-img-section"><img id="btmImg" src="" alt=""></div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-title">طرق الدفع المتاحة</div>
+    <div class="payment-grid">
+      <div class="pay-card pay-orange">🟠 Orange Money</div>
+      <div class="pay-card pay-inwi">💜 Inwi Money</div>
+      <div class="pay-card pay-cash-plus">💛 Cash Plus</div>
+      <div class="pay-card pay-cash">💚 كاش</div>
     </div>
-  </nav>
-  <div class="login-body">
-    <div class="login-card">
-      <div class="login-icon">🎮</div>
-      <h2 class="login-title">مرحباً بك</h2>
-      <p class="login-sub">سجّل دخولك للاستمتاع بأفضل الألعاب</p>
-      <form id="login-form" onsubmit="handleLogin(event)">
+    <p class="footer-copy">© 2025 Khourda Games — جميع الحقوق محفوظة 🇲🇦</p>
+  </div>
+</footer>
+
+<!-- TOAST CONTAINER -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- =================== MODALS =================== -->
+
+<!-- LOGIN MODAL -->
+<div class="overlay" id="loginOverlay" style="display:none;" onclick="closeLoginIfOutside(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeLogin()">✕</button>
+    <div class="modal-title">🎮 Khourda Games</div>
+    <div class="tabs">
+      <button class="tab active" id="tab-existing" onclick="switchLoginTab('existing')">لدي حساب</button>
+      <button class="tab" id="tab-new" onclick="switchLoginTab('new')">إنشاء حساب</button>
+    </div>
+
+    <!-- EXISTING ACCOUNT -->
+    <div id="form-existing">
+      <div class="form-group">
+        <label class="form-label">رقم الهاتف</label>
+        <input class="form-input" id="loginPhone" type="tel" placeholder="0612345678" dir="ltr">
+        <div class="form-error" id="loginPhoneErr"></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">كلمة المرور</label>
+        <input class="form-input" id="loginPass" type="password" placeholder="••••••••">
+        <div class="form-error" id="loginPassErr"></div>
+      </div>
+      <button class="btn btn-primary" style="width:100%;padding:14px;font-size:1rem;margin-top:8px;" onclick="doLogin()">دخول</button>
+    </div>
+
+    <!-- NEW ACCOUNT -->
+    <div id="form-new" style="display:none;">
+      <div class="form-group">
+        <label class="form-label">الاسم الكامل</label>
+        <input class="form-input" id="regName" type="text" placeholder="محمد الأمين">
+        <div class="form-error" id="regNameErr"></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">رقم الهاتف</label>
+        <input class="form-input" id="regPhone" type="tel" placeholder="0612345678" dir="ltr">
+        <div class="form-error" id="regPhoneErr"></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">كلمة المرور</label>
+        <input class="form-input" id="regPass" type="password" placeholder="••••••••">
+        <div class="form-error" id="regPassErr"></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">تأكيد كلمة المرور</label>
+        <input class="form-input" id="regPass2" type="password" placeholder="••••••••">
+        <div class="form-error" id="regPass2Err"></div>
+      </div>
+      <button class="btn btn-primary" style="width:100%;padding:14px;font-size:1rem;margin-top:8px;" onclick="doRegister()">إنشاء الحساب</button>
+    </div>
+  </div>
+</div>
+
+<!-- CART MODAL -->
+<div class="overlay" id="cartOverlay" style="display:none;" onclick="closeCartIfOutside(event)">
+  <div class="modal" style="max-width:520px;" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeCart()">✕</button>
+    <div class="modal-title">🛒 سلة المشتريات</div>
+    <div id="cartItems"></div>
+    <div id="cartEmpty" style="display:none;" class="empty-state">السلة فارغة 😅</div>
+
+    <div id="cartFooter" style="margin-top:16px;">
+      <div class="coupon-row">
+        <input class="form-input" id="couponInput" placeholder="أدخل رمز الكوبون" dir="ltr" style="text-align:center;letter-spacing:4px;">
+        <button class="btn btn-ghost" onclick="applyCoupon()">تطبيق</button>
+      </div>
+      <div class="coupon-applied" id="couponMsg" style="display:none;">✅ كوبون 777 — خصم 10% تم تطبيقه!</div>
+
+      <div class="cart-total-row" style="border-top:1px solid var(--border);padding-top:12px;margin-top:8px;">
+        <span style="color:var(--muted)">الإجمالي قبل الخصم:</span>
+        <span id="cartSubtotal" style="color:#fff;font-size:1.1rem;"></span>
+      </div>
+      <div class="cart-total-row" id="discountRow" style="display:none;">
+        <span style="color:var(--muted)">الخصم (10%):</span>
+        <span id="cartDiscount" style="color:var(--red);"></span>
+      </div>
+      <div class="cart-total-row" style="font-size:1.2rem;">
+        <span>الإجمالي النهائي:</span>
+        <span id="cartTotal" style="color:var(--green);text-shadow:0 0 8px rgba(0,230,118,.4);"></span>
+      </div>
+
+      <div style="margin-top:16px;" id="checkoutForm">
         <div class="form-group">
-          <label class="form-label">الاسم الكامل</label>
-          <input type="text" id="login-name" class="form-input" placeholder="أدخل اسمك الكامل" required />
+          <label class="form-label">اسمك</label>
+          <input class="form-input" id="checkoutName" placeholder="محمد الأمين">
         </div>
         <div class="form-group">
-          <label class="form-label">رقم الهاتف</label>
-          <input type="tel" id="login-phone" class="form-input" placeholder="0XXX XXX XXX" required />
+          <label class="form-label">رقم هاتفك</label>
+          <input class="form-input" id="checkoutPhone" type="tel" placeholder="0612345678" dir="ltr">
         </div>
-        <button type="submit" class="btn-login">تسجيل الدخول</button>
-      </form>
-      <div class="login-success" id="login-success">
-        <p>تم تسجيل دخولك بنجاح!</p>
-        <p style="color:var(--muted);font-size:0.85rem;margin-top:6px">مرحباً بك في Khourda Games</p>
+        <button class="btn btn-primary" style="width:100%;padding:14px;font-size:1rem;" onclick="doCheckout()">✅ تأكيد الطلب</button>
       </div>
     </div>
   </div>
-  <div class="payment-section">
-    <h2 class="payment-title">طرق الدفع</h2>
-    <p class="payment-sub">ادفع بالطريقة التي تناسبك بأمان وسرعة</p>
-    <div class="payment-methods">
-      <div class="pay-card orange"><div class="pay-icon orange">💳</div><div class="pay-name orange">Orange</div></div>
-      <div class="pay-card inwi"><div class="pay-icon inwi">💜</div><div class="pay-name inwi">Inwi</div></div>
-      <div class="pay-card cashplus"><div class="pay-icon cashplus">⭐</div><div class="pay-name cashplus">Cash Plus</div></div>
-      <div class="pay-card cash"><div class="pay-icon cash">💵</div><div class="pay-name cash">Cash</div></div>
-    </div>
-  </div>
-  <footer>
-    <div class="foot-logo"><span class="k">Khourda</span> Games</div>
-    <div class="foot-copy">جميع الحقوق محفوظة &copy; ٢٠٢٦ Khourda Games</div>
-  </footer>
 </div>
 
-<!-- ═══════════════ ADMIN ═══════════════ -->
-<div id="page-admin" class="page">
-  <nav>
-    <div class="logo" onclick="showPage('home')" style="cursor:pointer">
-      <span class="k">Khourda</span> <span class="g">Games</span>
-    </div>
-    <div class="nav-links">
-      <button class="nav-btn" onclick="showPage('home')">الرئيسية</button>
-    </div>
-  </nav>
-  <div class="admin-header">
-    <span class="admin-badge">ADMIN</span>
-    <h1 class="admin-h1">لوحة الإدارة</h1>
+<!-- ADMIN CODE MODAL -->
+<div class="overlay" id="adminCodeOverlay" style="display:none;" onclick="closeAdminCodeIfOutside(event)">
+  <div class="modal" style="max-width:360px;text-align:center;" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeAdminCode()">✕</button>
+    <div style="font-size:3rem;margin-bottom:16px;">🔒</div>
+    <div class="modal-title">لوحة الإدارة</div>
+    <p style="color:var(--muted);margin-bottom:20px;">أدخل الرمز السري للوصول</p>
+    <input class="form-input code-input" id="adminCodeInput" type="password" placeholder="• • • • • •" maxlength="6" oninput="checkAdminCode()">
+    <div class="form-error" id="adminCodeErr" style="text-align:center;margin-top:8px;"></div>
   </div>
-  <div class="admin-tabs">
-    <button class="tab-btn active" id="tab-btn-users" onclick="switchTab('users',this)">المستخدمون</button>
-    <button class="tab-btn" id="tab-btn-games" onclick="switchTab('games',this)">الألعاب</button>
+</div>
+
+<!-- ADMIN PANEL -->
+<div class="admin-overlay" id="adminPanel" style="display:none;">
+  <div class="admin-nav">
+    <div style="display:flex;align-items:center;gap:8px;">
+      <span class="orbitron" style="color:var(--green);font-weight:900;font-size:1.2rem;">KHOURDA</span>
+      <span style="color:var(--muted);font-size:.9rem;">| لوحة الإدارة</span>
+    </div>
+    <button class="btn btn-danger btn-sm" onclick="closeAdmin()">✕ إغلاق</button>
   </div>
 
-  <div id="tab-users" class="tab-content active">
-    <div id="users-container"></div>
-  </div>
+  <div class="admin-content">
+    <div class="admin-tabs">
+      <button class="admin-tab active" onclick="adminTab('games')">🎮 الألعاب</button>
+      <button class="admin-tab" onclick="adminTab('users')">👥 المستخدمون</button>
+      <button class="admin-tab" onclick="adminTab('orders')">📋 الطلبات</button>
+      <button class="admin-tab" onclick="adminTab('packages')">📦 الباقات</button>
+      <button class="admin-tab" onclick="adminTab('siteimgs')">🖼️ صور الموقع</button>
+    </div>
 
-  <div id="tab-games" class="tab-content">
-    <div class="admin-form">
-      <div class="admin-form-title">إضافة لعبة جديدة</div>
-      <div class="form-grid">
-        <div class="form-group">
-          <label class="form-label">الاسم بالعربية *</label>
-          <input id="g-ar" class="form-input" placeholder="مثال: ببجي موبايل" />
-        </div>
-        <div class="form-group">
-          <label class="form-label">Nom du jeu *</label>
-          <input id="g-fr" class="form-input" placeholder="ex: PUBG Mobile" style="direction:ltr" />
-        </div>
-        <div class="form-group">
-          <label class="form-label">السعر بالدينار *</label>
-          <input id="g-price" class="form-input" type="number" placeholder="1500" />
-        </div>
-        <div class="form-group">
-          <label class="form-label">التصنيف</label>
-          <input id="g-cat" class="form-input" placeholder="إطلاق نار" />
-        </div>
-        <div class="form-group">
-          <label class="form-label">المنصة</label>
-          <input id="g-plat" class="form-input" placeholder="موبايل" />
-        </div>
-        <div class="form-group">
-          <label class="form-label">رابط الصورة (اختياري)</label>
-          <input id="g-url" class="form-input" type="url" placeholder="https://..." style="direction:ltr" />
-        </div>
-        <div class="form-group form-full">
-          <label class="form-label">رفع صورة من الجهاز</label>
-          <div class="img-upload-area" onclick="document.getElementById('g-file').click()">
-            <input type="file" id="g-file" accept="image/*" style="display:none" onchange="previewImg(event)" />
-            <div class="img-upload-icon">📷</div>
-            <div class="img-upload-text">انقر لاختيار صورة من هاتفك أو جهازك</div>
-            <img id="img-prev" class="img-preview" />
+    <!-- GAMES TAB -->
+    <div id="admin-games">
+      <div style="display:grid;grid-template-columns:1fr 2fr;gap:24px;align-items:start;">
+        <div class="glass" style="padding:24px;">
+          <h3 style="font-size:1.2rem;font-weight:700;color:#fff;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border);">إضافة لعبة جديدة</h3>
+          <div class="form-group">
+            <label class="form-label">الاسم العربي</label>
+            <input class="form-input" id="g-titleAr" placeholder="سبايدرمان">
           </div>
+          <div class="form-group">
+            <label class="form-label">الاسم الأجنبي</label>
+            <input class="form-input" id="g-title" placeholder="Spider-Man" dir="ltr">
+          </div>
+          <div class="form-group">
+            <label class="form-label">السعر (د.م)</label>
+            <input class="form-input" id="g-price" type="number" placeholder="299" dir="ltr">
+          </div>
+          <div class="form-group">
+            <label class="form-label">رابط الصورة</label>
+            <input class="form-input" id="g-img" placeholder="https://..." dir="ltr">
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <div class="form-group">
+              <label class="form-label">الفئة</label>
+              <input class="form-input" id="g-cat" placeholder="مغامرة">
+            </div>
+            <div class="form-group">
+              <label class="form-label">المنصة</label>
+              <input class="form-input" id="g-plat" placeholder="PS5" dir="ltr">
+            </div>
+          </div>
+          <button class="btn btn-primary" style="width:100%;padding:12px;" onclick="adminAddGame()">➕ إضافة اللعبة</button>
+        </div>
+        <div class="glass" style="overflow:hidden;">
+          <table class="tbl">
+            <thead><tr><th>صورة</th><th>الاسم</th><th>السعر</th><th>المنصة</th><th>حذف</th></tr></thead>
+            <tbody id="adminGamesTable"></tbody>
+          </table>
         </div>
       </div>
-      <button class="btn-add" onclick="addGame()">إضافة اللعبة</button>
     </div>
-    <div id="games-admin-container"></div>
-  </div>
 
-  <div class="payment-section">
-    <h2 class="payment-title">طرق الدفع</h2>
-    <p class="payment-sub">ادفع بالطريقة التي تناسبك بأمان وسرعة</p>
-    <div class="payment-methods">
-      <div class="pay-card orange"><div class="pay-icon orange">💳</div><div class="pay-name orange">Orange</div></div>
-      <div class="pay-card inwi"><div class="pay-icon inwi">💜</div><div class="pay-name inwi">Inwi</div></div>
-      <div class="pay-card cashplus"><div class="pay-icon cashplus">⭐</div><div class="pay-name cashplus">Cash Plus</div></div>
-      <div class="pay-card cash"><div class="pay-icon cash">💵</div><div class="pay-name cash">Cash</div></div>
+    <!-- USERS TAB -->
+    <div id="admin-users" style="display:none;">
+      <div class="glass" style="overflow:hidden;">
+        <table class="tbl">
+          <thead><tr><th>#</th><th>الاسم</th><th>الهاتف</th><th>تاريخ التسجيل</th><th>حذف</th></tr></thead>
+          <tbody id="adminUsersTable"></tbody>
+        </table>
+      </div>
     </div>
+
+    <!-- ORDERS TAB -->
+    <div id="admin-orders" style="display:none;">
+      <div class="glass" style="overflow:hidden;">
+        <table class="tbl">
+          <thead><tr><th>#</th><th>الاسم</th><th>الهاتف</th><th>الألعاب</th><th>المبلغ</th><th>كوبون</th><th>التاريخ</th></tr></thead>
+          <tbody id="adminOrdersTable"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- PACKAGES TAB -->
+    <div id="admin-packages" style="display:none;">
+      <div style="display:grid;grid-template-columns:1fr 2fr;gap:24px;align-items:start;">
+        <div class="glass" style="padding:24px;">
+          <h3 style="font-size:1.2rem;font-weight:700;color:#fff;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border);">إضافة باقة</h3>
+          <div class="form-group">
+            <label class="form-label">اسم الباقة</label>
+            <input class="form-input" id="pk-name" placeholder="باقة المحترف">
+          </div>
+          <div class="form-group">
+            <label class="form-label">الوصف</label>
+            <textarea class="form-input" id="pk-desc" placeholder="3 ألعاب مختارة بخصم..." rows="3" style="resize:none;"></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label">السعر (د.م)</label>
+            <input class="form-input" id="pk-price" type="number" placeholder="699" dir="ltr">
+          </div>
+          <button class="btn btn-primary" style="width:100%;padding:12px;" onclick="adminAddPackage()">➕ إضافة الباقة</button>
+        </div>
+        <div class="glass" style="overflow:hidden;">
+          <table class="tbl">
+            <thead><tr><th>الاسم</th><th>الوصف</th><th>السعر</th><th>حذف</th></tr></thead>
+            <tbody id="adminPackagesTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- SITE IMAGES TAB -->
+    <div id="admin-siteimgs" style="display:none;">
+      <div class="glass" style="padding:32px;max-width:600px;">
+        <h3 style="font-size:1.2rem;font-weight:700;color:#fff;margin-bottom:24px;">تحديد صور الموقع</h3>
+        <div class="form-group">
+          <label class="form-label">🖼️ صورة الهيرو (الخلفية العلوية)</label>
+          <div style="display:flex;gap:8px;">
+            <input class="form-input" id="img-hero" placeholder="https://..." dir="ltr">
+            <button class="btn btn-ghost" onclick="setSiteImg('hero')" style="white-space:nowrap;">حفظ</button>
+          </div>
+          <div id="hero-img-preview" style="margin-top:8px;border-radius:8px;overflow:hidden;height:80px;display:none;"><img id="hero-img-prev-el" style="width:100%;height:100%;object-fit:cover;"></div>
+        </div>
+        <div class="form-group" style="margin-top:20px;">
+          <label class="form-label">🖼️ صورة وسط الصفحة</label>
+          <div style="display:flex;gap:8px;">
+            <input class="form-input" id="img-mid" placeholder="https://..." dir="ltr">
+            <button class="btn btn-ghost" onclick="setSiteImg('mid')" style="white-space:nowrap;">حفظ</button>
+          </div>
+          <div id="mid-img-preview" style="margin-top:8px;border-radius:8px;overflow:hidden;height:80px;display:none;"><img id="mid-img-prev-el" style="width:100%;height:100%;object-fit:cover;"></div>
+        </div>
+        <div class="form-group" style="margin-top:20px;">
+          <label class="form-label">🖼️ صورة أسفل الصفحة</label>
+          <div style="display:flex;gap:8px;">
+            <input class="form-input" id="img-btm" placeholder="https://..." dir="ltr">
+            <button class="btn btn-ghost" onclick="setSiteImg('btm')" style="white-space:nowrap;">حفظ</button>
+          </div>
+          <div id="btm-img-preview" style="margin-top:8px;border-radius:8px;overflow:hidden;height:80px;display:none;"><img id="btm-img-prev-el" style="width:100%;height:100%;object-fit:cover;"></div>
+        </div>
+        <button class="btn btn-danger" style="margin-top:24px;" onclick="clearAllSiteImgs()">🗑️ مسح جميع الصور</button>
+      </div>
+    </div>
+
   </div>
-  <footer>
-    <div class="foot-logo"><span class="k">Khourda</span> Games</div>
-    <div class="foot-copy">جميع الحقوق محفوظة &copy; ٢٠٢٦ Khourda Games</div>
-  </footer>
 </div>
 
+<!-- =================== SCRIPTS =================== -->
 <script>
-/* ── STATE ── */
-let clicks = 0, clickTimer = null, uploadedImg = null;
-const GK = 'kg_games', UK = 'kg_users';
+// ============ STORAGE HELPERS ============
+const store = {
+  get: (k, def=[]) => { try { return JSON.parse(localStorage.getItem(k)) ?? def; } catch { return def; } },
+  set: (k, v) => localStorage.setItem(k, JSON.stringify(v)),
+};
 
-const DEFAULT_GAMES = [
-  { id:1, ar:'ببجي موبايل', fr:'PUBG Mobile', price:1500, cat:'باتل رويال', plat:'موبايل', img:'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=600&h=340&fit=crop', date:new Date().toISOString() },
-  { id:2, ar:'كول أوف ديوتي موبايل', fr:'Call of Duty Mobile', price:2000, cat:'إطلاق نار', plat:'موبايل', img:'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=600&h=340&fit=crop', date:new Date().toISOString() },
-  { id:3, ar:'فري فاير', fr:'Free Fire', price:800, cat:'باتل رويال', plat:'موبايل', img:'https://images.unsplash.com/photo-1493711662062-fa541adb3fc8?w=600&h=340&fit=crop', date:new Date().toISOString() },
-  { id:4, ar:'ماين كرافت', fr:'Minecraft', price:1200, cat:'مغامرة', plat:'موبايل', img:'https://images.unsplash.com/photo-1486711457069-a6ccce2f9bc7?w=600&h=340&fit=crop', date:new Date().toISOString() },
-  { id:5, ar:'فيفا موبايل', fr:'FIFA Mobile', price:900, cat:'رياضة', plat:'موبايل', img:'https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?w=600&h=340&fit=crop', date:new Date().toISOString() },
-  { id:6, ar:'كلاش أوف كلانس', fr:'Clash of Clans', price:600, cat:'استراتيجية', plat:'موبايل', img:'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600&h=340&fit=crop', date:new Date().toISOString() },
-];
+const KEYS = { games:'kg_games', accounts:'kg_accounts', orders:'kg_orders', cart:'kg_cart', packages:'kg_packages', siteimgs:'kg_siteimgs', loggedIn:'kg_loggedIn' };
 
-function getGames(){ const s=localStorage.getItem(GK); return s?JSON.parse(s):[...DEFAULT_GAMES]; }
-function setGames(g){ localStorage.setItem(GK,JSON.stringify(g)); }
-function getUsers(){ const s=localStorage.getItem(UK); return s?JSON.parse(s):[]; }
-function setUsers(u){ localStorage.setItem(UK,JSON.stringify(u)); }
+function getGames(){ return store.get(KEYS.games, []); }
+function setGames(d){ store.set(KEYS.games, d); }
+function getAccounts(){ return store.get(KEYS.accounts, []); }
+function setAccounts(d){ store.set(KEYS.accounts, d); }
+function getOrders(){ return store.get(KEYS.orders, []); }
+function setOrders(d){ store.set(KEYS.orders, d); }
+function getCart(){ return store.get(KEYS.cart, []); }
+function setCart(d){ store.set(KEYS.cart, d); }
+function getPackages(){ return store.get(KEYS.packages, []); }
+function setPackages(d){ store.set(KEYS.packages, d); }
+function getSiteImgs(){ return store.get(KEYS.siteimgs, {hero:'',mid:'',btm:''}); }
+function setSiteImgs(d){ store.set(KEYS.siteimgs, d); }
+function getLoggedIn(){ return store.get(KEYS.loggedIn, null); }
+function setLoggedIn(d){ store.set(KEYS.loggedIn, d); }
 
-/* ── TOAST ── */
-function toast(msg,d=3000){
-  const t=document.getElementById('toast');
-  t.textContent=msg; t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),d);
-}
-
-/* ── PAGES ── */
-function showPage(p){
-  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
-  document.getElementById('page-'+p).classList.add('active');
-  window.scrollTo(0,0);
-  if(p==='home') renderHome();
-  if(p==='admin'){ renderUsers(); renderAdminGames(); }
-  if(p==='login'){
-    document.getElementById('login-form').style.display='';
-    document.getElementById('login-form').reset();
-    document.getElementById('login-success').classList.remove('show');
+// ============ DEFAULT DATA ============
+function initDefaults(){
+  if(!localStorage.getItem(KEYS.games)){
+    setGames([
+      {id:1,titleAr:'سبايدرمان 2',title:'Spider-Man 2',price:299,imageUrl:'https://upload.wikimedia.org/wikipedia/en/2/21/Spider-Man_2_cover.jpg',category:'مغامرة',platform:'PS5'},
+      {id:2,titleAr:'فيفا 25',title:'EA FC 25',price:249,imageUrl:'https://upload.wikimedia.org/wikipedia/en/a/aa/EA_Sports_FC_25_cover.jpg',category:'رياضة',platform:'متعدد'},
+      {id:3,titleAr:'كول أوف ديوتي',title:'Call of Duty',price:279,imageUrl:'https://upload.wikimedia.org/wikipedia/en/e/e3/Call_of_duty_mw3_2023.jpg',category:'إطلاق نار',platform:'متعدد'},
+    ]);
   }
 }
 
-/* ── SECRET ADMIN (5 clicks on logo) ── */
-document.getElementById('logo-home').addEventListener('click',()=>{
-  clicks++;
-  clearTimeout(clickTimer);
-  clickTimer=setTimeout(()=>clicks=0,3000);
-  if(clicks>=5){ clicks=0; toast('مرحباً بك في لوحة الإدارة'); setTimeout(()=>showPage('admin'),600); }
-});
+// ============ CANVAS ANIMATION ============
+let animFrame = 0;
+function animateCanvas(canvas, scale){
+  const ctx = canvas.getContext('2d');
+  const w = canvas.width, h = canvas.height;
+  const cycle = 240;
+  animFrame = (animFrame + 1) % (cycle * 2);
+  const t = animFrame;
+  ctx.clearRect(0, 0, w, h);
 
-/* ── ARABIC NUMERALS ── */
-function ar(n){ return String(n).replace(/\d/g,d=>'٠١٢٣٤٥٦٧٨٩'[d]); }
+  if(t < cycle){
+    // PHASE 1: Trash bin with garbage
+    const p = t / cycle;
+    ctx.strokeStyle = `rgba(0,230,118,${0.7 + 0.3*Math.sin(t*0.1)})`;
+    ctx.lineWidth = scale;
+    ctx.shadowColor = '#00e676';
+    ctx.shadowBlur = 4*scale;
 
-/* ── RENDER HOME GAMES ── */
-function renderHome(){
-  const games=getGames();
-  const grid=document.getElementById('games-grid');
-  if(!games.length){
-    grid.innerHTML='<div class="empty-state"><div class="empty-icon">🎮</div><p>لا توجد ألعاب بعد</p></div>';
-    return;
-  }
-  grid.innerHTML=games.map((g,i)=>`
-    <div class="game-card" style="animation-delay:${i*0.07}s">
-      ${g.img
-        ? `<img class="game-card-img" src="${g.img}" alt="${g.ar}" onerror="this.parentElement.querySelector('.game-card-placeholder').style.display='flex';this.style.display='none'" /><div class="game-card-placeholder" style="display:none">🎮</div>`
-        : `<div class="game-card-placeholder">🎮</div>`
+    // Lid
+    const lidOff = p < 0.3 ? -(p/0.3)*h*0.15 : -h*0.15 + (p-0.3)*h*0.1;
+    ctx.beginPath();
+    ctx.roundRect(w*0.15, h*0.22 + lidOff, w*0.7, h*0.13*scale, 2*scale);
+    ctx.stroke();
+    // Handle on lid
+    ctx.beginPath();
+    ctx.arc(w*0.5, h*0.22 + lidOff, w*0.08, Math.PI, 0);
+    ctx.stroke();
+
+    // Body
+    ctx.beginPath();
+    ctx.roundRect(w*0.2, h*0.38, w*0.6, h*0.5, 3*scale);
+    ctx.stroke();
+    // Lines on body
+    ctx.lineWidth = 0.5*scale;
+    for(let i=0;i<3;i++){
+      ctx.beginPath();
+      const lx = w*(0.32 + i*0.12);
+      ctx.moveTo(lx, h*0.42); ctx.lineTo(lx, h*0.82);
+      ctx.stroke();
+    }
+
+    // Flying particles
+    ctx.lineWidth = scale;
+    const particles = [
+      {sx:w*0.3,sy:h*0.3,dx:-0.4,dy:-1.2,shape:'circle'},
+      {sx:w*0.5,sy:h*0.25,dx:0.0,dy:-1.5,shape:'star'},
+      {sx:w*0.7,sy:h*0.3,dx:0.4,dy:-1.0,shape:'circle'},
+      {sx:w*0.4,sy:h*0.28,dx:-0.6,dy:-0.8,shape:'rect'},
+    ];
+    particles.forEach((part,i) => {
+      const delay = i * 0.15;
+      const pp = Math.max(0, (p - delay));
+      if(pp <= 0) return;
+      const px = part.sx + part.dx * pp * h * 1.2;
+      const py = part.sy + part.dy * pp * h * 0.8 + pp * pp * h * 0.5;
+      const alpha = Math.max(0, 1 - pp*2);
+      ctx.fillStyle = `rgba(0,230,118,${alpha*0.8})`;
+      ctx.strokeStyle = `rgba(0,230,118,${alpha})`;
+      ctx.lineWidth = scale;
+      if(part.shape === 'circle'){
+        ctx.beginPath(); ctx.arc(px, py, 4*scale, 0, Math.PI*2);
+        ctx.fill();
+      } else if(part.shape === 'rect'){
+        ctx.fillRect(px-4*scale, py-3*scale, 8*scale, 6*scale);
+      } else {
+        // star
+        ctx.beginPath();
+        for(let k=0;k<5;k++){
+          const angle = (k*4*Math.PI/5) - Math.PI/2;
+          const r = k%2===0 ? 5*scale : 2*scale;
+          k===0 ? ctx.moveTo(px+r*Math.cos(angle), py+r*Math.sin(angle))
+                : ctx.lineTo(px+r*Math.cos(angle), py+r*Math.sin(angle));
+        }
+        ctx.closePath(); ctx.fill();
       }
-      ${g.cat?`<span class="game-badge">${g.cat}</span>`:''}
-      <div class="game-card-body">
-        <div class="game-title-ar">${g.ar}</div>
-        <div class="game-meta">${g.plat||''}</div>
-        <div class="game-footer">
-          <div class="game-price"><span class="curr">دج</span>${ar(g.price)}</div>
-          <button class="btn-buy" onclick="showPage('login')">شراء الآن</button>
+    });
+
+  } else {
+    // PHASE 2: Gaming items appear with glow
+    const p = (t - cycle) / cycle;
+    const glow = 0.5 + 0.5*Math.sin(t * 0.12);
+    ctx.shadowColor = '#00e676';
+    ctx.shadowBlur = 10*scale*glow;
+    ctx.strokeStyle = `rgba(0,230,118,${0.7 + 0.3*glow})`;
+    ctx.lineWidth = 1.2*scale;
+
+    // Draw controller
+    const cx = w*0.5, cy = h*0.5;
+    const appear = Math.min(1, p*2);
+
+    // Body
+    ctx.globalAlpha = appear;
+    ctx.beginPath();
+    ctx.ellipse(cx, cy+h*0.05, w*0.28*appear, h*0.22*appear, 0, 0, Math.PI*2);
+    ctx.stroke();
+
+    // D-pad
+    ctx.lineWidth = 1.5*scale;
+    ctx.beginPath();
+    ctx.moveTo(cx-w*0.18, cy-h*0.05); ctx.lineTo(cx-w*0.06, cy-h*0.05);
+    ctx.moveTo(cx-w*0.12, cy-h*0.12); ctx.lineTo(cx-w*0.12, cy+h*0.02);
+    ctx.stroke();
+
+    // Buttons (circles)
+    ctx.lineWidth = scale;
+    ctx.fillStyle = `rgba(0,230,118,${0.6*glow*appear})`;
+    [[cx+w*0.12, cy-h*0.08],[cx+w*0.18, cy-h*0.02],[cx+w*0.12, cy+h*0.04],[cx+w*0.06, cy-h*0.02]].forEach(([bx,by]) => {
+      ctx.beginPath(); ctx.arc(bx, by, 3*scale, 0, Math.PI*2); ctx.fill();
+      ctx.beginPath(); ctx.arc(bx, by, 3*scale, 0, Math.PI*2); ctx.stroke();
+    });
+
+    // Joysticks
+    ctx.fillStyle = 'transparent';
+    ctx.beginPath(); ctx.arc(cx-w*0.14, cy+h*0.1, 5*scale*appear, 0, Math.PI*2); ctx.stroke();
+    ctx.beginPath(); ctx.arc(cx+w*0.06, cy+h*0.1, 5*scale*appear, 0, Math.PI*2); ctx.stroke();
+
+    // Floating star/sparkles around controller
+    for(let s=0;s<4;s++){
+      const ang = (s/4)*Math.PI*2 + t*0.05;
+      const sr = w*0.38;
+      const sx = cx + Math.cos(ang)*sr;
+      const sy = cy + Math.sin(ang)*sr*0.5;
+      const sa = (0.5 + 0.5*Math.sin(t*0.1+s)) * appear;
+      ctx.globalAlpha = sa;
+      ctx.fillStyle = '#00e676';
+      ctx.beginPath(); ctx.arc(sx, sy, 2*scale, 0, Math.PI*2); ctx.fill();
+    }
+
+    ctx.globalAlpha = 1;
+  }
+  ctx.shadowBlur = 0;
+}
+
+function startCanvasAnimations(){
+  const navC = document.getElementById('navCanvas');
+  const heroC = document.getElementById('heroCanvas');
+  function loop(){
+    animateCanvas(navC, 0.8);
+    animateCanvas(heroC, 1.4);
+    requestAnimationFrame(loop);
+  }
+  loop();
+}
+
+// ============ TOAST ============
+function toast(msg, type='info', dur=3000){
+  const tc = document.getElementById('toastContainer');
+  const el = document.createElement('div');
+  el.className = `toast ${type}`;
+  el.innerHTML = (type==='success'?'✅ ':type==='error'?'❌ ':'ℹ️ ') + msg;
+  tc.appendChild(el);
+  setTimeout(()=>{ el.style.opacity='0'; el.style.transform='translateY(20px)'; el.style.transition='all .3s'; setTimeout(()=>el.remove(), 300); }, dur);
+}
+
+// ============ SCROLL HELPERS ============
+function scrollToTop(){ window.scrollTo({top:0,behavior:'smooth'}); }
+function scrollToGames(){ document.getElementById('gamesSection').scrollIntoView({behavior:'smooth'}); }
+
+// ============ GAMES RENDER ============
+function renderGames(){
+  const games = getGames();
+  const grid = document.getElementById('gamesGrid');
+  if(!games.length){ grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1">لا توجد ألعاب متاحة حالياً 😴</div>'; return; }
+  grid.innerHTML = games.map(g => `
+    <div class="game-card">
+      ${g.imageUrl ? `<img class="game-img" src="${g.imageUrl}" alt="${g.titleAr}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="game-img-placeholder" style="display:none">🎮</div>` : `<div class="game-img-placeholder">🎮</div>`}
+      <div class="game-info">
+        <div class="game-title">${g.titleAr}</div>
+        <div class="game-meta">
+          <span class="game-platform">${g.platform||''}</span>
+          <span class="game-price">${g.price}<span> د.م</span></span>
         </div>
       </div>
+      <button class="add-to-cart-btn" onclick="addToCart(${g.id})">🛒 أضف للسلة</button>
     </div>
   `).join('');
 }
 
-/* ── LOGIN ── */
-function handleLogin(e){
-  e.preventDefault();
-  const name=document.getElementById('login-name').value.trim();
-  const phone=document.getElementById('login-phone').value.trim();
-  if(!name||!phone) return;
-  const users=getUsers();
-  users.push({ id:Date.now(), name, phone, date:new Date().toISOString() });
-  setUsers(users);
-  document.getElementById('login-form').style.display='none';
-  document.getElementById('login-success').classList.add('show');
-  toast('تم تسجيل دخولك بنجاح!');
+// ============ PACKAGES RENDER ============
+function renderPackages(){
+  const pkgs = getPackages();
+  const sec = document.getElementById('packagesSection');
+  const grid = document.getElementById('packagesGrid');
+  if(!pkgs.length){ sec.style.display='none'; return; }
+  sec.style.display='block';
+  grid.innerHTML = pkgs.map(p => `
+    <div class="pkg-card">
+      <div class="pkg-name">📦 ${p.name}</div>
+      <div class="pkg-desc">${p.desc||''}</div>
+      <div class="pkg-price">${p.price}<span> د.م</span></div>
+    </div>
+  `).join('');
 }
 
-/* ── TABS ── */
-function switchTab(tab, btn){
-  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-  document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
-  btn.classList.add('active');
-  document.getElementById('tab-'+tab).classList.add('active');
-  if(tab==='users') renderUsers();
-  if(tab==='games') renderAdminGames();
+// ============ SITE IMAGES ============
+function applySiteImages(){
+  const imgs = getSiteImgs();
+  // Hero bg
+  const heroBg = document.getElementById('heroBg');
+  if(imgs.hero){ heroBg.style.backgroundImage = `url('${imgs.hero}')`; heroBg.style.opacity='0.2'; }
+  else { heroBg.style.backgroundImage = ''; }
+  // Mid image
+  const midSec = document.getElementById('midImgSection');
+  if(imgs.mid){ document.getElementById('midImg').src = imgs.mid; midSec.style.display='block'; }
+  else { midSec.style.display='none'; }
+  // Btm image
+  const btmSec = document.getElementById('btmImgSection');
+  if(imgs.btm){ document.getElementById('btmImg').src = imgs.btm; btmSec.style.display='block'; }
+  else { btmSec.style.display='none'; }
 }
 
-/* ── RENDER USERS (ADMIN) ── */
-function renderUsers(){
-  const users=getUsers();
-  const c=document.getElementById('users-container');
-  if(!users.length){
-    c.innerHTML='<div class="empty-state"><div class="empty-icon">👤</div><p>لا يوجد مستخدمون مسجلون بعد</p></div>';
-    return;
+// ============ LOGIN ============
+function openLoginModal(){
+  const user = getLoggedIn();
+  if(user){
+    if(confirm(`أنت مسجل الدخول كـ ${user.name}\nهل تريد تسجيل الخروج؟`)){ doLogout(); } return;
   }
-  c.innerHTML=`<table class="admin-table"><thead><tr>
-    <th>#</th><th>الاسم</th><th>رقم الهاتف</th><th>تاريخ التسجيل</th><th>حذف</th>
-  </tr></thead><tbody>
-    ${users.map((u,i)=>`<tr>
-      <td>${ar(i+1)}</td>
-      <td><strong>${u.name}</strong></td>
-      <td style="direction:ltr;text-align:right">${u.phone}</td>
-      <td>${new Date(u.date).toLocaleDateString('ar-DZ')}</td>
-      <td><button class="btn-delete" onclick="delUser(${u.id})">حذف</button></td>
-    </tr>`).join('')}
-  </tbody></table>`;
+  document.getElementById('loginOverlay').style.display='flex';
+  clearLoginErrors();
+}
+function closeLogin(){ document.getElementById('loginOverlay').style.display='none'; clearLoginErrors(); }
+function closeLoginIfOutside(e){ if(e.target===document.getElementById('loginOverlay')) closeLogin(); }
+
+function switchLoginTab(tab){
+  document.getElementById('tab-existing').className = 'tab' + (tab==='existing'?' active':'');
+  document.getElementById('tab-new').className = 'tab' + (tab==='new'?' active':'');
+  document.getElementById('form-existing').style.display = tab==='existing' ? 'block' : 'none';
+  document.getElementById('form-new').style.display = tab==='new' ? 'block' : 'none';
+  clearLoginErrors();
 }
 
-function delUser(id){
-  if(!confirm('هل تريد حذف هذا المستخدم؟')) return;
-  setUsers(getUsers().filter(u=>u.id!==id));
-  renderUsers();
-  toast('تم حذف المستخدم');
+function clearLoginErrors(){
+  ['loginPhoneErr','loginPassErr','regNameErr','regPhoneErr','regPassErr','regPass2Err'].forEach(id => { const el=document.getElementById(id); if(el) el.textContent=''; });
 }
 
-/* ── RENDER GAMES (ADMIN) ── */
-function renderAdminGames(){
-  const games=getGames();
-  const c=document.getElementById('games-admin-container');
-  if(!games.length){
-    c.innerHTML='<div class="empty-state"><div class="empty-icon">🎮</div><p>لا توجد ألعاب بعد</p></div>';
-    return;
-  }
-  c.innerHTML=`<table class="admin-table"><thead><tr>
-    <th>الصورة</th><th>الاسم عربي</th><th>Nom</th><th>السعر</th><th>التصنيف</th><th>المنصة</th><th>حذف</th>
-  </tr></thead><tbody>
-    ${games.map(g=>`<tr>
-      <td>${g.img?`<img src="${g.img}" style="width:64px;height:38px;object-fit:cover;border-radius:6px" onerror="this.style.display='none'" />`:'—'}</td>
-      <td><strong>${g.ar}</strong></td>
-      <td style="direction:ltr;text-align:right">${g.fr}</td>
-      <td style="color:var(--green);font-weight:800">${ar(g.price)} دج</td>
-      <td>${g.cat||'—'}</td>
-      <td>${g.plat||'—'}</td>
-      <td><button class="btn-delete" onclick="delGame(${g.id})">حذف</button></td>
-    </tr>`).join('')}
-  </tbody></table>`;
-}
+function doLogin(){
+  const phone = document.getElementById('loginPhone').value.trim(); **...**
 
-function delGame(id){
-  if(!confirm('هل تريد حذف هذه اللعبة؟')) return;
-  setGames(getGames().filter(g=>g.id!==id));
-  renderAdminGames(); renderHome();
-  toast('تم حذف اللعبة');
-}
-
-/* ── IMAGE PREVIEW ── */
-function previewImg(e){
-  const file=e.target.files[0]; if(!file) return;
-  const r=new FileReader();
-  r.onload=ev=>{
-    uploadedImg=ev.target.result;
-    const p=document.getElementById('img-prev');
-    p.src=uploadedImg; p.style.display='block';
-  };
-  r.readAsDataURL(file);
-}
-
-/* ── ADD GAME ── */
-function addGame(){
-  const ar_=document.getElementById('g-ar').value.trim();
-  const fr=document.getElementById('g-fr').value.trim();
-  const price=Number(document.getElementById('g-price').value);
-  const cat=document.getElementById('g-cat').value.trim();
-  const plat=document.getElementById('g-plat').value.trim();
-  const url=document.getElementById('g-url').value.trim();
-  if(!ar_||!fr||!price){ toast('يرجى تعبئة الحقول الإلزامية *'); return; }
-  const games=getGames();
-  games.push({ id:Date.now(), ar:ar_, fr, price, cat, plat, img:uploadedImg||url||null, date:new Date().toISOString() });
-  setGames(games);
-  ['g-ar','g-fr','g-price','g-cat','g-plat','g-url'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('g-file').value='';
-  document.getElementById('img-prev').style.display='none';
-  uploadedImg=null;
-  renderAdminGames(); renderHome();
-  toast('تم إضافة اللعبة بنجاح!');
-}
-
-/* ── INIT ── */
-renderHome();
-</script>
-</body>
-</html>
+_This response is too long to display in full._
