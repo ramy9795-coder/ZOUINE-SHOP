@@ -17,7 +17,7 @@
   --border:rgba(34,197,94,.18);--border2:rgba(255,255,255,.07);
   --green:#22c55e;--green2:#16a34a;--glow:rgba(34,197,94,.32);
   --white:#f1f5f9;--muted:#64748b;--muted2:#94a3b8;
-  --red:#ef4444;--radius:16px;update
+  --red:#ef4444;--radius:16px;
 }
 html{scroll-behavior:smooth}
 body{
@@ -1197,7 +1197,7 @@ async function saveGame(){
   btn.disabled=true; btn.textContent='جاري الحفظ...';
 
   try{
-    if(_editId){ await api.games.(_editId,payload); toast('تم تعديل اللعبة بنجاح'); }
+    if(_editId){ await api.games.update(_editId,payload); toast('تم تعديل اللعبة بنجاح'); }
     else        { await api.games.create(payload);         toast('تمت إضافة اللعبة بنجاح'); }
     closeGameForm();
     renderAdminGames();
