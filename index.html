@@ -1,1 +1,1218 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Khourda Games</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@1,600;1,700;1,900&display=swap" rel="stylesheet"/>
+<style>
+/*═══════════════════════════════════════
+  RESET & VARIABLES
+═══════════════════════════════════════*/
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#080c10;--bg2:#0c1118;--card:rgba(12,17,24,0.92);
+  --border:rgba(34,197,94,.18);--border2:rgba(255,255,255,.07);
+  --green:#22c55e;--green2:#16a34a;--glow:rgba(34,197,94,.32);
+  --white:#f1f5f9;--muted:#64748b;--muted2:#94a3b8;
+  --red:#ef4444;--radius:16px;update
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Cairo',sans-serif;background:var(--bg);
+  color:var(--white);min-height:100vh;overflow-x:hidden;
+}
 
+/*═══════════════════════════════════════
+  AMBIENT ORBS
+═══════════════════════════════════════*/
+.orb{position:fixed;border-radius:50%;pointer-events:none;z-index:0;filter:blur(130px)}
+.orb1{width:55vw;height:55vh;background:var(--green);top:-18vh;right:-12vw;opacity:.12}
+.orb2{width:45vw;height:45vh;background:var(--green);bottom:-14vh;left:-10vw;opacity:.08}
+
+/*═══════════════════════════════════════
+  PAGES
+═══════════════════════════════════════*/
+.page{display:none;min-height:100vh;position:relative;z-index:1;flex-direction:column}
+.page.active{display:flex}
+
+/*═══════════════════════════════════════
+  HEADER
+═══════════════════════════════════════*/
+header{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:16px 28px;position:sticky;top:0;z-index:200;
+  background:rgba(8,12,16,.85);backdrop-filter:blur(24px);
+  border-bottom:1px solid var(--border);
+}
+.logo{
+  font-family:'Playfair Display',serif;font-style:italic;
+  font-size:1.9rem;letter-spacing:-.02em;cursor:default;user-select:none;
+  -webkit-user-select:none;position:relative;
+}
+.logo .k{color:var(--green);text-shadow:0 0 22px var(--glow)}
+.logo .g{color:var(--white);margin-right:5px}
+.logo.pressable{cursor:pointer}
+
+/* long-press ring */
+.logo.pressable::after{
+  content:'';position:absolute;inset:-8px;border-radius:10px;
+  border:2px solid var(--green);opacity:0;pointer-events:none;
+  transition:opacity .15s;
+}
+.logo.pressable.pressing::after{
+  opacity:1;animation:ringGrow 5s linear forwards;
+}
+@keyframes ringGrow{
+  0%{transform:scale(.82);opacity:0}5%{opacity:1}100%{transform:scale(1.05);opacity:.7}
+}
+
+.user-pill{
+  display:flex;align-items:center;gap:10px;
+  font-size:.9rem;color:var(--muted2);
+}
+.user-pill strong{color:var(--green);font-size:.95rem}
+
+/*═══════════════════════════════════════
+  BUTTONS
+═══════════════════════════════════════*/
+.btn{
+  font-family:'Cairo',sans-serif;font-weight:700;border:none;
+  cursor:pointer;border-radius:12px;transition:all .2s;
+  display:inline-flex;align-items:center;gap:6px;line-height:1;
+}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none!important}
+.btn-primary{background:var(--green);color:#000;padding:11px 24px;font-size:1rem;box-shadow:0 0 18px var(--glow)}
+.btn-primary:not(:disabled):hover{background:var(--green2);box-shadow:0 0 28px var(--glow);transform:translateY(-1px)}
+.btn-outline{background:transparent;color:var(--green);border:1.5px solid rgba(34,197,94,.38);padding:10px 20px;font-size:.93rem}
+.btn-outline:not(:disabled):hover{background:rgba(34,197,94,.1);border-color:var(--green)}
+.btn-ghost{background:transparent;color:var(--muted2);border:1px solid var(--border2);padding:8px 16px;font-size:.85rem}
+.btn-ghost:not(:disabled):hover{color:var(--white);background:rgba(255,255,255,.06)}
+.btn-danger{background:var(--red);color:#fff;padding:7px 14px;font-size:.84rem}
+.btn-danger:not(:disabled):hover{background:#c53030}
+.btn-sm{padding:7px 15px;font-size:.84rem;border-radius:10px}
+.btn-full{width:100%;justify-content:center;font-size:1.05rem;padding:14px}
+.btn-icon{width:44px;height:44px;border-radius:12px;justify-content:center;font-size:1.2rem;padding:0}
+
+/*═══════════════════════════════════════
+  HERO
+═══════════════════════════════════════*/
+.hero{
+  text-align:center;padding:56px 20px 44px;
+  animation:fadeUp .8s ease both;
+}
+.hero h1{
+  font-size:clamp(2.4rem,6.5vw,5rem);font-weight:900;
+  line-height:1.22;margin-bottom:16px;
+}
+.hero h1 .hl{color:var(--green);text-shadow:0 0 28px var(--glow)}
+.hero p{color:var(--muted2);font-size:1.1rem}
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+
+/*═══════════════════════════════════════
+  SECTION HEADING
+═══════════════════════════════════════*/
+.sec-title{
+  font-size:1.65rem;font-weight:800;padding-right:14px;
+  border-right:4px solid var(--green);margin-bottom:24px;
+}
+
+/*═══════════════════════════════════════
+  GAMES GRID
+═══════════════════════════════════════*/
+.games-wrap{max-width:1200px;margin:0 auto;padding:0 20px 80px}
+.games-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+  gap:20px;
+}
+.game-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:20px;overflow:hidden;backdrop-filter:blur(16px);
+  transition:all .32s cubic-bezier(.34,1.56,.64,1);
+  animation:fadeUp .45s ease both;
+}
+.game-card:hover{
+  border-color:rgba(34,197,94,.48);
+  box-shadow:0 6px 36px var(--glow),0 0 0 1px rgba(34,197,94,.18);
+  transform:scale(1.035) rotateY(3deg) rotateX(2deg);
+}
+.game-card .img-box{
+  aspect-ratio:4/5;overflow:hidden;position:relative;background:var(--bg2);
+}
+.game-card .img-box img{
+  width:100%;height:100%;object-fit:cover;
+  transition:transform .6s ease;
+}
+.game-card:hover .img-box img{transform:scale(1.1)}
+.game-card .img-box .grad{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,var(--bg) 0%,transparent 65%);
+}
+.img-ph{
+  width:100%;height:100%;display:flex;align-items:center;justify-content:center;
+  font-family:'Playfair Display',serif;font-style:italic;
+  font-size:4rem;color:rgba(255,255,255,.07);
+}
+.card-info{padding:14px 16px 16px;position:relative;z-index:2;margin-top:-52px}
+.card-title{font-size:1.1rem;font-weight:800;margin-bottom:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.card-foot{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.card-price{
+  font-size:1.55rem;font-weight:900;color:var(--green);
+  text-shadow:0 0 10px var(--glow);line-height:1;
+}
+
+/*═══════════════════════════════════════
+  EMPTY STATE
+═══════════════════════════════════════*/
+.empty-state{
+  grid-column:1/-1;text-align:center;padding:52px 20px;
+  background:rgba(255,255,255,.02);border:1px dashed var(--border2);
+  border-radius:20px;color:var(--muted);
+}
+.empty-state .ei{font-size:3rem;margin-bottom:12px}
+
+/*═══════════════════════════════════════
+  LOADER
+═══════════════════════════════════════*/
+.loader{
+  grid-column:1/-1;display:flex;justify-content:center;padding:48px;
+}
+.spin{
+  width:48px;height:48px;border:4px solid rgba(34,197,94,.2);
+  border-top-color:var(--green);border-radius:50%;animation:spin .8s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/*═══════════════════════════════════════
+  FOOTER
+═══════════════════════════════════════*/
+footer{
+  background:rgba(10,16,22,.9);backdrop-filter:blur(20px);
+  border-top:1px solid var(--border);padding:44px 20px;
+  text-align:center;z-index:1;margin-top:auto;
+}
+footer h3{font-size:1.5rem;font-weight:800;margin-bottom:24px}
+.pay-row{display:flex;flex-wrap:wrap;justify-content:center;gap:14px}
+.pay-badge{
+  padding:11px 26px;border-radius:14px;border:1.5px solid;
+  font-size:1rem;font-weight:700;
+  background:rgba(255,255,255,.03);backdrop-filter:blur(6px);
+  transition:transform .2s;
+}
+.pay-badge:hover{transform:scale(1.06)}
+
+/*═══════════════════════════════════════
+  FLOATING NAV BUTTONS
+═══════════════════════════════════════*/
+.float-nav{
+  position:fixed;bottom:28px;left:20px;
+  display:flex;flex-direction:column;gap:10px;z-index:300;
+}
+.float-nav .fn-btn{
+  width:50px;height:50px;border-radius:14px;border:none;
+  cursor:pointer;font-size:1.3rem;display:flex;align-items:center;justify-content:center;
+  transition:all .2s;backdrop-filter:blur(12px);font-family:'Cairo',sans-serif;
+}
+.fn-btn-home{background:rgba(34,197,94,.15);border:1.5px solid rgba(34,197,94,.35);color:var(--green)}
+.fn-btn-top{background:rgba(255,255,255,.07);border:1.5px solid var(--border2);color:var(--muted2)}
+.fn-btn-home:hover{background:rgba(34,197,94,.28);transform:scale(1.1)}
+.fn-btn-top:hover{background:rgba(255,255,255,.12);color:var(--white);transform:scale(1.1)}
+
+/*═══════════════════════════════════════
+  OVERLAY & MODAL
+═══════════════════════════════════════*/
+.overlay{
+  display:none;position:fixed;inset:0;
+  background:rgba(0,0,0,.72);backdrop-filter:blur(10px);
+  z-index:1000;align-items:center;justify-content:center;padding:18px;
+}
+.overlay.open{display:flex;animation:fadeIn .18s ease}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+.modal{
+  background:rgba(10,16,22,.98);border:1px solid rgba(34,197,94,.22);
+  border-radius:24px;padding:32px 28px;width:100%;
+  max-width:450px;position:relative;overflow:hidden;
+  animation:slideUp .28s cubic-bezier(.34,1.56,.64,1) both;
+}
+.modal::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--green),transparent);
+}
+@keyframes slideUp{
+  from{opacity:0;transform:translateY(22px) scale(.97)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+.modal-close{
+  position:absolute;top:14px;left:14px;background:rgba(255,255,255,.07);
+  border:none;color:var(--muted2);width:30px;height:30px;border-radius:8px;
+  cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;
+  transition:background .18s;
+}
+.modal-close:hover{background:rgba(255,255,255,.14);color:var(--white)}
+.modal-logo{
+  text-align:center;margin-bottom:22px;
+  font-family:'Playfair Display',serif;font-style:italic;font-size:2rem;
+}
+.modal-logo .k{color:var(--green)}
+.modal-logo .g{color:var(--white);margin-right:5px}
+.modal h2{font-size:1.2rem;font-weight:800;margin-bottom:18px;text-align:right}
+
+/*═══════════════════════════════════════
+  FORMS
+═══════════════════════════════════════*/
+.fg{margin-bottom:16px}
+.fg label{display:block;font-size:.87rem;font-weight:600;color:var(--muted2);margin-bottom:7px;text-align:right}
+.fg input,.fg textarea,.fg select{
+  width:100%;background:rgba(255,255,255,.05);
+  border:1.5px solid rgba(255,255,255,.1);border-radius:12px;
+  padding:12px 15px;font-family:'Cairo',sans-serif;font-size:.97rem;
+  color:var(--white);outline:none;transition:border-color .18s,box-shadow .18s;text-align:right;
+}
+.fg input.ltr{text-align:left;direction:ltr}
+.fg input:focus,.fg textarea:focus{
+  border-color:var(--green);box-shadow:0 0 0 3px rgba(34,197,94,.14);
+}
+.fg .ferr{
+  color:var(--red);font-size:.8rem;margin-top:5px;
+  display:none;align-items:center;gap:5px;
+}
+.fg .ferr.show{display:flex}
+.fg textarea{resize:vertical;min-height:72px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+
+.back-link{
+  background:none;border:none;color:var(--muted);font-family:'Cairo',sans-serif;
+  font-size:.88rem;cursor:pointer;padding:0 0 14px;display:flex;align-items:center;gap:4px;
+  transition:color .18s;
+}
+.back-link:hover{color:var(--white)}
+
+.choose-stack{display:flex;flex-direction:column;gap:12px;margin-top:4px}
+.btn-choice{
+  font-family:'Cairo',sans-serif;font-size:1rem;font-weight:700;
+  padding:14px 20px;border-radius:14px;cursor:pointer;border:none;
+  transition:all .2s;text-align:center;width:100%;
+}
+.btn-choice-p{background:var(--green);color:#000;box-shadow:0 0 16px var(--glow)}
+.btn-choice-p:hover{background:var(--green2);transform:translateY(-2px)}
+.btn-choice-o{background:transparent;color:var(--green);border:1.5px solid rgba(34,197,94,.38)}
+.btn-choice-o:hover{background:rgba(34,197,94,.1);border-color:var(--green)}
+
+/*═══════════════════════════════════════
+  ORDER MODAL
+═══════════════════════════════════════*/
+.info-box{
+  background:rgba(255,255,255,.04);border:1px solid var(--border);
+  border-radius:14px;padding:14px 18px;margin-bottom:12px;
+}
+.info-box .ib-label{color:var(--muted);font-size:.8rem;margin-bottom:4px}
+.info-box strong{font-size:1.05rem;font-weight:800}
+.big-price{color:var(--green);font-size:1.65rem;font-weight:900;text-shadow:0 0 10px var(--glow);margin-top:5px}
+
+/*═══════════════════════════════════════
+  IMAGE UPLOAD
+═══════════════════════════════════════*/
+.img-drop{
+  border:2px dashed rgba(255,255,255,.12);border-radius:14px;
+  padding:24px;text-align:center;cursor:pointer;
+  transition:border-color .2s,background .2s;
+  background:rgba(255,255,255,.02);position:relative;overflow:hidden;
+}
+.img-drop:hover{border-color:rgba(34,197,94,.45);background:rgba(34,197,94,.04)}
+.img-drop img{max-height:130px;border-radius:10px;object-fit:contain}
+.img-drop .di{font-size:2.2rem;margin-bottom:6px}
+.img-drop p{color:var(--muted);font-size:.85rem}
+.img-drop input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer}
+.img-or{text-align:center;color:var(--muted);font-size:.78rem;margin:8px 0}
+
+/*═══════════════════════════════════════
+  ADMIN PAGE
+═══════════════════════════════════════*/
+.admin-wrap{max-width:1100px;margin:0 auto;padding:28px 20px 72px;flex:1}
+.admin-hdr{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:28px;padding-bottom:18px;border-bottom:1px solid var(--border);
+  flex-wrap:wrap;gap:12px;
+}
+.admin-hdr h1{font-size:1.85rem;font-weight:900}
+.admin-hdr small{color:var(--muted);font-size:.88rem;font-family:'Playfair Display',serif;font-style:italic;margin-top:3px;display:block}
+.admin-hdr small .k{color:var(--green)}
+
+.tabs{
+  display:flex;gap:5px;background:var(--card);
+  border:1px solid var(--border);border-radius:14px;
+  padding:5px;margin-bottom:24px;width:fit-content;
+  flex-wrap:wrap;
+}
+.tab-btn{
+  font-family:'Cairo',sans-serif;font-weight:700;font-size:.9rem;
+  padding:9px 18px;border:none;border-radius:10px;
+  background:transparent;color:var(--muted);cursor:pointer;transition:all .18s;
+}
+.tab-btn.active{background:var(--green);color:#000}
+.tab-btn:not(.active):hover{background:rgba(255,255,255,.06);color:var(--white)}
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+
+.panel-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:10px}
+.panel-top h2{font-size:1.15rem;font-weight:800}
+.panel-count{font-size:.83rem;color:var(--muted);background:rgba(255,255,255,.05);padding:4px 12px;border-radius:20px}
+
+/*═══════════════════════════════════════
+  RESPONSIVE TABLE
+═══════════════════════════════════════*/
+.tbl-wrap{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:16px;overflow:hidden;
+}
+/* mobile: card-style rows */
+@media(max-width:680px){
+  .tbl-wrap table thead{display:none}
+  .tbl-wrap table tbody tr{
+    display:flex;flex-direction:column;
+    padding:14px 16px;border-bottom:1px solid rgba(255,255,255,.05);
+    gap:6px;
+  }
+  .tbl-wrap table tbody tr:last-child{border-bottom:none}
+  .tbl-wrap table tbody td{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:0;border:none;text-align:right;font-size:.88rem;
+  }
+  .tbl-wrap table tbody td::before{
+    content:attr(data-lbl);color:var(--muted);font-size:.78rem;font-weight:600;
+    flex-shrink:0;margin-left:10px;
+  }
+  .td-actions{justify-content:flex-start!important}
+  .td-actions::before{display:none}
+}
+@media(min-width:681px){
+  .tbl-wrap{overflow-x:auto}
+  table{width:100%;border-collapse:collapse;font-size:.9rem}
+  thead th{
+    padding:13px 15px;text-align:right;font-weight:700;
+    color:var(--green);border-bottom:1px solid var(--border);
+    white-space:nowrap;background:rgba(34,197,94,.04);
+  }
+  tbody td{
+    padding:12px 15px;border-bottom:1px solid rgba(255,255,255,.04);
+    text-align:right;vertical-align:middle;
+  }
+  tbody tr:last-child td{border-bottom:none}
+  tbody tr:hover td{background:rgba(255,255,255,.025)}
+}
+
+.td-phone{direction:ltr;text-align:left!important;color:var(--muted2)}
+.td-price{color:var(--green);font-weight:800}
+.td-muted{color:var(--muted2);font-size:.84rem}
+.td-img img{width:46px;height:46px;border-radius:9px;object-fit:cover}
+.td-img .no-img{width:46px;height:46px;border-radius:9px;background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;font-size:.72rem;color:var(--muted)}
+.td-actions{display:flex;gap:8px;justify-content:flex-end}
+.empty-td{text-align:center!important;padding:40px!important;color:var(--muted)}
+.empty-td::before{display:none!important}
+
+/*═══════════════════════════════════════
+  ADMIN CODE MODAL
+═══════════════════════════════════════*/
+.code-inp{
+  font-size:2rem;text-align:center;letter-spacing:.35em;
+  padding:14px;direction:ltr;
+}
+
+/*═══════════════════════════════════════
+  TOAST
+═══════════════════════════════════════*/
+#toast{
+  position:fixed;bottom:28px;right:50%;transform:translateX(50%);
+  background:rgba(10,16,22,.97);border:1px solid var(--green);
+  color:var(--white);font-family:'Cairo',sans-serif;font-size:.97rem;
+  font-weight:600;padding:13px 26px;border-radius:16px;
+  z-index:9999;box-shadow:0 0 28px var(--glow);
+  display:none;text-align:center;min-width:240px;max-width:90vw;
+}
+#toast.show{display:block;animation:toastIn .28s ease}
+#toast.err{border-color:var(--red);box-shadow:0 0 28px rgba(239,68,68,.35)}
+@keyframes toastIn{
+  from{opacity:0;transform:translateX(50%) translateY(18px)}
+  to{opacity:1;transform:translateX(50%) translateY(0)}
+}
+
+/*═══════════════════════════════════════
+  LIMIT BADGE
+═══════════════════════════════════════*/
+.limit-badge{
+  display:inline-flex;align-items:center;gap:5px;
+  background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.28);
+  color:#f87171;border-radius:10px;padding:4px 10px;font-size:.8rem;font-weight:700;
+}
+
+/*═══════════════════════════════════════
+  RESPONSIVE MISC
+═══════════════════════════════════════*/
+@media(max-width:600px){
+  header{padding:13px 16px}
+  .logo{font-size:1.5rem}
+  .hero{padding:38px 14px 30px}
+  .games-wrap{padding:0 12px 70px}
+  .admin-wrap{padding:18px 12px 70px}
+  .modal{padding:26px 18px}
+  .row2{grid-template-columns:1fr}
+  .tabs{width:100%}
+  .tab-btn{flex:1;text-align:center;font-size:.82rem;padding:8px 8px}
+}
+</style>
+</head>
+<body>
+
+<!-- Ambient -->
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+
+<!--═══════════════════════════════════
+    PAGE — HOME
+═══════════════════════════════════-->
+<div id="pg-home" class="page active">
+  <header>
+    <div class="logo pressable" id="logo-lp">
+      <span class="k">Khourda</span><span class="g">Games</span>
+    </div>
+    <div id="header-user"></div>
+  </header>
+
+  <section class="hero">
+    <h1>🎮 أقوى موقع بيع<br><span class="hl">ألعاب الحاسوب</span><br>في المغرب 🇲🇦</h1>
+    <p>⚡ شحن فوري &bull; آمن &bull; بأسعار لا تُنافَس</p>
+  </section>
+
+  <div class="games-wrap">
+    <h2 class="sec-title">🕹️ الألعاب المتوفرة</h2>
+    <div class="games-grid" id="games-grid">
+      <div class="loader"><div class="spin"></div></div>
+    </div>
+  </div>
+
+  <footer>
+    <h3>💳 طرق الدفع</h3>
+    <div class="pay-row">
+      <div class="pay-badge" style="border-color:#ff7600;color:#ff7600;box-shadow:0 0 14px #ff760022">Orange</div>
+      <div class="pay-badge" style="border-color:#8b5cf6;color:#8b5cf6;box-shadow:0 0 14px #8b5cf622">Inwi</div>
+      <div class="pay-badge" style="border-color:#22c55e;color:#22c55e;box-shadow:0 0 14px #22c55e22">Cash Plus</div>
+      <div class="pay-badge" style="border-color:#14b8a6;color:#14b8a6;box-shadow:0 0 14px #14b8a622">Cash</div>
+    </div>
+  </footer>
+</div>
+
+<!--═══════════════════════════════════
+    PAGE — ADMIN
+═══════════════════════════════════-->
+<div id="pg-admin" class="page">
+  <header>
+    <div class="logo"><span class="k">Khourda</span><span class="g">Games</span></div>
+    <button class="btn btn-outline btn-sm" onclick="goHome()">← الرئيسية</button>
+  </header>
+
+  <div class="admin-wrap">
+    <div class="admin-hdr">
+      <div>
+        <h1>لوحة التحكم</h1>
+        <small><span class="k">Khourda</span> Games Admin</small>
+      </div>
+    </div>
+
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('orders')">📦 الطلبات</button>
+      <button class="tab-btn" onclick="switchTab('users')">👥 التسجيل</button>
+      <button class="tab-btn" onclick="switchTab('games')">🎮 الألعاب</button>
+    </div>
+
+    <!-- ORDERS -->
+    <div id="tab-orders" class="tab-panel active">
+      <div class="panel-top">
+        <h2>سجل الطلبات</h2>
+        <span class="panel-count" id="orders-count">0 طلب</span>
+      </div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr>
+            <th>#</th><th>الاسم</th><th>الهاتف</th><th>اللعبة</th><th>السعر</th><th>التاريخ</th><th>حذف</th>
+          </tr></thead>
+          <tbody id="tbody-orders"><tr><td class="empty-td" colspan="7">جاري التحميل...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- USERS -->
+    <div id="tab-users" class="tab-panel">
+      <div class="panel-top">
+        <h2>المستخدمون المسجلون</h2>
+        <span class="panel-count" id="users-count">0 مستخدم</span>
+      </div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr>
+            <th>#</th><th>الاسم</th><th>الهاتف</th><th>تاريخ التسجيل</th><th>حذف</th>
+          </tr></thead>
+          <tbody id="tbody-users"><tr><td class="empty-td" colspan="5">جاري التحميل...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- GAMES -->
+    <div id="tab-games" class="tab-panel">
+      <div class="panel-top">
+        <h2>قائمة الألعاب</h2>
+        <button class="btn btn-primary btn-sm" onclick="openGameForm()">+ إضافة لعبة</button>
+      </div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr>
+            <th>الصورة</th><th>العنوان</th><th>السعر</th><th>التصنيف</th><th>إجراءات</th>
+          </tr></thead>
+          <tbody id="tbody-games"><tr><td class="empty-td" colspan="5">جاري التحميل...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FLOATING NAV -->
+<div class="float-nav" id="float-nav">
+  <button class="fn-btn fn-btn-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="أعلى الصفحة">↑</button>
+  <button class="fn-btn fn-btn-home" id="fn-home-btn" onclick="goHome()" title="الرئيسية" style="display:none">🏠</button>
+</div>
+
+<!--═══════════════════════════════════
+    MODAL — FORCE LOGIN
+═══════════════════════════════════-->
+<div class="overlay" id="m-login">
+  <div class="modal">
+    <div class="modal-logo"><span class="k">Khourda</span><span class="g">Games</span></div>
+
+    <div id="ls-choose">
+      <p style="text-align:center;color:var(--muted2);margin-bottom:18px;font-size:1.02rem">مرحباً! كيف تريد المتابعة؟</p>
+      <div class="choose-stack">
+        <button class="btn-choice btn-choice-p" onclick="showLS('login')">لدي حساب — تسجيل الدخول</button>
+        <button class="btn-choice btn-choice-o" onclick="showLS('register')">حساب جديد — التسجيل</button>
+      </div>
+    </div>
+
+    <div id="ls-login" style="display:none">
+      <button class="back-link" onclick="showLS('choose')">→ رجوع</button>
+      <h2>تسجيل الدخول</h2>
+      <div class="fg">
+        <label>رقم الهاتف</label>
+        <input type="tel" id="li-phone" class="ltr" placeholder="06XXXXXXXX" maxlength="10"/>
+        <div class="ferr" id="li-phone-e">⚠ رقم الهاتف غير موجود. أنشئ حساباً.</div>
+      </div>
+      <button class="btn btn-primary btn-full" id="li-btn" onclick="doLogin()">دخول</button>
+    </div>
+
+    <div id="ls-register" style="display:none">
+      <button class="back-link" onclick="showLS('choose')">→ رجوع</button>
+      <h2>إنشاء حساب جديد</h2>
+      <div class="fg">
+        <label>الاسم الكامل</label>
+        <input type="text" id="ri-name" placeholder="أدخل اسمك الكامل" maxlength="60"/>
+        <div class="ferr" id="ri-name-e">⚠ الاسم يجب أن يكون 3 أحرف على الأقل، بدون أرقام</div>
+      </div>
+      <div class="fg">
+        <label>رقم الهاتف</label>
+        <input type="tel" id="ri-phone" class="ltr" placeholder="06XXXXXXXX" maxlength="15"/>
+        <div class="ferr" id="ri-phone-e">⚠ أدخل رقم هاتف صالح (8 أرقام على الأقل)</div>
+        <div class="ferr" id="ri-phone-dup">⚠ هذا الرقم مسجل مسبقاً، سجل الدخول بدلاً من ذلك</div>
+      </div>
+      <button class="btn btn-primary btn-full" id="ri-btn" onclick="doRegister()">إنشاء الحساب</button>
+    </div>
+  </div>
+</div>
+
+<!--═══════════════════════════════════
+    MODAL — ORDER CONFIRM
+═══════════════════════════════════-->
+<div class="overlay" id="m-order">
+  <div class="modal" style="max-width:380px">
+    <button class="modal-close" onclick="closeM('m-order')">✕</button>
+    <h2>تأكيد الطلب 🛒</h2>
+    <div class="info-box">
+      <div class="ib-label">اللعبة</div>
+      <strong id="ord-gname"></strong>
+      <div class="big-price" id="ord-gprice"></div>
+    </div>
+    <div class="info-box">
+      <div class="ib-label">الطالب</div>
+      <strong id="ord-uname"></strong>
+      <div style="color:var(--muted2);font-size:.88rem;margin-top:3px" id="ord-uphone" dir="ltr"></div>
+    </div>
+    <div id="ord-limit-warning" style="display:none;margin-bottom:12px">
+      <div class="limit-badge">⛔ لقد بلغت حد الطلبات اليومي (2 طلبات / 24 ساعة)</div>
+    </div>
+    <button class="btn btn-primary btn-full" id="ord-confirm-btn" onclick="confirmOrder()">✅ تأكيد الطلب</button>
+  </div>
+</div>
+
+<!--═══════════════════════════════════
+    MODAL — ADMIN CODE
+═══════════════════════════════════-->
+<div class="overlay" id="m-code">
+  <div class="modal" style="max-width:330px">
+    <button class="modal-close" onclick="closeM('m-code')">✕</button>
+    <h2 style="text-align:center">🔐 رمز الدخول</h2>
+    <div class="fg">
+      <input type="password" id="code-inp" class="code-inp" placeholder="••••••" maxlength="12"
+             oninput="document.getElementById('code-err').classList.remove('show')"
+             onkeydown="if(event.key==='Enter')checkCode()"/>
+      <div class="ferr" id="code-err" style="justify-content:center">⚠ رمز غير صحيح</div>
+    </div>
+    <button class="btn btn-primary btn-full" onclick="checkCode()">دخول</button>
+  </div>
+</div>
+
+<!--═══════════════════════════════════
+    MODAL — GAME FORM
+═══════════════════════════════════-->
+<div class="overlay" id="m-game">
+  <div class="modal" style="max-width:500px">
+    <button class="modal-close" onclick="closeGameForm()">✕</button>
+    <h2 id="gf-title-h">إضافة لعبة جديدة</h2>
+
+    <div class="fg">
+      <label>عنوان اللعبة *</label>
+      <input type="text" id="gf-title" placeholder="اسم اللعبة"/>
+      <div class="ferr" id="gf-title-e">⚠ العنوان مطلوب</div>
+    </div>
+    <div class="row2">
+      <div class="fg">
+        <label>السعر بالدرهم *</label>
+        <input type="number" id="gf-price" placeholder="150" min="0"/>
+        <div class="ferr" id="gf-price-e">⚠ أدخل سعرًا صالحًا</div>
+      </div>
+      <div class="fg">
+        <label>التصنيف</label>
+        <input type="text" id="gf-cat" placeholder="أكشن، MOBA..."/>
+      </div>
+    </div>
+
+    <div class="fg">
+      <label>صورة اللعبة</label>
+      <div class="img-drop" id="img-drop" onclick="document.getElementById('gf-file').click()">
+        <div id="img-ph"><div class="di">📷</div><p>انقر لاختيار صورة من جهازك</p></div>
+        <img id="img-prev" src="" alt="" style="display:none"/>
+        <input type="file" id="gf-file" accept="image/*" onclick="event.stopPropagation()" onchange="onFileChange(event)"/>
+      </div>
+      <div class="img-or">أو أدخل رابط الصورة</div>
+      <input type="text" id="gf-url" class="ltr" placeholder="https://..." style="margin-top:4px" oninput="onUrlChange(this.value)"/>
+    </div>
+
+    <button class="btn btn-primary btn-full" style="margin-top:6px" onclick="saveGame()">💾 حفظ اللعبة</button>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+'use strict';
+/*═══════════════════════════════════════
+  CONFIG
+═══════════════════════════════════════*/
+const API = (location.protocol === 'file:')
+  ? 'https://REPLACE_WITH_YOUR_DOMAIN/api'
+  : '/api';
+
+const ADMIN_CODE   = '197803';
+const MAX_ORDERS   = 2;          // per 24h per user
+const ORDER_WINDOW = 24*60*60*1000;
+
+/*═══════════════════════════════════════
+  STATE
+═══════════════════════════════════════*/
+let ME = null;  // current logged-in user (stored in localStorage only)
+
+try { ME = JSON.parse(localStorage.getItem('kg_me')); } catch{}
+
+/*═══════════════════════════════════════
+  API HELPERS
+═══════════════════════════════════════*/
+async function apiFetch(path, opts={}) {
+  try {
+    const r = await fetch(API + path, {
+      headers: { 'Content-Type': 'application/json', ...opts.headers },
+      ...opts,
+      body: opts.body ? JSON.stringify(opts.body) : undefined,
+    });
+    if (r.status === 204) return null;
+    const data = await r.json();
+    if (!r.ok) throw new Error(data.error || r.status);
+    return data;
+  } catch(e) {
+    throw e;
+  }
+}
+
+const api = {
+  games:   { list: ()=>apiFetch('/games'), create: b=>apiFetch('/games',{method:'POST',body:b}),
+              update: (id,b)=>apiFetch(`/games/${id}`,{method:'PATCH',body:b}),
+              del: id=>apiFetch(`/games/${id}`,{method:'DELETE'}) },
+  users:   { list: ()=>apiFetch('/users'), login: b=>apiFetch('/users/login',{method:'POST',body:b}),
+              register: b=>apiFetch('/users/register',{method:'POST',body:b}),
+              del: id=>apiFetch(`/users/${id}`,{method:'DELETE'}) },
+  orders:  { list: ()=>apiFetch('/orders'), create: b=>apiFetch('/orders',{method:'POST',body:b}),
+              del: id=>apiFetch(`/orders/${id}`,{method:'DELETE'}) },
+};
+
+/*═══════════════════════════════════════
+  UTILITIES
+═══════════════════════════════════════*/
+const toAr = n => String(n).replace(/\d/g, d=>'٠١٢٣٤٥٦٧٨٩'[d]);
+
+const esc = s => String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+
+const fmtDate = iso => {
+  try{const d=new Date(iso);return d.getFullYear()+'/'+String(d.getMonth()+1).padStart(2,'0')+'/'+String(d.getDate()).padStart(2,'0');}catch{return '—';}
+};
+
+// Arabic + Latin letters, no digits, min 2 chars
+const validName  = n => /^[\u0600-\u06FFa-zA-Z\s]{2,60}$/.test(n.trim()) && n.trim().length >= 2;
+// Accept any phone: 6-15 digits, strip spaces/dashes/+
+const validPhone = p => { const d = p.replace(/[\s\-\+]/g,''); return /^\d{8,15}$/.test(d); };
+
+/*═══════════════════════════════════════
+  TOAST
+═══════════════════════════════════════*/
+let _toastT;
+function toast(msg, isErr=false) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = isErr ? 'show err' : 'show';
+  clearTimeout(_toastT);
+  _toastT = setTimeout(()=>{ el.className=''; },3800);
+}
+
+/*═══════════════════════════════════════
+  MODALS
+═══════════════════════════════════════*/
+function openM(id)  { document.getElementById(id).classList.add('open'); }
+function closeM(id) { document.getElementById(id).classList.remove('open'); }
+
+/*═══════════════════════════════════════
+  PAGE ROUTING
+═══════════════════════════════════════*/
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('pg-'+id).classList.add('active');
+  document.getElementById('fn-home-btn').style.display = id==='admin' ? 'flex' : 'none';
+  window.scrollTo(0,0);
+}
+function goHome() { showPage('home'); renderHome(); }
+
+/*═══════════════════════════════════════
+  LONG-PRESS ADMIN
+═══════════════════════════════════════*/
+let _lpT;
+const logoEl = document.getElementById('logo-lp');
+
+function lpStart(){
+  logoEl.classList.add('pressing');
+  _lpT = setTimeout(()=>{
+    logoEl.classList.remove('pressing');
+    document.getElementById('code-inp').value='';
+    document.getElementById('code-err').classList.remove('show');
+    openM('m-code');
+    setTimeout(()=>document.getElementById('code-inp').focus(),200);
+  },5000);
+}
+function lpEnd(){ clearTimeout(_lpT); logoEl.classList.remove('pressing'); }
+
+logoEl.addEventListener('mousedown', lpStart);
+logoEl.addEventListener('mouseup',   lpEnd);
+logoEl.addEventListener('mouseleave',lpEnd);
+logoEl.addEventListener('touchstart',e=>{e.preventDefault();lpStart();},{passive:false});
+logoEl.addEventListener('touchend',  lpEnd);
+logoEl.addEventListener('touchcancel',lpEnd);
+
+function checkCode(){
+  if(document.getElementById('code-inp').value.trim()===ADMIN_CODE){
+    closeM('m-code');
+    openAdmin();
+  } else {
+    document.getElementById('code-err').classList.add('show');
+  }
+}
+
+async function openAdmin(){
+  showPage('admin');
+  switchTab('orders');
+  renderAdmin();
+}
+
+/*═══════════════════════════════════════
+  ADMIN TABS
+═══════════════════════════════════════*/
+function switchTab(name){
+  const names=['orders','users','games'];
+  document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',names[i]===name));
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+}
+
+/*═══════════════════════════════════════
+  LOGIN STEP CONTROL
+═══════════════════════════════════════*/
+function showLS(step){
+  ['choose','login','register'].forEach(s=>{
+    document.getElementById('ls-'+s).style.display = s===step?'':'none';
+  });
+}
+
+/*═══════════════════════════════════════
+  HEADER USER AREA
+═══════════════════════════════════════*/
+function renderHeader(){
+  const el = document.getElementById('header-user');
+  if(ME){
+    el.innerHTML = `<div class="user-pill">
+      <span>مرحباً، <strong>${esc(ME.name)}</strong></span>
+      <button class="btn btn-ghost btn-sm" onclick="doLogout()">خروج</button>
+    </div>`;
+  } else {
+    el.innerHTML = `<button class="btn btn-outline btn-sm" onclick="showLS('choose');openM('m-login')">تسجيل الدخول</button>`;
+  }
+}
+
+function doLogout(){
+  ME=null; localStorage.removeItem('kg_me');
+  renderHeader();
+  showLS('choose');
+  openM('m-login');
+}
+
+/*═══════════════════════════════════════
+  LOGIN
+═══════════════════════════════════════*/
+async function doLogin(){
+  const phone = document.getElementById('li-phone').value.trim();
+  const errEl = document.getElementById('li-phone-e');
+  errEl.classList.remove('show');
+
+  if(!validPhone(phone)){
+    errEl.textContent='⚠ أدخل رقم هاتف صالح (06/07/05 + 8 أرقام)';
+    errEl.classList.add('show'); return;
+  }
+
+  const btn=document.getElementById('li-btn');
+  btn.disabled=true; btn.textContent='جاري التحقق...';
+
+  try {
+    const user = await api.users.login({phone});
+    setMe(user);
+    closeM('m-login');
+    toast('مرحباً بعودتك '+user.name+' !');
+    renderHome();
+  } catch(e){
+    errEl.textContent='⚠ رقم الهاتف غير موجود. أنشئ حساباً جديداً.';
+    errEl.classList.add('show');
+  } finally { btn.disabled=false; btn.textContent='دخول'; }
+}
+
+/*═══════════════════════════════════════
+  REGISTER
+═══════════════════════════════════════*/
+async function doRegister(){
+  const name  = document.getElementById('ri-name').value.trim();
+  const phone = document.getElementById('ri-phone').value.trim();
+  const nErr  = document.getElementById('ri-name-e');
+  const pErr  = document.getElementById('ri-phone-e');
+  const dErr  = document.getElementById('ri-phone-dup');
+  [nErr,pErr,dErr].forEach(e=>e.classList.remove('show'));
+
+  let ok=true;
+  if(!validName(name))  { nErr.classList.add('show'); ok=false; }
+  if(!validPhone(phone)){ pErr.classList.add('show'); ok=false; }
+  if(!ok) return;
+
+  const btn=document.getElementById('ri-btn');
+  btn.disabled=true; btn.textContent='جاري التسجيل...';
+
+  try {
+    // Check for duplicate phone BEFORE registering
+    const users = await api.users.list();
+    if(users.some(u=>u.phone===phone)){
+      dErr.classList.add('show');
+      btn.disabled=false; btn.textContent='إنشاء الحساب';
+      return;
+    }
+
+    const user = await api.users.register({name,phone});
+    setMe(user);
+    closeM('m-login');
+    toast('مرحباً بك '+user.name+' !');
+    renderHome();
+  } catch(e){
+    toast('حدث خطأ أثناء التسجيل',true);
+  } finally { btn.disabled=false; btn.textContent='إنشاء الحساب'; }
+}
+
+function setMe(user){
+  ME=user;
+  localStorage.setItem('kg_me',JSON.stringify(user));
+  renderHeader();
+}
+
+/*═══════════════════════════════════════
+  HOME RENDER
+═══════════════════════════════════════*/
+async function renderHome(){
+  renderHeader();
+  const grid=document.getElementById('games-grid');
+  grid.innerHTML='<div class="loader"><div class="spin"></div></div>';
+
+  try {
+    const games = await api.games.list();
+    if(!games.length){
+      grid.innerHTML='<div class="empty-state"><div class="ei">🎮</div><p>لا توجد ألعاب حالياً</p></div>';
+      return;
+    }
+    grid.innerHTML=games.map((g,i)=>`
+      <div class="game-card" style="animation-delay:${i*.07}s" onclick="tryOrder(${g.id})">
+        <div class="img-box">
+          ${g.imageUrl
+            ?`<img src="${esc(g.imageUrl)}" alt="${esc(g.title)}" loading="lazy"/>`
+            :`<div class="img-ph">K</div>`}
+          <div class="grad"></div>
+        </div>
+        <div class="card-info">
+          <div class="card-title">${esc(g.title)}</div>
+          <div class="card-foot">
+            <div class="card-price">${toAr(g.price)} درهم</div>
+            <button class="btn btn-primary btn-sm" onclick="event.stopPropagation();tryOrder(${g.id})">🛒 اطلب</button>
+          </div>
+        </div>
+      </div>`).join('');
+    _gamesCache = games;
+  } catch(e){
+    grid.innerHTML='<div class="empty-state"><div class="ei">⚠️</div><p>تعذر تحميل الألعاب</p></div>';
+  }
+}
+
+let _gamesCache=[];
+let _pendingGameId=null;
+
+/*═══════════════════════════════════════
+  ORDER FLOW
+═══════════════════════════════════════*/
+async function tryOrder(gameId){
+  if(!ME){ showLS('choose'); openM('m-login'); _pendingGameId=gameId; return; }
+  _pendingGameId=gameId;
+
+  const g=_gamesCache.find(x=>x.id===gameId);
+  if(!g) return;
+
+  document.getElementById('ord-gname').textContent  = g.title;
+  document.getElementById('ord-gprice').textContent = toAr(g.price)+' درهم';
+  document.getElementById('ord-uname').textContent  = ME.name;
+  document.getElementById('ord-uphone').textContent = ME.phone;
+
+  // Check daily order limit
+  const limited = await checkOrderLimit(ME.phone);
+  document.getElementById('ord-limit-warning').style.display = limited ? 'block' : 'none';
+  document.getElementById('ord-confirm-btn').disabled = limited;
+
+  openM('m-order');
+}
+
+async function checkOrderLimit(phone){
+  try {
+    const orders = await api.orders.list();
+    const now = Date.now();
+    const recent = orders.filter(o=>o.phone===phone && (now-new Date(o.createdAt).getTime()) < ORDER_WINDOW);
+    return recent.length >= MAX_ORDERS;
+  } catch { return false; }
+}
+
+async function confirmOrder(){
+  if(!ME||!_pendingGameId) return;
+  const g=_gamesCache.find(x=>x.id===_pendingGameId);
+  if(!g) return;
+
+  const btn=document.getElementById('ord-confirm-btn');
+  btn.disabled=true; btn.textContent='جاري الإرسال...';
+
+  try {
+    await api.orders.create({ name:ME.name, phone:ME.phone, gameTitle:g.title, gameId:g.id, price:g.price });
+    _pendingGameId=null;
+    closeM('m-order');
+    toast('✅ تم إرسال طلبك! سنتواصل معك قريباً.');
+  } catch(e){
+    toast('حدث خطأ أثناء إرسال الطلب',true);
+    btn.disabled=false; btn.textContent='✅ تأكيد الطلب';
+  }
+}
+
+/*═══════════════════════════════════════
+  ADMIN RENDER
+═══════════════════════════════════════*/
+async function renderAdmin(){
+  renderAdminOrders();
+  renderAdminUsers();
+  renderAdminGames();
+}
+
+async function renderAdminOrders(){
+  const el=document.getElementById('tbody-orders');
+  const cnt=document.getElementById('orders-count');
+  el.innerHTML='<tr><td class="empty-td" colspan="7">جاري التحميل...</td></tr>';
+  try {
+    const orders=await api.orders.list();
+    cnt.textContent=orders.length+' طلب';
+    if(!orders.length){ el.innerHTML='<tr><td class="empty-td" colspan="7">لا توجد طلبات بعد</td></tr>'; return; }
+    el.innerHTML=orders.map(o=>`
+      <tr>
+        <td data-lbl="#" class="td-muted">${o.id}</td>
+        <td data-lbl="الاسم"><strong>${esc(o.name)}</strong></td>
+        <td data-lbl="الهاتف" class="td-phone">${esc(o.phone)}</td>
+        <td data-lbl="اللعبة">${esc(o.gameTitle)}</td>
+        <td data-lbl="السعر" class="td-price">${toAr(o.price)} درهم</td>
+        <td data-lbl="التاريخ" class="td-muted">${fmtDate(o.createdAt)}</td>
+        <td class="td-actions"><button class="btn btn-danger btn-sm" onclick="delOrder(${o.id})">حذف</button></td>
+      </tr>`).join('');
+  } catch{ el.innerHTML='<tr><td class="empty-td" colspan="7">تعذر التحميل</td></tr>'; }
+}
+
+async function renderAdminUsers(){
+  const el=document.getElementById('tbody-users');
+  const cnt=document.getElementById('users-count');
+  el.innerHTML='<tr><td class="empty-td" colspan="5">جاري التحميل...</td></tr>';
+  try {
+    const users=await api.users.list();
+    cnt.textContent=users.length+' مستخدم';
+    if(!users.length){ el.innerHTML='<tr><td class="empty-td" colspan="5">لا يوجد مستخدمون</td></tr>'; return; }
+    el.innerHTML=users.map(u=>`
+      <tr>
+        <td data-lbl="#" class="td-muted">${u.id}</td>
+        <td data-lbl="الاسم"><strong>${esc(u.name)}</strong></td>
+        <td data-lbl="الهاتف" class="td-phone">${esc(u.phone)}</td>
+        <td data-lbl="التسجيل" class="td-muted">${fmtDate(u.createdAt)}</td>
+        <td class="td-actions"><button class="btn btn-danger btn-sm" onclick="delUser(${u.id})">حذف</button></td>
+      </tr>`).join('');
+  } catch{ el.innerHTML='<tr><td class="empty-td" colspan="5">تعذر التحميل</td></tr>'; }
+}
+
+async function renderAdminGames(){
+  const el=document.getElementById('tbody-games');
+  el.innerHTML='<tr><td class="empty-td" colspan="5">جاري التحميل...</td></tr>';
+  try {
+    const games=await api.games.list();
+    _gamesCache=games;
+    if(!games.length){ el.innerHTML='<tr><td class="empty-td" colspan="5">لا توجد ألعاب</td></tr>'; return; }
+    el.innerHTML=games.map(g=>`
+      <tr>
+        <td class="td-img" data-lbl="الصورة">
+          ${g.imageUrl
+            ?`<img src="${esc(g.imageUrl)}" alt="${esc(g.title)}"/>`
+            :`<div class="no-img">لا صورة</div>`}
+        </td>
+        <td data-lbl="العنوان"><strong>${esc(g.title)}</strong></td>
+        <td data-lbl="السعر" class="td-price">${toAr(g.price)} درهم</td>
+        <td data-lbl="التصنيف" class="td-muted">${esc(g.category||'—')}</td>
+        <td class="td-actions">
+          <button class="btn btn-ghost btn-sm" onclick="openGameForm(${g.id})">تعديل</button>
+          <button class="btn btn-danger btn-sm" onclick="delGame(${g.id})">حذف</button>
+        </td>
+      </tr>`).join('');
+  } catch{ el.innerHTML='<tr><td class="empty-td" colspan="5">تعذر التحميل</td></tr>'; }
+}
+
+/*═══════════════════════════════════════
+  DELETE HANDLERS
+═══════════════════════════════════════*/
+async function delOrder(id){
+  if(!confirm('حذف هذا الطلب؟')) return;
+  try{ await api.orders.del(id); renderAdminOrders(); toast('تم حذف الطلب'); }
+  catch{ toast('خطأ أثناء الحذف',true); }
+}
+async function delUser(id){
+  if(!confirm('حذف هذا المستخدم؟')) return;
+  try{ await api.users.del(id); renderAdminUsers(); toast('تم حذف المستخدم'); }
+  catch{ toast('خطأ أثناء الحذف',true); }
+}
+async function delGame(id){
+  if(!confirm('حذف هذه اللعبة؟')) return;
+  try{ await api.games.del(id); renderAdminGames(); renderHome(); toast('تم حذف اللعبة'); }
+  catch{ toast('خطأ أثناء الحذف',true); }
+}
+
+/*═══════════════════════════════════════
+  GAME FORM
+═══════════════════════════════════════*/
+let _editId=null, _imgData='';
+
+async function openGameForm(gameId=null){
+  _editId=gameId; _imgData='';
+  resetImgPrev();
+  ['gf-title-e','gf-price-e'].forEach(id=>document.getElementById(id).classList.remove('show'));
+
+  if(gameId){
+    const g=_gamesCache.find(x=>x.id===gameId);
+    document.getElementById('gf-title-h').textContent='تعديل اللعبة';
+    document.getElementById('gf-title').value=g.title;
+    document.getElementById('gf-price').value=g.price;
+    document.getElementById('gf-cat').value=g.category||'';
+    document.getElementById('gf-url').value=(g.imageUrl&&!g.imageUrl.startsWith('data:'))?g.imageUrl:'';
+    if(g.imageUrl){ _imgData=g.imageUrl; showImgPrev(g.imageUrl); }
+  } else {
+    document.getElementById('gf-title-h').textContent='إضافة لعبة جديدة';
+    ['gf-title','gf-price','gf-cat','gf-url'].forEach(id=>document.getElementById(id).value='');
+  }
+  openM('m-game');
+}
+
+function closeGameForm(){ closeM('m-game'); _editId=null; _imgData=''; resetImgPrev(); }
+
+function onFileChange(e){
+  const f=e.target.files[0]; if(!f) return;
+  const r=new FileReader();
+  r.onload=ev=>{ _imgData=ev.target.result; showImgPrev(_imgData); document.getElementById('gf-url').value=''; };
+  r.readAsDataURL(f);
+}
+function onUrlChange(v){ if(v.trim()){ _imgData=v.trim(); showImgPrev(v.trim()); } else { resetImgPrev(); } }
+function showImgPrev(src){ document.getElementById('img-ph').style.display='none'; const i=document.getElementById('img-prev'); i.src=src; i.style.display='block'; }
+function resetImgPrev(){ document.getElementById('img-ph').style.display=''; const i=document.getElementById('img-prev'); i.style.display='none'; i.src=''; document.getElementById('gf-file').value=''; }
+
+async function saveGame(){
+  const title=document.getElementById('gf-title').value.trim();
+  const price=parseFloat(document.getElementById('gf-price').value);
+  let ok=true;
+  if(!title){ document.getElementById('gf-title-e').classList.add('show'); ok=false; } else { document.getElementById('gf-title-e').classList.remove('show'); }
+  if(isNaN(price)||price<0){ document.getElementById('gf-price-e').classList.add('show'); ok=false; } else { document.getElementById('gf-price-e').classList.remove('show'); }
+  if(!ok) return;
+
+  const payload={
+    title, price, category:document.getElementById('gf-cat').value.trim()||undefined,
+    imageUrl:_imgData||document.getElementById('gf-url').value.trim()||undefined,
+  };
+
+  const btn=document.querySelector('#m-game .btn-primary');
+  btn.disabled=true; btn.textContent='جاري الحفظ...';
+
+  try{
+    if(_editId){ await api.games.(_editId,payload); toast('تم تعديل اللعبة بنجاح'); }
+    else        { await api.games.create(payload);         toast('تمت إضافة اللعبة بنجاح'); }
+    closeGameForm();
+    renderAdminGames();
+    renderHome();
+  } catch{ toast('خطأ أثناء الحفظ',true); }
+  finally{ btn.disabled=false; btn.textContent='💾 حفظ اللعبة'; }
+}
+
+/*═══════════════════════════════════════
+  INIT
+═══════════════════════════════════════*/
+document.addEventListener('DOMContentLoaded', ()=>{
+  renderHome();
+  if(!ME){ showLS('choose'); openM('m-login'); }
+});
+</script>
+</body>
+</html>
