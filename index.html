@@ -314,6 +314,21 @@ footer h3{font-size:1.5rem;font-weight:800;margin-bottom:24px}
 .big-price{color:var(--green);font-size:1.65rem;font-weight:900;text-shadow:0 0 10px var(--glow);margin-top:5px}
 
 /*═══════════════════════════════════════
+  PHONE PREFIX INPUT
+═══════════════════════════════════════*/
+.phone-wrap{display:flex;align-items:stretch}
+.phone-prefix{
+  background:rgba(34,197,94,.13);border:1.5px solid rgba(34,197,94,.38);
+  border-left:none;border-radius:12px 0 0 12px;
+  padding:12px 14px;color:var(--green);font-weight:800;font-size:1rem;
+  display:flex;align-items:center;flex-shrink:0;user-select:none;
+}
+.phone-wrap input{
+  border-radius:0 12px 12px 0!important;border-right:none!important;
+  flex:1;min-width:0;
+}
+
+/*═══════════════════════════════════════
   IMAGE UPLOAD
 ═══════════════════════════════════════*/
 .img-drop{
@@ -604,7 +619,11 @@ footer h3{font-size:1.5rem;font-weight:800;margin-bottom:24px}
       <h2>تسجيل الدخول</h2>
       <div class="fg">
         <label>رقم الهاتف</label>
-        <input type="tel" id="li-phone" class="ltr" placeholder="06XXXXXXXX" maxlength="10"/>
+        <div class="phone-wrap">
+          <div class="phone-prefix">06</div>
+          <input type="tel" id="li-phone" class="ltr" placeholder="XXXXXXXX" maxlength="8"
+                 oninput="this.value=this.value.replace(/\D/g,'').slice(0,8)"/>
+        </div>
         <div class="ferr" id="li-phone-e">⚠ رقم الهاتف غير موجود. أنشئ حساباً.</div>
       </div>
       <button class="btn btn-primary btn-full" id="li-btn" onclick="doLogin()">دخول</button>
@@ -614,14 +633,19 @@ footer h3{font-size:1.5rem;font-weight:800;margin-bottom:24px}
       <button class="back-link" onclick="showLS('choose')">→ رجوع</button>
       <h2>إنشاء حساب جديد</h2>
       <div class="fg">
-        <label>الاسم الكامل</label>
-        <input type="text" id="ri-name" placeholder="أدخل اسمك الكامل" maxlength="60"/>
-        <div class="ferr" id="ri-name-e">⚠ الاسم يجب أن يكون 3 أحرف على الأقل، بدون أرقام</div>
+        <label>الاسم (3 إلى 8 حروف، بدون أرقام)</label>
+        <input type="text" id="ri-name" placeholder="اسمك" maxlength="8"
+               oninput="this.value=this.value.replace(/[0-9\u0660-\u0669]/g,'')"/>
+        <div class="ferr" id="ri-name-e">⚠ الاسم 3 إلى 8 حروف فقط، ممنوعة الأرقام</div>
       </div>
       <div class="fg">
-        <label>رقم الهاتف</label>
-        <input type="tel" id="ri-phone" class="ltr" placeholder="06XXXXXXXX" maxlength="15"/>
-        <div class="ferr" id="ri-phone-e">⚠ أدخل رقم هاتف صالح (8 أرقام على الأقل)</div>
+        <label>رقم الهاتف (8 أرقام بعد 06)</label>
+        <div class="phone-wrap">
+          <div class="phone-prefix">06</div>
+          <input type="tel" id="ri-phone" class="ltr" placeholder="XXXXXXXX" maxlength="8"
+                 oninput="this.value=this.value.replace(/\D/g,'').slice(0,8)"/>
+        </div>
+        <div class="ferr" id="ri-phone-e">⚠ أدخل 8 أرقام بعد 06</div>
         <div class="ferr" id="ri-phone-dup">⚠ هذا الرقم مسجل مسبقاً، سجل الدخول بدلاً من ذلك</div>
       </div>
       <button class="btn btn-primary btn-full" id="ri-btn" onclick="doRegister()">إنشاء الحساب</button>
@@ -773,10 +797,12 @@ const fmtDate = iso => {
   try{const d=new Date(iso);return d.getFullYear()+'/'+String(d.getMonth()+1).padStart(2,'0')+'/'+String(d.getDate()).padStart(2,'0');}catch{return '—';}
 };
 
-// Arabic + Latin letters, no digits, min 2 chars
-const validName  = n => /^[\u0600-\u06FFa-zA-Z\s]{2,60}$/.test(n.trim()) && n.trim().length >= 2;
-// Accept any phone: 6-15 digits, strip spaces/dashes/+
-const validPhone = p => { const d = p.replace(/[\s\-\+]/g,''); return /^\d{8,15}$/.test(d); };
+// Letters only (Arabic or Latin), 3-8 chars, no digits
+const validName  = n => /^[\u0600-\u06FFa-zA-ZÀ-ÿ\s]{3,8}$/.test(n.trim());
+// Exactly 8 digits (the "06" prefix is added separately)
+const validPhone8 = p => /^\d{8}$/.test(p.trim());
+// Build full phone from 8-digit suffix
+const fullPhone  = p => '06' + p.trim();
 
 /*═══════════════════════════════════════
   TOAST
@@ -892,15 +918,16 @@ function doLogout(){
   LOGIN
 ═══════════════════════════════════════*/
 async function doLogin(){
-  const phone = document.getElementById('li-phone').value.trim();
-  const errEl = document.getElementById('li-phone-e');
+  const suffix = document.getElementById('li-phone').value.trim();
+  const errEl  = document.getElementById('li-phone-e');
   errEl.classList.remove('show');
 
-  if(!validPhone(phone)){
-    errEl.textContent='⚠ أدخل رقم هاتف صالح (06/07/05 + 8 أرقام)';
+  if(!validPhone8(suffix)){
+    errEl.textContent='⚠ أدخل 8 أرقام بعد 06';
     errEl.classList.add('show'); return;
   }
 
+  const phone = fullPhone(suffix);
   const btn=document.getElementById('li-btn');
   btn.disabled=true; btn.textContent='جاري التحقق...';
 
@@ -920,17 +947,19 @@ async function doLogin(){
   REGISTER
 ═══════════════════════════════════════*/
 async function doRegister(){
-  const name  = document.getElementById('ri-name').value.trim();
-  const phone = document.getElementById('ri-phone').value.trim();
-  const nErr  = document.getElementById('ri-name-e');
-  const pErr  = document.getElementById('ri-phone-e');
-  const dErr  = document.getElementById('ri-phone-dup');
+  const name   = document.getElementById('ri-name').value.trim();
+  const suffix = document.getElementById('ri-phone').value.trim();
+  const nErr   = document.getElementById('ri-name-e');
+  const pErr   = document.getElementById('ri-phone-e');
+  const dErr   = document.getElementById('ri-phone-dup');
   [nErr,pErr,dErr].forEach(e=>e.classList.remove('show'));
 
   let ok=true;
-  if(!validName(name))  { nErr.classList.add('show'); ok=false; }
-  if(!validPhone(phone)){ pErr.classList.add('show'); ok=false; }
+  if(!validName(name))    { nErr.classList.add('show'); ok=false; }
+  if(!validPhone8(suffix)){ pErr.classList.add('show'); ok=false; }
   if(!ok) return;
+
+  const phone = fullPhone(suffix);
 
   const btn=document.getElementById('ri-btn');
   btn.disabled=true; btn.textContent='جاري التسجيل...';
