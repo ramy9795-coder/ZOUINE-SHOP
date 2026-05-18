@@ -1,564 +1,1346 @@
-.btn-o{background:none;color:var(--w);font-family:'Cairo',sans-serif;font-weight:700;font-size:1rem;padding:13px 36px;border:1px solid rgba(255,255,255,.28);border-radius:50px;cursor:pointer;transition:all .3s}
-.btn-o:hover{border-color:var(--g);color:var(--g);background:var(--gl)}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Khourda Games</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@1,600;1,700;1,900&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* ── STATS ── */
-.stats-bar{display:flex;justify-content:center;background:var(--bg3);border-top:1px solid var(--br);border-bottom:1px solid var(--br);padding:24px 20px;flex-wrap:wrap;gap:0}
-.stat{flex:1;min-width:130px;text-align:center;padding:0 20px;border-left:1px solid var(--br)}
-.stat:last-child{border-left:none}
-.sn{font-family:'Tajawal',sans-serif;font-size:2rem;font-weight:900;color:var(--g);display:block}
-.sl{color:var(--mu);font-size:.85rem;margin-top:3px}
+  :root {
+    --bg:        #080c10;
+    --bg2:       #0d1117;
+    --card:      rgba(13,20,30,0.85);
+    --border:    rgba(34,197,94,0.18);
+    --green:     #22c55e;
+    --green2:    #16a34a;
+    --green-glow:rgba(34,197,94,0.35);
+    --white:     #f8fafc;
+    --muted:     #94a3b8;
+    --red:       #ef4444;
+    --orange:    #ff7600;
+    --purple:    #8b5cf6;
+    --teal:      #14b8a6;
+    --radius:    16px;
+  }
 
-/* ── SECTION ── */
-.sec{padding:64px 28px}
-.sec-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:40px}
-.sec-t{font-family:'Tajawal',sans-serif;font-size:1.8rem;font-weight:900;position:relative}
-.sec-t::after{content:'';display:block;width:50px;height:3px;background:var(--g);border-radius:2px;margin-top:7px;box-shadow:0 0 10px var(--gg)}
+  html { scroll-behavior: smooth; }
 
-/* ── GAME CARDS ── */
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:20px}
-.gcard{background:var(--card);border:1px solid var(--br);border-radius:14px;overflow:hidden;transition:all .3s;cursor:pointer;position:relative;backdrop-filter:blur(10px);box-shadow:0 4px 18px rgba(0,0,0,.3)}
-.gcard:hover{transform:perspective(1000px) rotateX(-2deg) translateY(-6px);box-shadow:0 18px 50px rgba(0,230,118,.18),0 0 0 1px rgba(0,230,118,.28);border-color:rgba(0,230,118,.45)}
-.gcard img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block}
-.gcard-ph{width:100%;aspect-ratio:16/9;background:linear-gradient(135deg,#0a1a0f,#0f2a1a);display:flex;align-items:center;justify-content:center}
-.gcard-ph svg{width:48px;height:48px;opacity:.5}
-.gbadge{position:absolute;top:10px;right:10px;background:var(--g);color:#000;font-weight:800;font-size:.7rem;padding:3px 10px;border-radius:50px}
-.gbody{padding:16px}
-.gtitle{font-family:'Tajawal',sans-serif;font-size:1.05rem;font-weight:900;margin-bottom:4px}
-.gmeta{color:var(--mu);font-size:.8rem;margin-bottom:12px}
-.gfoot{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--br);padding-top:12px}
-.gprice{font-family:'Tajawal',sans-serif;font-size:1.3rem;font-weight:900;color:var(--g);text-shadow:0 0 12px var(--gg)}
-.gprice .cur{font-size:.8rem;margin-right:3px}
-.btn-buy{background:var(--gl);border:1px solid var(--g);color:var(--g);font-family:'Cairo',sans-serif;font-weight:700;font-size:.82rem;padding:7px 18px;border-radius:50px;cursor:pointer;transition:all .2s}
-.btn-buy:hover{background:var(--g);color:#000}
+  body {
+    font-family: 'Cairo', sans-serif;
+    background: var(--bg);
+    color: var(--white);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
 
-/* ── PACKAGES ── */
-.pkg-card{background:linear-gradient(135deg,rgba(0,230,118,.08),rgba(0,100,50,.12));border:1px solid rgba(0,230,118,.35);border-radius:16px;padding:24px;position:relative;overflow:hidden}
-.pkg-card::before{content:'';position:absolute;top:0;right:0;width:120px;height:120px;background:radial-gradient(circle,rgba(0,230,118,.15),transparent);border-radius:50%}
-.pkg-name{font-family:'Tajawal',sans-serif;font-size:1.3rem;font-weight:900;color:var(--g);margin-bottom:8px}
-.pkg-games{color:var(--mu);font-size:.88rem;margin-bottom:14px;line-height:1.6}
-.pkg-price{font-family:'Tajawal',sans-serif;font-size:1.8rem;font-weight:900;color:var(--g)}
-.pkg-orig{text-decoration:line-through;color:var(--mu);font-size:.9rem;margin-right:8px}
+  /* ─── GLOW ORBS ─── */
+  .orb {
+    position: fixed;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+    filter: blur(120px);
+    opacity: 0.18;
+  }
+  .orb1 { width: 60vw; height: 60vh; background: var(--green); top: -20vh; left: -15vw; }
+  .orb2 { width: 50vw; height: 50vh; background: var(--green); bottom: -15vh; right: -15vw; opacity: 0.12; }
 
-/* ── SITE IMAGE SECTIONS ── */
-.site-img-sec{width:100%;max-height:300px;overflow:hidden;position:relative}
-.site-img-sec img{width:100%;height:100%;object-fit:cover;display:block}
-.site-img-placeholder{width:100%;height:180px;background:var(--bg3);border:1px dashed var(--br);display:none;align-items:center;justify-content:center;color:var(--mu);font-size:.9rem}
+  /* ─── PAGES ─── */
+  .page { display: none; min-height: 100vh; position: relative; z-index: 1; }
+  .page.active { display: flex; flex-direction: column; }
 
-/* ── PAYMENT ── */
-.pay-sec{background:var(--bg3);border-top:1px solid var(--br);padding:50px 28px;text-align:center}
-.pay-title{font-family:'Tajawal',sans-serif;font-size:1.7rem;font-weight:900;margin-bottom:6px}
-.pay-sub{color:var(--mu);font-size:.9rem;margin-bottom:36px}
-.pay-methods{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
-.pcard{background:var(--card);border-radius:14px;padding:20px 28px;min-width:130px;border:1px solid transparent;transition:all .3s}
-.pcard:hover{transform:translateY(-4px)}
-.pcard.or{border-color:rgba(255,120,0,.32)}.pcard.or:hover{box-shadow:0 8px 36px rgba(255,120,0,.22)}
-.pcard.iw{border-color:rgba(160,0,255,.32)}.pcard.iw:hover{box-shadow:0 8px 36px rgba(160,0,255,.22)}
-.pcard.cp{border-color:rgba(255,195,0,.32)}.pcard.cp:hover{box-shadow:0 8px 36px rgba(255,195,0,.22)}
-.pcard.ca{border-color:rgba(0,230,118,.32)}.pcard.ca:hover{box-shadow:0 8px 36px rgba(0,230,118,.22)}
-.picon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:.85rem;font-weight:900;font-family:'Orbitron',sans-serif}
-.picon.or{background:rgba(255,120,0,.15);color:#ff7800}
-.picon.iw{background:rgba(160,0,255,.15);color:#a000ff}
-.picon.cp{background:rgba(255,195,0,.15);color:#ffc300}
-.picon.ca{background:rgba(0,230,118,.15);color:var(--g)}
-.pname{font-family:'Cairo',sans-serif;font-weight:800;font-size:.9rem}
-.pname.or{color:#ff7800}.pname.iw{color:#a000ff}.pname.cp{color:#ffc300}.pname.ca{color:var(--g)}
+  /* ─── HEADER ─── */
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 32px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(8,12,16,0.8);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
 
-/* ── FOOTER ── */
-footer{background:var(--bg);border-top:1px solid var(--br);padding:20px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
-.fl{font-family:'Orbitron',sans-serif;font-size:1rem;font-weight:900;letter-spacing:2px}.fl span{color:var(--g)}
-.fc{color:var(--mu);font-size:.8rem}
+  .logo {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 2rem;
+    letter-spacing: -0.02em;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  .logo .k { color: var(--green); text-shadow: 0 0 20px var(--green-glow); }
+  .logo .g { color: var(--white); margin-right: 6px; }
 
-/* ── LOGIN ── */
-.login-body{min-height:calc(100vh - 66px);display:flex;align-items:center;justify-content:center;padding:36px 20px;background:radial-gradient(ellipse at 50% 0%,rgba(0,230,118,.11) 0%,transparent 60%)}
-.login-card{background:rgba(10,20,40,.93);border:1px solid var(--br);border-radius:22px;padding:44px 40px;width:100%;max-width:460px;backdrop-filter:blur(20px);box-shadow:0 0 70px rgba(0,230,118,.1),0 36px 70px rgba(0,0,0,.4);animation:float3d 6s ease-in-out infinite}
-@keyframes float3d{0%,100%{transform:perspective(1200px) rotateX(2deg) translateY(0)}50%{transform:perspective(1200px) rotateX(-1deg) translateY(-7px)}}
-.l-icon{width:66px;height:66px;background:var(--gl);border:1px solid var(--g);border-radius:18px;display:flex;align-items:center;justify-content:center;margin:0 auto 22px;box-shadow:0 0 26px var(--gg)}
-.l-icon svg{width:32px;height:32px}
-.l-title{font-family:'Tajawal',sans-serif;font-size:1.6rem;font-weight:900;text-align:center;margin-bottom:5px}
-.l-sub{color:var(--mu);text-align:center;font-size:.9rem;margin-bottom:28px}
-.l-tabs{display:flex;gap:0;margin-bottom:28px;border-radius:12px;overflow:hidden;border:1px solid var(--br)}
-.l-tab{flex:1;background:none;border:none;color:var(--mu);font-family:'Cairo',sans-serif;font-size:.9rem;font-weight:700;padding:12px;cursor:pointer;transition:all .2s;border-left:1px solid var(--br)}
-.l-tab:last-child{border-left:none}
-.l-tab.on{background:var(--g);color:#000}
-.fg{margin-bottom:17px}
-.fl-{display:block;font-weight:700;font-size:.9rem;margin-bottom:7px;color:rgba(255,255,255,.85)}
-.fi{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14);border-radius:11px;color:var(--w);font-family:'Cairo',sans-serif;font-size:.95rem;padding:13px 16px;outline:none;transition:all .2s;direction:rtl}
-.fi:focus{border-color:var(--g);background:var(--gl);box-shadow:0 0 0 3px rgba(0,230,118,.13)}
-.btn-submit{width:100%;background:linear-gradient(135deg,var(--g),var(--gd));color:#000;font-family:'Cairo',sans-serif;font-weight:800;font-size:1rem;padding:15px;border:none;border-radius:11px;cursor:pointer;box-shadow:0 0 26px var(--gg);transition:all .3s;margin-top:6px}
-.btn-submit:hover{transform:translateY(-2px);box-shadow:0 8px 36px var(--gg)}
-.l-success{display:none;background:rgba(0,230,118,.1);border:1px solid var(--g);border-radius:11px;padding:18px;text-align:center;margin-top:18px}
-.l-success.show{display:block}
-.l-success p{color:var(--g);font-weight:700}
+  .btn {
+    font-family: 'Cairo', sans-serif;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    border-radius: 12px;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .btn-primary {
+    background: var(--green);
+    color: #000;
+    padding: 10px 24px;
+    font-size: 1rem;
+    box-shadow: 0 0 20px var(--green-glow);
+  }
+  .btn-primary:hover { background: var(--green2); box-shadow: 0 0 30px var(--green-glow); transform: translateY(-1px); }
+  .btn-outline {
+    background: transparent;
+    color: var(--green);
+    border: 1.5px solid rgba(34,197,94,0.4);
+    padding: 10px 22px;
+    font-size: 0.95rem;
+  }
+  .btn-outline:hover { background: rgba(34,197,94,0.1); border-color: var(--green); }
+  .btn-sm { padding: 7px 16px; font-size: 0.85rem; }
+  .btn-danger { background: var(--red); color: #fff; padding: 7px 14px; font-size: 0.85rem; }
+  .btn-danger:hover { background: #c53030; }
+  .btn-ghost { background: transparent; color: var(--muted); padding: 7px 14px; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.1); }
+  .btn-ghost:hover { color: var(--white); background: rgba(255,255,255,0.06); }
 
-/* ── CART PAGE ── */
-.cart-page{min-height:calc(100vh - 66px);padding:40px 28px}
-.cart-title{font-family:'Tajawal',sans-serif;font-size:1.8rem;font-weight:900;margin-bottom:30px}
-.cart-grid{display:grid;grid-template-columns:1fr 340px;gap:28px;align-items:start}
-@media(max-width:768px){.cart-grid{grid-template-columns:1fr}}
-.cart-items{display:flex;flex-direction:column;gap:14px}
-.cart-item{background:var(--card);border:1px solid var(--br);border-radius:14px;padding:16px;display:flex;align-items:center;gap:14px}
-.ci-img{width:80px;height:52px;object-fit:cover;border-radius:8px;flex-shrink:0}
-.ci-ph{width:80px;height:52px;background:var(--bg3);border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
-.ci-info{flex:1}
-.ci-name{font-family:'Tajawal',sans-serif;font-weight:900;font-size:1rem}
-.ci-price{color:var(--g);font-family:'Tajawal',sans-serif;font-weight:800;font-size:.95rem;margin-top:3px}
-.ci-del{background:rgba(255,60,60,.12);border:1px solid rgba(255,60,60,.3);color:#ff6060;font-family:'Cairo',sans-serif;font-size:.8rem;font-weight:700;padding:5px 12px;border-radius:8px;cursor:pointer;flex-shrink:0}
-.ci-del:hover{background:rgba(255,60,60,.25)}
-.cart-summary{background:var(--card);border:1px solid var(--br);border-radius:16px;padding:24px;position:sticky;top:80px}
-.cs-title{font-family:'Tajawal',sans-serif;font-size:1.2rem;font-weight:900;margin-bottom:20px;color:var(--g)}
-.cs-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;font-size:.9rem;color:var(--mu)}
-.cs-row.total{color:var(--w);font-weight:800;font-size:1.1rem;border-top:1px solid var(--br);padding-top:14px;margin-top:14px}
-.cs-row.total .price{color:var(--g);font-family:'Tajawal',sans-serif;font-size:1.3rem;font-weight:900}
-.coupon-row{display:flex;gap:8px;margin:16px 0}
-.coupon-input{flex:1;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14);border-radius:10px;color:var(--w);font-family:'Cairo',sans-serif;font-size:.9rem;padding:10px 14px;outline:none;direction:rtl;transition:all .2s}
-.coupon-input:focus{border-color:var(--g);background:var(--gl)}
-.btn-coupon{background:var(--gl);border:1px solid var(--g);color:var(--g);font-family:'Cairo',sans-serif;font-weight:700;font-size:.85rem;padding:10px 16px;border-radius:10px;cursor:pointer;white-space:nowrap}
-.btn-coupon:hover{background:var(--g);color:#000}
-.coupon-ok{display:none;color:var(--g);font-size:.85rem;font-weight:700;margin-bottom:8px}
-.coupon-ok.show{display:block}
-.checkout-form{margin-top:16px;border-top:1px solid var(--br);padding-top:18px}
-.checkout-label{display:block;font-weight:700;font-size:.88rem;margin-bottom:6px;color:rgba(255,255,255,.85)}
-.checkout-input{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14);border-radius:10px;color:var(--w);font-family:'Cairo',sans-serif;font-size:.9rem;padding:11px 14px;outline:none;direction:rtl;transition:all .2s;margin-bottom:14px}
-.checkout-input:focus{border-color:var(--g);background:var(--gl)}
-.btn-checkout{width:100%;background:linear-gradient(135deg,var(--g),var(--gd));color:#000;font-family:'Cairo',sans-serif;font-weight:800;font-size:1rem;padding:14px;border:none;border-radius:11px;cursor:pointer;box-shadow:0 0 24px var(--gg);transition:all .3s}
-.btn-checkout:hover{transform:translateY(-2px)}
-.empty-cart{text-align:center;padding:60px 20px;color:var(--mu)}
-.empty-cart svg{width:64px;height:64px;margin-bottom:16px;opacity:.5}
+  /* ─── HERO ─── */
+  .hero {
+    text-align: center;
+    padding: 64px 24px 48px;
+    animation: fadeUp 0.8s ease both;
+  }
+  .hero h1 {
+    font-size: clamp(2.8rem, 7vw, 5.5rem);
+    font-weight: 900;
+    line-height: 1.2;
+    margin-bottom: 20px;
+  }
+  .hero h1 .hl { color: var(--green); text-shadow: 0 0 30px var(--green-glow); }
+  .hero p { color: var(--muted); font-size: 1.2rem; margin-bottom: 0; }
 
-/* ── ADMIN ── */
-.adm-hdr{background:var(--bg3);border-bottom:1px solid var(--br);padding:26px 28px;display:flex;align-items:center;gap:16px}
-.adm-badge{background:var(--g);color:#000;font-weight:800;font-size:.78rem;padding:4px 12px;border-radius:50px;font-family:'Orbitron',sans-serif}
-.adm-h1{font-family:'Tajawal',sans-serif;font-size:1.5rem;font-weight:900}
-.adm-tabs{display:flex;gap:0;padding:0 28px;border-bottom:1px solid var(--br);overflow-x:auto}
-.tab-b{background:none;border:none;color:var(--mu);font-family:'Cairo',sans-serif;font-size:.88rem;font-weight:700;padding:14px 20px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .2s;white-space:nowrap}
-.tab-b.on{color:var(--g);border-bottom-color:var(--g)}
-.tab-c{display:none;padding:32px 28px}
-.tab-c.on{display:block}
-.adm-tbl{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--br);border-radius:12px;overflow:hidden}
-.adm-tbl th{background:var(--bg3);color:var(--g);font-weight:700;padding:12px 16px;text-align:right;border-bottom:1px solid var(--br);font-size:.85rem}
-.adm-tbl td{padding:12px 16px;border-bottom:1px solid rgba(255,255,255,.05);font-size:.88rem;color:rgba(255,255,255,.85)}
-.adm-tbl tr:last-child td{border-bottom:none}
-.adm-tbl tr:hover td{background:var(--gl)}
-.btn-del{background:rgba(255,60,60,.1);border:1px solid rgba(255,60,60,.28);color:#ff6060;font-family:'Cairo',sans-serif;font-weight:700;font-size:.8rem;padding:5px 13px;border-radius:7px;cursor:pointer;transition:all .2s}
-.btn-del:hover{background:rgba(255,60,60,.22)}
-.adm-form{background:var(--card);border:1px solid var(--br);border-radius:14px;padding:28px;margin-bottom:28px}
-.adm-ft{font-family:'Tajawal',sans-serif;font-size:1.1rem;font-weight:900;color:var(--g);margin-bottom:20px}
-.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.ffull{grid-column:1/-1}
-.btn-add-adm{background:var(--g);color:#000;font-family:'Cairo',sans-serif;font-weight:800;font-size:.95rem;padding:12px 28px;border:none;border-radius:11px;cursor:pointer;transition:all .2s;margin-top:6px}
-.btn-add-adm:hover{transform:translateY(-2px);box-shadow:0 6px 28px var(--gg)}
-.up-area{border:2px dashed var(--br);border-radius:11px;padding:24px;text-align:center;cursor:pointer;transition:all .2s}
-.up-area:hover{border-color:var(--g);background:var(--gl)}
-.up-icon{font-size:2rem;margin-bottom:6px;color:var(--g)}
-.up-text{color:var(--mu);font-size:.85rem}
-.up-prev{width:100%;max-height:180px;object-fit:cover;border-radius:8px;margin-top:10px;display:none}
-.empty-s{text-align:center;padding:50px 20px;color:var(--mu)}
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
 
-/* ── ADMIN PASSWORD SCREEN ── */
-.adm-lock{min-height:calc(100vh - 66px);display:flex;align-items:center;justify-content:center;padding:30px 20px}
-.lock-card{background:var(--card);border:1px solid var(--br);border-radius:20px;padding:40px;max-width:380px;width:100%;text-align:center;box-shadow:0 0 60px rgba(0,230,118,.1)}
-.lock-icon{font-size:3rem;margin-bottom:16px;color:var(--g)}
-.lock-t{font-family:'Tajawal',sans-serif;font-size:1.4rem;font-weight:900;margin-bottom:8px}
-.lock-s{color:var(--mu);font-size:.9rem;margin-bottom:24px}
-.lock-input{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14);border-radius:11px;color:var(--w);font-family:'Orbitron',sans-serif;font-size:1.2rem;padding:14px;text-align:center;letter-spacing:6px;outline:none;transition:all .2s;direction:ltr;margin-bottom:14px}
-.lock-input:focus{border-color:var(--g);background:var(--gl)}
-.lock-err{color:#ff6060;font-size:.85rem;font-weight:700;margin-bottom:10px;display:none}
-.lock-err.show{display:block}
+  /* ─── SECTION TITLE ─── */
+  .section-title {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--white);
+    padding-right: 16px;
+    border-right: 4px solid var(--green);
+    margin-bottom: 28px;
+  }
 
-/* ── SITE IMAGES ADMIN ── */
-.img-slot{background:var(--card);border:1px solid var(--br);border-radius:12px;padding:18px;margin-bottom:14px}
-.img-slot-name{font-family:'Tajawal',sans-serif;font-weight:700;color:var(--g);margin-bottom:12px;font-size:.95rem}
-.img-slot-preview{width:100%;height:100px;object-fit:cover;border-radius:8px;display:none;margin-bottom:8px}
-.img-slot-preview.show{display:block}
+  /* ─── GAMES GRID ─── */
+  .games-container { max-width: 1200px; margin: 0 auto; padding: 0 24px 60px; }
 
-/* ── RESPONSIVE ── */
-@media(max-width:600px){
-  nav{padding:0 14px;height:60px}
-  .logo-k,.logo-g{font-size:1.2rem}
-  .nb{font-size:.78rem;padding:6px 12px}
-  .hero{padding:36px 14px 24px}
-  .hero-k,.hero-g{font-size:2rem}
-  #logo-canvas{width:80px;height:60px}
-  .sec{padding:40px 14px}
-  .stats-bar{padding:18px 14px}
-  .stat{min-width:100px;padding:0 10px}
-  .sn{font-size:1.5rem}
-  .pay-sec{padding:36px 14px}
-  footer{padding:16px 14px}
-  .login-card{padding:28px 18px}
-  .adm-hdr,.tab-c{padding-left:14px;padding-right:14px}
-  .fgrid{grid-template-columns:1fr}
-  .cart-page{padding:28px 14px}
-  .adm-tbl th,.adm-tbl td{padding:9px 10px;font-size:.78rem}
-}
+  .games-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 24px;
+  }
+
+  .game-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+    backdrop-filter: blur(16px);
+    transition: all 0.35s cubic-bezier(0.34,1.56,0.64,1);
+    cursor: pointer;
+    transform-style: preserve-3d;
+    perspective: 800px;
+    animation: fadeUp 0.5s ease both;
+  }
+  .game-card:hover {
+    border-color: rgba(34,197,94,0.5);
+    box-shadow: 0 8px 40px var(--green-glow), 0 0 0 1px rgba(34,197,94,0.2);
+    transform: scale(1.04) rotateY(3deg) rotateX(2deg);
+  }
+
+  .game-card .img-wrap {
+    aspect-ratio: 4/5;
+    overflow: hidden;
+    position: relative;
+    background: var(--bg2);
+  }
+  .game-card .img-wrap img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+  }
+  .game-card:hover .img-wrap img { transform: scale(1.1); }
+  .game-card .img-wrap .gradient {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, var(--bg) 0%, transparent 60%);
+  }
+  .game-card .img-placeholder {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 4rem;
+    color: rgba(255,255,255,0.08);
+  }
+
+  .game-card .info {
+    padding: 16px 18px 18px;
+    position: relative;
+    z-index: 2;
+    margin-top: -56px;
+  }
+  .game-card .game-title {
+    font-size: 1.15rem;
+    font-weight: 800;
+    margin-bottom: 6px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .game-card .game-desc {
+    font-size: 0.82rem;
+    color: var(--muted);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin-bottom: 14px;
+    min-height: 36px;
+  }
+  .game-card .bottom-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 8px;
+  }
+  .game-price {
+    font-size: 1.6rem;
+    font-weight: 900;
+    color: var(--green);
+    text-shadow: 0 0 12px var(--green-glow);
+    line-height: 1;
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: rgba(13,20,30,0.9);
+    backdrop-filter: blur(20px);
+    border-top: 1px solid var(--border);
+    padding: 48px 24px;
+    text-align: center;
+    z-index: 1;
+  }
+  footer h3 { font-size: 1.6rem; font-weight: 800; margin-bottom: 28px; }
+  .payment-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+  }
+  .payment-badge {
+    padding: 12px 28px;
+    border-radius: 14px;
+    border: 1.5px solid;
+    font-size: 1.05rem;
+    font-weight: 700;
+    background: rgba(255,255,255,0.04);
+    backdrop-filter: blur(8px);
+    transition: transform 0.2s;
+  }
+  .payment-badge:hover { transform: scale(1.06); }
+
+  /* ─── MODAL OVERLAY ─── */
+  .overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(8px);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    animation: fadeIn 0.2s ease;
+  }
+  .overlay.open { display: flex; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+  .modal {
+    background: rgba(13,20,30,0.97);
+    border: 1px solid rgba(34,197,94,0.25);
+    border-radius: 24px;
+    padding: 36px 32px;
+    width: 100%;
+    max-width: 460px;
+    position: relative;
+    animation: slideUp 0.3s cubic-bezier(0.34,1.56,0.64,1) both;
+    overflow: hidden;
+  }
+  .modal::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--green), transparent);
+  }
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(24px) scale(0.97); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 16px; left: 16px;
+    background: rgba(255,255,255,0.07);
+    border: none;
+    color: var(--muted);
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s;
+  }
+  .modal-close:hover { background: rgba(255,255,255,0.14); color: var(--white); }
+
+  .modal-logo {
+    text-align: center;
+    margin-bottom: 24px;
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 2.2rem;
+  }
+  .modal-logo .k { color: var(--green); }
+  .modal-logo .g { color: var(--white); margin-right: 6px; }
+
+  .modal h2 { font-size: 1.3rem; font-weight: 800; margin-bottom: 20px; text-align: right; }
+  .modal h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 16px; color: var(--muted); text-align: right; }
+
+  /* ─── FORM ─── */
+  .form-group { margin-bottom: 18px; }
+  .form-group label {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--muted);
+    margin-bottom: 8px;
+    text-align: right;
+  }
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    width: 100%;
+    background: rgba(255,255,255,0.05);
+    border: 1.5px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 13px 16px;
+    font-family: 'Cairo', sans-serif;
+    font-size: 1rem;
+    color: var(--white);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    text-align: right;
+  }
+  .form-group input[dir="ltr"],
+  .form-group input.ltr { text-align: left; direction: ltr; }
+  .form-group input:focus,
+  .form-group textarea:focus {
+    border-color: var(--green);
+    box-shadow: 0 0 0 3px rgba(34,197,94,0.15);
+  }
+  .form-group textarea { resize: vertical; min-height: 80px; }
+  .form-error { color: var(--red); font-size: 0.82rem; margin-top: 5px; display: none; }
+  .form-error.show { display: block; }
+
+  /* ─── CHOOSE BUTTONS ─── */
+  .choose-row { display: flex; flex-direction: column; gap: 12px; margin-top: 8px; }
+  .btn-choice {
+    font-family: 'Cairo', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    padding: 14px 20px;
+    border-radius: 14px;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+    text-align: center;
+  }
+  .btn-choice-primary {
+    background: var(--green);
+    color: #000;
+    box-shadow: 0 0 18px var(--green-glow);
+  }
+  .btn-choice-primary:hover { background: var(--green2); transform: translateY(-2px); }
+  .btn-choice-outline {
+    background: transparent;
+    color: var(--green);
+    border: 1.5px solid rgba(34,197,94,0.4);
+  }
+  .btn-choice-outline:hover { background: rgba(34,197,94,0.1); border-color: var(--green); }
+
+  .back-btn {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-family: 'Cairo', sans-serif;
+    font-size: 0.9rem;
+    cursor: pointer;
+    padding: 0 0 16px 0;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    transition: color 0.2s;
+  }
+  .back-btn:hover { color: var(--white); }
+
+  /* ─── ADMIN PAGE ─── */
+  .admin-wrap {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 32px 24px 60px;
+    flex: 1;
+  }
+  .admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .admin-header h1 { font-size: 2rem; font-weight: 900; }
+  .admin-header p { color: var(--muted); font-size: 0.9rem; margin-top: 4px; font-family: 'Playfair Display', serif; font-style: italic; }
+  .admin-header p .k { color: var(--green); }
+
+  .tabs {
+    display: flex;
+    gap: 6px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 6px;
+    margin-bottom: 28px;
+    width: fit-content;
+  }
+  .tab-btn {
+    font-family: 'Cairo', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .tab-btn.active { background: var(--green); color: #000; }
+  .tab-btn:not(.active):hover { background: rgba(255,255,255,0.06); color: var(--white); }
+
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* ─── TABLE ─── */
+  .table-wrap {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: auto;
+  }
+  table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+  thead th {
+    padding: 14px 16px;
+    text-align: right;
+    font-weight: 700;
+    color: var(--green);
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+    background: rgba(34,197,94,0.04);
+  }
+  tbody td { padding: 13px 16px; border-bottom: 1px solid rgba(255,255,255,0.04); text-align: right; vertical-align: middle; }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover td { background: rgba(255,255,255,0.03); }
+  .td-phone { direction: ltr; text-align: left; color: var(--muted); }
+  .td-price { color: var(--green); font-weight: 800; }
+  .td-muted { color: var(--muted); font-size: 0.85rem; }
+  .td-img img { width: 50px; height: 50px; border-radius: 10px; object-fit: cover; }
+  .td-img .no-img { width: 50px; height: 50px; border-radius: 10px; background: rgba(255,255,255,0.06); display: flex; align-items: center; justify-content: center; font-size: 0.7rem; color: var(--muted); }
+  .empty-row td { text-align: center; padding: 40px; color: var(--muted); }
+
+  .table-actions { display: flex; gap: 8px; justify-content: flex-end; }
+
+  /* ─── PANEL TOP BAR ─── */
+  .panel-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  .panel-top h2 { font-size: 1.2rem; font-weight: 800; }
+  .panel-count { font-size: 0.85rem; color: var(--muted); }
+
+  /* ─── IMAGE UPLOAD AREA ─── */
+  .img-upload-area {
+    border: 2px dashed rgba(255,255,255,0.12);
+    border-radius: 14px;
+    padding: 28px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    background: rgba(255,255,255,0.02);
+    position: relative;
+    overflow: hidden;
+  }
+  .img-upload-area:hover {
+    border-color: rgba(34,197,94,0.45);
+    background: rgba(34,197,94,0.04);
+  }
+  .img-upload-area img { max-height: 150px; border-radius: 10px; object-fit: contain; }
+  .img-upload-area .upload-icon { font-size: 2.5rem; margin-bottom: 8px; }
+  .img-upload-area p { color: var(--muted); font-size: 0.88rem; }
+  .img-upload-area input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+  .img-or { text-align: center; color: var(--muted); font-size: 0.8rem; margin: 10px 0; }
+
+  /* ─── ORDER CONFIRM MODAL ─── */
+  .order-info-box {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px 20px;
+    margin-bottom: 14px;
+  }
+  .order-info-box p { color: var(--muted); font-size: 0.82rem; margin-bottom: 4px; }
+  .order-info-box strong { font-size: 1.05rem; font-weight: 800; }
+  .order-big-price { color: var(--green); font-size: 1.7rem; font-weight: 900; text-shadow: 0 0 12px var(--green-glow); }
+
+  /* ─── USER BADGE ─── */
+  .user-badge {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+  .user-badge strong { color: var(--green); font-size: 0.95rem; }
+
+  /* ─── ADMIN CODE ─── */
+  .code-input {
+    font-size: 2rem;
+    text-align: center;
+    letter-spacing: 0.3em;
+    padding: 14px;
+    direction: ltr;
+  }
+
+  /* ─── TOAST ─── */
+  #toast {
+    position: fixed;
+    bottom: 30px;
+    right: 50%;
+    transform: translateX(50%);
+    background: rgba(13,20,30,0.96);
+    border: 1px solid var(--green);
+    color: var(--white);
+    font-family: 'Cairo', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 14px 28px;
+    border-radius: 16px;
+    z-index: 9999;
+    box-shadow: 0 0 30px var(--green-glow);
+    display: none;
+    text-align: center;
+    min-width: 260px;
+    animation: toastIn 0.3s ease;
+  }
+  @keyframes toastIn {
+    from { opacity: 0; transform: translateX(50%) translateY(20px); }
+    to   { opacity: 1; transform: translateX(50%) translateY(0); }
+  }
+
+  /* ─── LONG PRESS INDICATOR ─── */
+  .logo-press-ring {
+    display: inline-block;
+    position: relative;
+  }
+  .logo-press-ring::after {
+    content: '';
+    position: absolute;
+    inset: -6px;
+    border-radius: 8px;
+    border: 2px solid var(--green);
+    opacity: 0;
+    transform: scale(0.85);
+    transition: opacity 0.15s;
+    pointer-events: none;
+  }
+  .logo-press-ring.pressing::after {
+    opacity: 1;
+    animation: ringPulse 5s linear;
+  }
+  @keyframes ringPulse {
+    0%   { transform: scale(0.85); opacity: 0; }
+    10%  { opacity: 1; }
+    100% { transform: scale(1); opacity: 0.8; }
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 600px) {
+    header { padding: 14px 18px; }
+    .logo { font-size: 1.5rem; }
+    .hero { padding: 40px 16px 32px; }
+    .games-container { padding: 0 14px 48px; }
+    .admin-wrap { padding: 20px 14px 48px; }
+    .modal { padding: 28px 20px; }
+    .tabs { width: 100%; }
+    .tab-btn { flex: 1; font-size: 0.82rem; padding: 9px 10px; }
+  }
 </style>
 </head>
 <body>
 
-<!-- TOAST -->
-<div id="toast"></div>
+<!-- GLOW ORBS -->
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
 
-<!-- ═══════════════════════════════════════
-     HOME PAGE
-═══════════════════════════════════════ -->
+<!-- ════════════════════════════════════════
+     PAGE: HOME
+════════════════════════════════════════ -->
 <div id="page-home" class="page active">
-  <nav>
-    <div class="logo-nav" id="logo-nav-home">
-      <span class="logo-k">Khourda</span>
-      <div class="logo-dot"></div>
-      <span class="logo-g">Games</span>
+  <header>
+    <div class="logo logo-press-ring" id="logo-trigger">
+      <span class="k">Khourda</span><span class="g">Games</span>
     </div>
-    <div class="nav-links">
-      <button class="nb on" onclick="showPage('home')">الرئيسية</button>
-      <button class="nb" onclick="showPage('login')">دخول</button>
-      <button class="nb cart-btn" onclick="showPage('cart')" id="cart-nav-btn">
-        🛒 السلة
-        <span class="cart-count" id="cart-count-home">0</span>
-      </button>
-    </div>
-  </nav>
-
-  <!-- SITE IMAGE: HERO BANNER -->
-  <div class="site-img-sec" id="site-img-hero" style="display:none">
-    <img id="site-img-hero-img" src="" alt=""/>
-  </div>
+    <div id="header-user-area"></div>
+  </header>
 
   <section class="hero">
-    <div class="ring r1"></div><div class="ring r2"></div><div class="ring r3"></div>
-    <span class="hero-badge">🇲🇦 المتجر الأول للألعاب في المغرب</span>
-    <!-- BIG LOGO WITH ANIMATION -->
-    <div class="hero-logo-wrap">
-      <span class="hero-k">KHOURDA</span>
-      <canvas id="logo-canvas" width="120" height="80"></canvas>
-      <span class="hero-g">Games</span>
-    </div>
-    <h1 class="hero-title">المتجر الأول <span class="hl">للألعاب</span><br>في المغرب</h1>
-    <p class="hero-sub">اكتشف أحدث وأفضل الألعاب بأسعار مناسبة وبطرق دفع محلية آمنة.</p>
-    <div class="hero-cta">
-      <button class="btn-p" onclick="document.getElementById('games-sec').scrollIntoView({behavior:'smooth'})">تصفح الألعاب</button>
-      <button class="btn-o" onclick="showPage('login')">تسجيل الدخول</button>
-    </div>
+    <h1>🎮 أقوى موقع بيع<br><span class="hl">ألعاب الحاسوب</span><br>في المغرب 🇲🇦</h1>
+    <p>⚡ شحن فوري • آمن • بأسعار لا تُنافَس</p>
   </section>
 
-  <div class="stats-bar">
-    <div class="stat"><span class="sn">+٥٠٠</span><div class="sl">لعبة متوفرة</div></div>
-    <div class="stat"><span class="sn">+٢٠٠٠</span><div class="sl">زبون راضٍ</div></div>
-    <div class="stat"><span class="sn">٤</span><div class="sl">طرق دفع محلية</div></div>
-    <div class="stat"><span class="sn">٢٤/٧</span><div class="sl">دعم فني</div></div>
+  <div class="games-container">
+    <h2 class="section-title">🕹️ الألعاب المتوفرة</h2>
+    <div class="games-grid" id="games-grid"></div>
   </div>
 
-  <!-- SITE IMAGE: BETWEEN SECTIONS -->
-  <div class="site-img-sec" id="site-img-mid" style="display:none">
-    <img id="site-img-mid-img" src="" alt=""/>
-  </div>
-
-  <!-- PACKAGES -->
-  <section class="sec" id="pkg-sec" style="display:none">
-    <div class="sec-hdr"><h2 class="sec-t">الحزم الخاصة</h2></div>
-    <div class="grid" id="pkg-grid"></div>
-  </section>
-
-  <!-- GAMES -->
-  <section class="sec" id="games-sec">
-    <div class="sec-hdr"><h2 class="sec-t">الألعاب المميزة</h2></div>
-    <div class="grid" id="games-grid"></div>
-  </section>
-
-  <!-- SITE IMAGE: BEFORE PAYMENT -->
-  <div class="site-img-sec" id="site-img-btm" style="display:none">
-    <img id="site-img-btm-img" src="" alt=""/>
-  </div>
-
-  <div class="pay-sec">
-    <h2 class="pay-title">طرق الدفع</h2>
-    <p class="pay-sub">ادفع بالطريقة التي تناسبك بأمان وسرعة</p>
-    <div class="pay-methods">
-      <div class="pcard or"><div class="picon or">OR</div><div class="pname or">Orange</div></div>
-      <div class="pcard iw"><div class="picon iw">IW</div><div class="pname iw">Inwi</div></div>
-      <div class="pcard cp"><div class="picon cp">CP</div><div class="pname cp">Cash Plus</div></div>
-      <div class="pcard ca"><div class="picon ca">CA</div><div class="pname ca">Cash</div></div>
-    </div>
-  </div>
   <footer>
-    <div class="fl"><span>KHOURDA</span> GAMES</div>
-    <div class="fc">© ٢٠٢٦ Khourda Games — المغرب. جميع الحقوق محفوظة</div>
+    <h3>💳 طرق الدفع</h3>
+    <div class="payment-row">
+      <div class="payment-badge" style="border-color:#ff7600;color:#ff7600;box-shadow:0 0 14px #ff760025;">Orange</div>
+      <div class="payment-badge" style="border-color:#8b5cf6;color:#8b5cf6;box-shadow:0 0 14px #8b5cf625;">Inwi</div>
+      <div class="payment-badge" style="border-color:#22c55e;color:#22c55e;box-shadow:0 0 14px #22c55e25;">Cash Plus</div>
+      <div class="payment-badge" style="border-color:#14b8a6;color:#14b8a6;box-shadow:0 0 14px #14b8a625;">Cash</div>
+    </div>
   </footer>
 </div>
 
-<!-- ═══════════════════════════════════════
-     LOGIN PAGE
-═══════════════════════════════════════ -->
-<div id="page-login" class="page">
-  <nav>
-    <div class="logo-nav" onclick="showPage('home')" style="cursor:pointer">
-      <span class="logo-k">Khourda</span><div class="logo-dot"></div><span class="logo-g">Games</span>
-    </div>
-    <div class="nav-links">
-      <button class="nb" onclick="showPage('home')">الرئيسية</button>
-      <button class="nb on">دخول</button>
-    </div>
-  </nav>
-  <div class="login-body">
-    <div class="login-card">
-      <div class="l-icon">
-        <svg viewBox="0 0 32 32" fill="none" stroke="#00e676" stroke-width="2">
-          <circle cx="16" cy="10" r="5"/><path d="M6 28c0-5.5 4.5-10 10-10s10 4.5 10 10"/>
-        </svg>
-      </div>
-      <h2 class="l-title">مرحباً بك</h2>
-      <p class="l-sub">سجّل دخولك للاستمتاع بأفضل الألعاب في المغرب</p>
-      <div class="l-tabs">
-        <button class="l-tab on" id="tab-existing" onclick="switchLoginTab('existing')">لدي حساب</button>
-        <button class="l-tab" id="tab-new" onclick="switchLoginTab('new')">إنشاء حساب</button>
-      </div>
-      <!-- EXISTING ACCOUNT -->
-      <form id="form-existing" onsubmit="loginExisting(event)">
-        <div class="fg"><label class="fl-">رقم الهاتف</label><input type="tel" id="ex-phone" class="fi" placeholder="06XXXXXXXX" required/></div>
-        <div class="fg"><label class="fl-">كلمة السر</label><input type="password" id="ex-pass" class="fi" placeholder="••••••••" required/></div>
-        <button type="submit" class="btn-submit">دخول</button>
-      </form>
-      <!-- NEW ACCOUNT -->
-      <form id="form-new" style="display:none" onsubmit="registerNew(event)">
-        <div class="fg"><label class="fl-">الاسم الكامل</label><input type="text" id="nw-name" class="fi" placeholder="أدخل اسمك" required/></div>
-        <div class="fg"><label class="fl-">رقم الهاتف</label><input type="tel" id="nw-phone" class="fi" placeholder="06XXXXXXXX" required/></div>
-        <div class="fg"><label class="fl-">كلمة السر</label><input type="password" id="nw-pass" class="fi" placeholder="اختر كلمة سر" required/></div>
-        <button type="submit" class="btn-submit">إنشاء الحساب</button>
-      </form>
-      <div class="l-success" id="l-success">
-        <p id="l-success-msg">تم تسجيل الدخول بنجاح!</p>
-      </div>
-    </div>
-  </div>
-  <div class="pay-sec"><h2 class="pay-title">طرق الدفع</h2><p class="pay-sub">ادفع بالطريقة التي تناسبك</p>
-    <div class="pay-methods">
-      <div class="pcard or"><div class="picon or">OR</div><div class="pname or">Orange</div></div>
-      <div class="pcard iw"><div class="picon iw">IW</div><div class="pname iw">Inwi</div></div>
-      <div class="pcard cp"><div class="picon cp">CP</div><div class="pname cp">Cash Plus</div></div>
-      <div class="pcard ca"><div class="picon ca">CA</div><div class="pname ca">Cash</div></div>
-    </div>
-  </div>
-  <footer><div class="fl"><span>KHOURDA</span> GAMES</div><div class="fc">© ٢٠٢٦ Khourda Games — المغرب</div></footer>
-</div>
-
-<!-- ═══════════════════════════════════════
-     CART / PURCHASE PAGE
-═══════════════════════════════════════ -->
-<div id="page-cart" class="page">
-  <nav>
-    <div class="logo-nav" onclick="showPage('home')" style="cursor:pointer">
-      <span class="logo-k">Khourda</span><div class="logo-dot"></div><span class="logo-g">Games</span>
-    </div>
-    <div class="nav-links">
-      <button class="nb" onclick="showPage('home')">الرئيسية</button>
-      <button class="nb" onclick="showPage('login')">دخول</button>
-      <button class="nb on">🛒 السلة</button>
-    </div>
-  </nav>
-  <div class="cart-page">
-    <h1 class="cart-title">سلة المشتريات</h1>
-    <div id="cart-empty" class="empty-cart" style="display:none">
-      <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2">
-        <circle cx="32" cy="32" r="28"/><path d="M20 32h24M32 20v24"/>
-      </svg>
-      <p>السلة فارغة — أضف ألعاباً من المتجر</p>
-      <button class="btn-p" style="margin-top:20px" onclick="showPage('home')">تصفح الألعاب</button>
-    </div>
-    <div class="cart-grid" id="cart-content">
-      <div class="cart-items" id="cart-items-list"></div>
-      <div class="cart-summary">
-        <div class="cs-title">ملخص الطلب</div>
-        <div class="cs-row"><span>المجموع الجزئي</span><span id="subtotal-val">٠ د.م</span></div>
-        <div class="cs-row" id="discount-row" style="display:none"><span>خصم الكوبون (٪١٠)</span><span id="discount-val" style="color:#ff6b6b">-٠ د.م</span></div>
-        <div class="cs-row total"><span>الإجمالي</span><span class="price" id="total-val">٠ د.م</span></div>
-        <div style="margin:16px 0">
-          <div class="coupon-row">
-            <input class="coupon-input" id="coupon-input" placeholder="رمز الكوبون" maxlength="10"/>
-            <button class="btn-coupon" onclick="applyCoupon()">تطبيق</button>
-          </div>
-          <div class="coupon-ok" id="coupon-ok">تم تطبيق خصم ١٠٪ ✓</div>
-        </div>
-        <div class="checkout-form">
-          <label class="checkout-label">رقم الهاتف للتأكيد</label>
-          <input type="tel" class="checkout-input" id="co-phone" placeholder="06XXXXXXXX"/>
-          <button class="btn-checkout" onclick="placeOrder()">تأكيد الطلب</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  <footer><div class="fl"><span>KHOURDA</span> GAMES</div><div class="fc">© ٢٠٢٦ Khourda Games — المغرب</div></footer>
-</div>
-
-<!-- ═══════════════════════════════════════
-     ADMIN — LOCK SCREEN
-═══════════════════════════════════════ -->
+<!-- ════════════════════════════════════════
+     PAGE: ADMIN
+════════════════════════════════════════ -->
 <div id="page-admin" class="page">
-  <nav>
-    <div class="logo-nav" onclick="showPage('home')" style="cursor:pointer">
-      <span class="logo-k">Khourda</span><div class="logo-dot"></div><span class="logo-g">Games</span>
+  <header>
+    <div class="logo">
+      <span class="k">Khourda</span><span class="g">Games</span>
     </div>
-    <div class="nav-links">
-      <button class="nb" onclick="showPage('home')">الرئيسية</button>
-    </div>
-  </nav>
+    <button class="btn btn-outline btn-sm" onclick="goHome()">← الرئيسية</button>
+  </header>
 
-  <!-- LOCK -->
-  <div class="adm-lock" id="adm-lock">
-    <div class="lock-card">
-      <div class="lock-icon">🔐</div>
-      <h2 class="lock-t">لوحة الإدارة</h2>
-      <p class="lock-s">أدخل الرمز السري للوصول</p>
-      <input type="password" class="lock-input" id="lock-input" placeholder="••••••" maxlength="10" onkeydown="if(event.key==='Enter')checkAdminCode()"/>
-      <div class="lock-err" id="lock-err">رمز خاطئ، حاول مجدداً</div>
-      <button class="btn-submit" onclick="checkAdminCode()">دخول</button>
-    </div>
-  </div>
-
-  <!-- ADMIN PANEL -->
-  <div id="adm-panel" style="display:none">
-    <div class="adm-hdr">
-      <span class="adm-badge">ADMIN</span>
-      <h1 class="adm-h1">لوحة الإدارة — Khourda Games</h1>
-    </div>
-    <div class="adm-tabs">
-      <button class="tab-b on" onclick="swTab('accounts',this)">الحسابات</button>
-      <button class="tab-b" onclick="swTab('orders',this)">الطلبات</button>
-      <button class="tab-b" onclick="swTab('games',this)">الألعاب</button>
-      <button class="tab-b" onclick="swTab('packages',this)">الحزم</button>
-      <button class="tab-b" onclick="swTab('images',this)">صور الموقع</button>
+  <div class="admin-wrap">
+    <div class="admin-header">
+      <div>
+        <h1>لوحة التحكم</h1>
+        <p><span class="k">Khourda</span> Games Admin</p>
+      </div>
     </div>
 
-    <!-- TAB: ACCOUNTS -->
-    <div id="tab-accounts" class="tab-c on">
-      <div id="accounts-tbl"></div>
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('orders')">📦 الطلبات</button>
+      <button class="tab-btn" onclick="switchTab('users')">👥 التسجيل</button>
+      <button class="tab-btn" onclick="switchTab('games')">🎮 الألعاب</button>
     </div>
 
     <!-- TAB: ORDERS -->
-    <div id="tab-orders" class="tab-c">
-      <div id="orders-tbl"></div>
+    <div id="tab-orders" class="tab-panel active">
+      <div class="panel-top">
+        <h2>سجل الطلبات</h2>
+        <span class="panel-count" id="orders-count"></span>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th>#</th><th>الاسم</th><th>رقم الهاتف</th><th>اللعبة</th><th>السعر</th><th>التاريخ</th><th>حذف</th>
+          </tr></thead>
+          <tbody id="orders-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- TAB: USERS -->
+    <div id="tab-users" class="tab-panel">
+      <div class="panel-top">
+        <h2>المستخدمون المسجلون</h2>
+        <span class="panel-count" id="users-count"></span>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th>#</th><th>الاسم</th><th>رقم الهاتف</th><th>تاريخ التسجيل</th><th>حذف</th>
+          </tr></thead>
+          <tbody id="users-tbody"></tbody>
+        </table>
+      </div>
     </div>
 
     <!-- TAB: GAMES -->
-    <div id="tab-games" class="tab-c">
-      <div class="adm-form">
-        <div class="adm-ft">إضافة لعبة جديدة</div>
-        <div class="fgrid">
-          <div class="fg"><label class="fl-">الاسم بالعربية *</label><input id="g-ar" class="fi" placeholder="ببجي موبايل"/></div>
-          <div class="fg"><label class="fl-">Nom *</label><input id="g-fr" class="fi" placeholder="PUBG Mobile" style="direction:ltr"/></div>
-          <div class="fg"><label class="fl-">السعر (د.م) *</label><input id="g-price" class="fi" type="number" placeholder="150"/></div>
-          <div class="fg"><label class="fl-">التصنيف</label><input id="g-cat" class="fi" placeholder="إطلاق نار"/></div>
-          <div class="fg"><label class="fl-">المنصة</label><input id="g-plat" class="fi" placeholder="موبايل"/></div>
-          <div class="fg"><label class="fl-">رابط الصورة</label><input id="g-url" class="fi" type="url" placeholder="https://..." style="direction:ltr"/></div>
-          <div class="fg ffull">
-            <label class="fl-">رفع صورة من الجهاز</label>
-            <div class="up-area" onclick="document.getElementById('g-file').click()">
-              <input type="file" id="g-file" accept="image/*" style="display:none" onchange="prevImg(event,'g-prev','gUpImg')"/>
-              <div class="up-icon">📷</div>
-              <div class="up-text">انقر لاختيار صورة من هاتفك</div>
-              <img id="g-prev" class="up-prev"/>
-            </div>
-          </div>
-        </div>
-        <button class="btn-add-adm" onclick="addGame()">إضافة اللعبة</button>
+    <div id="tab-games" class="tab-panel">
+      <div class="panel-top">
+        <h2>قائمة الألعاب</h2>
+        <button class="btn btn-primary btn-sm" onclick="openGameModal()">+ إضافة لعبة</button>
       </div>
-      <div id="games-adm-tbl"></div>
-    </div>
-
-    <!-- TAB: PACKAGES -->
-    <div id="tab-packages" class="tab-c">
-      <div class="adm-form">
-        <div class="adm-ft">إضافة حزمة جديدة</div>
-        <div class="fgrid">
-          <div class="fg"><label class="fl-">اسم الحزمة *</label><input id="p-name" class="fi" placeholder="حزمة المحترفين"/></div>
-          <div class="fg"><label class="fl-">السعر الجديد (د.م) *</label><input id="p-price" class="fi" type="number" placeholder="350"/></div>
-          <div class="fg ffull"><label class="fl-">الألعاب المضمنة (فصل بفاصلة)</label><input id="p-games" class="fi" placeholder="PUBG Mobile, Free Fire, COD Mobile"/></div>
-          <div class="fg ffull"><label class="fl-">الوصف</label><input id="p-desc" class="fi" placeholder="وصف الحزمة..."/></div>
-        </div>
-        <button class="btn-add-adm" onclick="addPkg()">إضافة الحزمة</button>
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th>الصورة</th><th>العنوان</th><th>السعر</th><th>التصنيف</th><th>إجراءات</th>
+          </tr></thead>
+          <tbody id="games-tbody"></tbody>
+        </table>
       </div>
-      <div id="pkg-adm-tbl"></div>
-    </div>
-
-    <!-- TAB: SITE IMAGES -->
-    <div id="tab-images" class="tab-c">
-      <p style="color:var(--mu);font-size:.9rem;margin-bottom:24px">اختر موضع الصورة في الموقع وارفع صورتك مباشرة</p>
-      <div id="img-slots-container"></div>
     </div>
   </div>
-  <footer><div class="fl"><span>KHOURDA</span> GAMES</div><div class="fc">© ٢٠٢٦ Khourda Games — الإدارة</div></footer>
 </div>
 
+<!-- ════════════════════════════════════════
+     MODAL: FORCE LOGIN
+════════════════════════════════════════ -->
+<div class="overlay" id="modal-login">
+  <div class="modal">
+    <div class="modal-logo"><span class="k">Khourda</span><span class="g">Games</span></div>
+
+    <!-- CHOOSE -->
+    <div id="login-step-choose">
+      <p style="text-align:center;color:var(--muted);margin-bottom:20px;font-size:1.05rem;">مرحباً! كيف تريد المتابعة؟</p>
+      <div class="choose-row">
+        <button class="btn-choice btn-choice-primary" onclick="showLoginStep('existing')">لدي حساب — تسجيل الدخول</button>
+        <button class="btn-choice btn-choice-outline" onclick="showLoginStep('register')">حساب جديد — التسجيل</button>
+      </div>
+    </div>
+
+    <!-- EXISTING LOGIN -->
+    <div id="login-step-existing" style="display:none;">
+      <button class="back-btn" onclick="showLoginStep('choose')">→ رجوع</button>
+      <h2>تسجيل الدخول</h2>
+      <div class="form-group">
+        <label>رقم الهاتف</label>
+        <input type="tel" id="login-phone" class="ltr" placeholder="06XXXXXXXX" />
+        <div class="form-error" id="login-phone-err">رقم الهاتف غير موجود. أنشئ حساباً جديداً.</div>
+      </div>
+      <button class="btn btn-primary" style="width:100%;justify-content:center;font-size:1.05rem;padding:13px;" onclick="doLogin()">دخول</button>
+    </div>
+
+    <!-- REGISTER -->
+    <div id="login-step-register" style="display:none;">
+      <button class="back-btn" onclick="showLoginStep('choose')">→ رجوع</button>
+      <h2>إنشاء حساب جديد</h2>
+      <div class="form-group">
+        <label>الاسم الكامل</label>
+        <input type="text" id="reg-name" placeholder="أدخل اسمك" />
+        <div class="form-error" id="reg-name-err">الاسم يجب أن يكون حرفين على الأقل</div>
+      </div>
+      <div class="form-group">
+        <label>رقم الهاتف</label>
+        <input type="tel" id="reg-phone" class="ltr" placeholder="06XXXXXXXX" />
+        <div class="form-error" id="reg-phone-err">رقم الهاتف غير صالح</div>
+      </div>
+      <button class="btn btn-primary" style="width:100%;justify-content:center;font-size:1.05rem;padding:13px;" onclick="doRegister()">إنشاء الحساب</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     MODAL: ORDER CONFIRM
+════════════════════════════════════════ -->
+<div class="overlay" id="modal-order">
+  <div class="modal" style="max-width:380px;">
+    <button class="modal-close" onclick="closeModal('modal-order')">✕</button>
+    <h2>تأكيد الطلب</h2>
+    <div class="order-info-box">
+      <p>اللعبة</p>
+      <strong id="order-game-name"></strong>
+      <div class="order-big-price" id="order-game-price" style="margin-top:6px;"></div>
+    </div>
+    <div class="order-info-box">
+      <p>بيانات الطالب</p>
+      <strong id="order-user-name"></strong>
+      <div style="color:var(--muted);font-size:0.9rem;margin-top:3px;" id="order-user-phone" dir="ltr"></div>
+    </div>
+    <button class="btn btn-primary" style="width:100%;justify-content:center;font-size:1.05rem;padding:13px;" onclick="confirmOrder()">✅ تأكيد الطلب</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     MODAL: ADMIN CODE
+════════════════════════════════════════ -->
+<div class="overlay" id="modal-admin-code">
+  <div class="modal" style="max-width:340px;">
+    <button class="modal-close" onclick="closeModal('modal-admin-code')">✕</button>
+    <h2 style="text-align:center;">🔐 رمز الدخول</h2>
+    <div class="form-group">
+      <input type="password" id="admin-code-input" class="code-input" placeholder="••••••" maxlength="10"
+             oninput="document.getElementById('admin-code-err').classList.remove('show')"
+             onkeydown="if(event.key==='Enter')checkAdminCode()" />
+      <div class="form-error" id="admin-code-err" style="text-align:center;">رمز غير صحيح</div>
+    </div>
+    <button class="btn btn-primary" style="width:100%;justify-content:center;font-size:1.05rem;padding:13px;" onclick="checkAdminCode()">دخول</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     MODAL: ADD / EDIT GAME
+════════════════════════════════════════ -->
+<div class="overlay" id="modal-game">
+  <div class="modal" style="max-width:520px;">
+    <button class="modal-close" onclick="closeGameModal()">✕</button>
+    <h2 id="game-modal-title">إضافة لعبة جديدة</h2>
+
+    <div class="form-group">
+      <label>عنوان اللعبة *</label>
+      <input type="text" id="gf-title" placeholder="اسم اللعبة" />
+      <div class="form-error" id="gf-title-err">العنوان مطلوب</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+      <div class="form-group">
+        <label>السعر (درهم) *</label>
+        <input type="number" id="gf-price" placeholder="150" min="0" />
+        <div class="form-error" id="gf-price-err">السعر مطلوب</div>
+      </div>
+      <div class="form-group">
+        <label>التصنيف</label>
+        <input type="text" id="gf-category" placeholder="أكشن، مغامرة..." />
+      </div>
+    </div>
+    <div class="form-group">
+      <label>الوصف</label>
+      <textarea id="gf-desc" placeholder="وصف اللعبة"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label>صورة اللعبة</label>
+      <div class="img-upload-area" id="img-upload-area" onclick="document.getElementById('gf-imgfile').click()">
+        <div id="img-upload-placeholder">
+          <div class="upload-icon">📷</div>
+          <p>انقر لرفع صورة من جهازك</p>
+        </div>
+        <img id="img-preview" src="" alt="" style="display:none;" />
+        <input type="file" id="gf-imgfile" accept="image/*" onclick="event.stopPropagation()" onchange="handleImageUpload(event)" />
+      </div>
+      <div class="img-or">أو أدخل رابط الصورة</div>
+      <input type="text" id="gf-imgurl" placeholder="https://..." class="ltr" style="margin-top:4px;"
+             oninput="handleImageUrlInput(this.value)" />
+    </div>
+
+    <button class="btn btn-primary" style="width:100%;justify-content:center;font-size:1.05rem;padding:13px;margin-top:4px;" onclick="saveGame()">
+      حفظ اللعبة
+    </button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast"></div>
+
 <script>
-/* ═══════════════════════════════════
-   STORAGE KEYS
-═══════════════════════════════════ */
-const SK={
-  games:'kg_games', accounts:'kg_accounts', orders:'kg_orders',
-  cart:'kg_cart', packages:'kg_pkgs', siteImgs:'kg_siteimgs'
+// ═══════════════════════════════════════
+//  STORAGE HELPERS
+// ═══════════════════════════════════════
+const LS = {
+  get: (k, def) => { try { return JSON.parse(localStorage.getItem(k)) ?? def; } catch { return def; } },
+  set: (k, v) => localStorage.setItem(k, JSON.stringify(v)),
 };
 
-/* ═══════════════════════════════════
-   DEFAULT DATA
-═══════════════════════════════════ */
-const DEF_GAMES=[
-  {id:1,ar:'ببجي موبايل',fr:'PUBG Mobile',price:150,cat:'باتل رويال',plat:'موبايل',img:'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=600&h=340&fit=crop',date:Date.now()},
-  {id:2,ar:'كول أوف ديوتي موبايل',fr:'Call of Duty Mobile',price:200,cat:'إطلاق نار',plat:'موبايل',img:'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=600&h=340&fit=crop',date:Date.now()},
-  {id:3,ar:'فري فاير',fr:'Free Fire',price:80,cat:'باتل رويال',plat:'موبايل',img:'https://images.unsplash.com/photo-1493711662062-fa541adb3fc8?w=600&h=340&fit=crop',date:Date.now()},
-  {id:4,ar:'ماين كرافت',fr:'Minecraft',price:120,cat:'مغامرة',plat:'موبايل',img:'https://images.unsplash.com/photo-1486711457069-a6ccce2f9bc7?w=600&h=340&fit=crop',date:Date.now()},
-  {id:5,ar:'فيفا موبايل',fr:'FIFA Mobile',price:90,cat:'رياضة',plat:'موبايل',img:'https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?w=600&h=340&fit=crop',date:Date.now()},
-  {id:6,ar:'كلاش أوف كلانس',fr:'Clash of Clans',price:60,cat:'استراتيجية',plat:'موبايل',img:'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600&h=340&fit=crop',date:Date.now()},
-];
+// ═══════════════════════════════════════
+//  DATA
+// ═══════════════════════════════════════
+let users  = LS.get('kg_users',  []);
+let orders = LS.get('kg_orders', []);
+let games  = LS.get('kg_games',  defaultGames());
+let currentUser = LS.get('kg_current', null);
+let nextId = LS.get('kg_nextid', 100);
 
-/* ═══════════════════════════════════
-   STATE HELPERS
-═══════════════════════════════════ */
-function load(k,def){try{const v=localStorage.getItem(k);return v?JSON.parse(v):def;}catch{return def;}}
-function save(k,v){localStorage.setItem(k,JSON.stringify(v));}
-function getGames(){return load(SK.games,DEF_GAMES);}
-function getAccounts(){return load(SK.accounts,[]);}
-function getOrders(){return load(SK.orders,[]);}
-function getCart(){return load(SK.cart,[]);}
-function getPkgs(){return load(SK.packages,[]);}
-function getSiteImgs(){return load(SK.siteImgs,{hero:null,mid:null,btm:null});}
-
-/* ═══════════════════════════════════
-   ARABIC NUMERALS
-═══════════════════════════════════ */
-function ar(n){return String(n).replace(/\d/g,d=>'٠١٢٣٤٥٦٧٨٩'[d]);}
-function fmt(n){return ar(Number(n).toFixed(0))+' د.م';}
-
-/* ═══════════════════════════════════
-   TOAST
-═══════════════════════════════════ */
-let _tt;
-function toast(m,d=3000){
-  const t=document.getElementById('toast');
-  t.textContent=m;t.classList.add('show');
-  clearTimeout(_tt);_tt=setTimeout(()=>t.classList.remove('show'),d);
+function defaultGames() {
+  return [
+    { id:1, title:'بابجي موبايل',    desc:'لعبة بابجي الشهيرة للجوال',     price:150, img:'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&h=500&fit=crop', cat:'أكشن' },
+    { id:2, title:'فري فاير',        desc:'لعبة بقاء مثيرة للجوال',         price:80,  img:'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=400&h=500&fit=crop', cat:'بقاء' },
+    { id:3, title:'كود موبايل',      desc:'كول أوف ديوتي للجوال',           price:200, img:'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=400&h=500&fit=crop', cat:'أكشن' },
+    { id:4, title:'ماين كرافت',      desc:'عالم بناء لا نهاية له',          price:120, img:'https://images.unsplash.com/photo-1493711662062-fa541adb3fc8?w=400&h=500&fit=crop', cat:'مغامرة' },
+    { id:5, title:'كلاش أوف كلانس', desc:'بنِ قريتك وهاجم الأعداء',        price:60,  img:'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=400&h=500&fit=crop', cat:'استراتيجية' },
+    { id:6, title:'موبايل ليجندز',  desc:'معارك 5 ضد 5 مثيرة',             price:90,  img:'https://images.unsplash.com/photo-1560253023-3ec5d502959f?w=400&h=500&fit=crop', cat:'MOBA' },
+  ];
 }
 
-/* ═══════════════════════════════════
-   NAVIGATION
-═══════════════════════════════════ */
-function showPage(p){
-  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
-  document.getElementById('page-'+p).classList.add('active');
-  window.scrollTo(0,0);
-  if(p==='home'){renderHome();applyCartBadge();}
-  if(p==='cart')renderCart();
-  if(p==='admin'){document.getElementById('adm-lock').style.display='flex';document.getElementById('adm-panel').style.display='none';document.getElementById('lock-input').value='';document.getElementById('lock-err').classList.remove('show');}
-  if(p==='login'){
-    document.getElementById('form-existing').style.display='block';
-    document.getElementById('form-new').style.display='none';
-    document.getElementById('tab-existing').classList.add('on');
-    document.getElementById('tab-new').classList.remove('on');
-    document.getElementById('l-success').classList.remove('show');
+function save() {
+  LS.set('kg_users',   users);
+  LS.set('kg_orders',  orders);
+  LS.set('kg_games',   games);
+  LS.set('kg_current', currentUser);
+  LS.set('kg_nextid',  nextId);
+}
+
+function uid() { return ++nextId; }
+
+// ═══════════════════════════════════════
+//  ARABIC NUMERALS
+// ═══════════════════════════════════════
+function toAr(n) {
+  const a = ['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'];
+  return String(n).replace(/\d/g, d => a[d]);
+}
+
+// ═══════════════════════════════════════
+//  TOAST
+// ═══════════════════════════════════════
+let toastTimer = null;
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.style.display = 'block';
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { el.style.display = 'none'; }, 3500);
+}
+
+// ═══════════════════════════════════════
+//  PAGE ROUTING
+// ═══════════════════════════════════════
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function goHome() { showPage('home'); renderHome(); }
+
+// ═══════════════════════════════════════
+//  MODAL HELPERS
+// ═══════════════════════════════════════
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+// ═══════════════════════════════════════
+//  LONG PRESS ADMIN TRIGGER
+// ═══════════════════════════════════════
+let longPressTimer = null;
+const logoEl = document.getElementById('logo-trigger');
+
+function startPress() {
+  logoEl.classList.add('pressing');
+  longPressTimer = setTimeout(() => {
+    logoEl.classList.remove('pressing');
+    document.getElementById('admin-code-input').value = '';
+    document.getElementById('admin-code-err').classList.remove('show');
+    openModal('modal-admin-code');
+    setTimeout(() => document.getElementById('admin-code-input').focus(), 200);
+  }, 5000);
+}
+
+function endPress() {
+  clearTimeout(longPressTimer);
+  longPressTimer = null;
+  logoEl.classList.remove('pressing');
+}
+
+logoEl.addEventListener('mousedown',   startPress);
+logoEl.addEventListener('mouseup',     endPress);
+logoEl.addEventListener('mouseleave',  endPress);
+logoEl.addEventListener('touchstart',  e => { e.preventDefault(); startPress(); }, { passive: false });
+logoEl.addEventListener('touchend',    endPress);
+logoEl.addEventListener('touchcancel', endPress);
+
+function checkAdminCode() {
+  const code = document.getElementById('admin-code-input').value.trim();
+  if (code === '197803') {
+    closeModal('modal-admin-code');
+    renderAdmin();
+    showPage('admin');
+  } else {
+    document.getElementById('admin-code-err').classList.add('show');
   }
 }
 
-/* ═══════════════════════════════════
-   LOGIN
-═══════════════════════════════════ */
-function switchLoginTab(t){
-  document.getElementById( **...**
+// ═══════════════════════════════════════
+//  LOGIN SYSTEM
+// ═══════════════════════════════════════
+function showLoginStep(step) {
+  ['choose','existing','register'].forEach(s =>
+    document.getElementById('login-step-' + s).style.display = (s === step ? '' : 'none')
+  );
+}
 
-_This response is too long to display in full._
+function doLogin() {
+  const phone = document.getElementById('login-phone').value.trim();
+  const errEl = document.getElementById('login-phone-err');
+  errEl.classList.remove('show');
+  if (!phone || phone.length < 8) { errEl.textContent = 'أدخل رقم هاتف صالح'; errEl.classList.add('show'); return; }
+  const user = users.find(u => u.phone === phone);
+  if (!user) { errEl.textContent = 'رقم الهاتف غير موجود. أنشئ حساباً جديداً.'; errEl.classList.add('show'); return; }
+  setCurrentUser(user);
+  closeModal('modal-login');
+  toast('مرحباً بعودتك ' + user.name + ' !');
+  renderHome();
+}
+
+function doRegister() {
+  const name  = document.getElementById('reg-name').value.trim();
+  const phone = document.getElementById('reg-phone').value.trim();
+  const nameErr  = document.getElementById('reg-name-err');
+  const phoneErr = document.getElementById('reg-phone-err');
+  nameErr.classList.remove('show'); phoneErr.classList.remove('show');
+  let ok = true;
+  if (name.length < 2)  { nameErr.classList.add('show');  ok = false; }
+  if (phone.length < 8) { phoneErr.classList.add('show'); ok = false; }
+  if (!ok) return;
+  const user = { id: uid(), name, phone, createdAt: new Date().toISOString() };
+  users.push(user);
+  save();
+  setCurrentUser(user);
+  closeModal('modal-login');
+  toast('مرحباً بك ' + user.name + ' !');
+  renderHome();
+}
+
+function setCurrentUser(user) {
+  currentUser = user;
+  save();
+}
+
+function logout() {
+  currentUser = null;
+  save();
+  renderHeaderUser();
+  showLoginStep('choose');
+  openModal('modal-login');
+}
+
+function renderHeaderUser() {
+  const area = document.getElementById('header-user-area');
+  if (currentUser) {
+    area.innerHTML = `<div class="user-badge">
+      <span>مرحباً، <strong>${currentUser.name}</strong></span>
+      <button class="btn btn-ghost btn-sm" onclick="logout()">خروج</button>
+    </div>`;
+  } else {
+    area.innerHTML = `<button class="btn btn-outline btn-sm" onclick="openModal('modal-login')">تسجيل الدخول</button>`;
+  }
+}
+
+// ═══════════════════════════════════════
+//  HOME RENDER
+// ═══════════════════════════════════════
+function renderHome() {
+  renderHeaderUser();
+  const grid = document.getElementById('games-grid');
+  if (!games.length) {
+    grid.innerHTML = '<div style="text-align:center;padding:48px;color:var(--muted);grid-column:1/-1;">لا توجد ألعاب حالياً.</div>';
+    return;
+  }
+  grid.innerHTML = games.map((g, i) => `
+    <div class="game-card" style="animation-delay:${i * 0.07}s;" onclick="requestOrder(${g.id})">
+      <div class="img-wrap">
+        ${g.img
+          ? `<img src="${escHtml(g.img)}" alt="${escHtml(g.title)}" loading="lazy" />`
+          : `<div class="img-placeholder">K</div>`}
+        <div class="gradient"></div>
+      </div>
+      <div class="info">
+        <div class="game-title">${escHtml(g.title)}</div>
+        <div class="game-desc">${escHtml(g.desc || '')}</div>
+        <div class="bottom-row">
+          <div class="game-price">${toAr(g.price)} درهم</div>
+          <button class="btn btn-primary btn-sm" onclick="event.stopPropagation();requestOrder(${g.id})">🛒 اطلب</button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+// ═══════════════════════════════════════
+//  ORDER FLOW
+// ═══════════════════════════════════════
+let pendingGame = null;
+
+function requestOrder(gameId) {
+  if (!currentUser) {
+    showLoginStep('choose');
+    openModal('modal-login');
+    pendingGame = gameId;
+    return;
+  }
+  const g = games.find(x => x.id === gameId);
+  if (!g) return;
+  pendingGame = gameId;
+  document.getElementById('order-game-name').textContent  = g.title;
+  document.getElementById('order-game-price').textContent = toAr(g.price) + ' درهم';
+  document.getElementById('order-user-name').textContent  = currentUser.name;
+  document.getElementById('order-user-phone').textContent = currentUser.phone;
+  openModal('modal-order');
+}
+
+function confirmOrder() {
+  if (!currentUser || !pendingGame) return;
+  const g = games.find(x => x.id === pendingGame);
+  if (!g) return;
+  const order = {
+    id: uid(), name: currentUser.name, phone: currentUser.phone,
+    gameTitle: g.title, gameId: g.id, price: g.price,
+    createdAt: new Date().toISOString()
+  };
+  orders.push(order);
+  save();
+  pendingGame = null;
+  closeModal('modal-order');
+  toast('✅ تم إرسال طلبك بنجاح! سنتواصل معك قريباً.');
+}
+
+// ═══════════════════════════════════════
+//  ADMIN RENDER
+// ═══════════════════════════════════════
+function switchTab(name) {
+  document.querySelectorAll('.tab-btn').forEach((b, i) => {
+    b.classList.toggle('active', ['orders','users','games'][i] === name);
+  });
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+}
+
+function renderAdmin() {
+  renderAdminOrders();
+  renderAdminUsers();
+  renderAdminGames();
+}
+
+function renderAdminOrders() {
+  document.getElementById('orders-count').textContent = orders.length + ' طلب';
+  const tbody = document.getElementById('orders-tbody');
+  if (!orders.length) {
+    tbody.innerHTML = '<tr class="empty-row"><td colspan="7">لا توجد طلبات بعد</td></tr>';
+    return;
+  }
+  tbody.innerHTML = orders.map(o => `
+    <tr>
+      <td class="td-muted">${o.id}</td>
+      <td><strong>${escHtml(o.name)}</strong></td>
+      <td class="td-phone">${escHtml(o.phone)}</td>
+      <td>${escHtml(o.gameTitle)}</td>
+      <td class="td-price">${toAr(o.price)} درهم</td>
+      <td class="td-muted">${fmtDate(o.createdAt)}</td>
+      <td><button class="btn btn-danger btn-sm" onclick="deleteOrder(${o.id})">حذف</button></td>
+    </tr>`).join('');
+}
+
+function renderAdminUsers() {
+  document.getElementById('users-count').textContent = users.length + ' مستخدم';
+  const tbody = document.getElementById('users-tbody');
+  if (!users.length) {
+    tbody.innerHTML = '<tr class="empty-row"><td colspan="5">لا يوجد مستخدمين</td></tr>';
+    return;
+  }
+  tbody.innerHTML = users.map(u => `
+    <tr>
+      <td class="td-muted">${u.id}</td>
+      <td><strong>${escHtml(u.name)}</strong></td>
+      <td class="td-phone">${escHtml(u.phone)}</td>
+      <td class="td-muted">${fmtDate(u.createdAt)}</td>
+      <td><button class="btn btn-danger btn-sm" onclick="deleteUser(${u.id})">حذف</button></td>
+    </tr>`).join('');
+}
+
+function renderAdminGames() {
+  const tbody = document.getElementById('games-tbody');
+  if (!games.length) {
+    tbody.innerHTML = '<tr class="empty-row"><td colspan="5">لا توجد ألعاب</td></tr>';
+    return;
+  }
+  tbody.innerHTML = games.map(g => `
+    <tr>
+      <td class="td-img">
+        ${g.img
+          ? `<img src="${escHtml(g.img)}" alt="${escHtml(g.title)}" />`
+          : `<div class="no-img">لا صورة</div>`}
+      </td>
+      <td><strong>${escHtml(g.title)}</strong></td>
+      <td class="td-price">${toAr(g.price)} درهم</td>
+      <td class="td-muted">${escHtml(g.cat || '—')}</td>
+      <td>
+        <div class="table-actions">
+          <button class="btn btn-ghost btn-sm" onclick="openGameModal(${g.id})">تعديل</button>
+          <button class="btn btn-danger btn-sm" onclick="deleteGame(${g.id})">حذف</button>
+        </div>
+      </td>
+    </tr>`).join('');
+}
+
+// ─── DELETE ───
+function deleteOrder(id) {
+  if (!confirm('هل أنت متأكد من حذف هذا الطلب؟')) return;
+  orders = orders.filter(o => o.id !== id);
+  save(); renderAdminOrders();
+  toast('تم حذف الطلب');
+}
+function deleteUser(id) {
+  if (!confirm('هل أنت متأكد من حذف هذا المستخدم؟')) return;
+  users = users.filter(u => u.id !== id);
+  save(); renderAdminUsers();
+  toast('تم حذف المستخدم');
+}
+function deleteGame(id) {
+  if (!confirm('هل أنت متأكد من حذف هذه اللعبة؟')) return;
+  games = games.filter(g => g.id !== id);
+  save(); renderAdminGames();
+  toast('تم حذف اللعبة');
+}
+
+// ═══════════════════════════════════════
+//  GAME MODAL
+// ═══════════════════════════════════════
+let editingGameId = null;
+let currentImageData = '';
+
+function openGameModal(gameId) {
+  editingGameId = gameId ?? null;
+  currentImageData = '';
+  resetImgPreview();
+
+  if (gameId) {
+    const g = games.find(x => x.id === gameId);
+    document.getElementById('game-modal-title').textContent = 'تعديل اللعبة';
+    document.getElementById('gf-title').value    = g.title;
+    document.getElementById('gf-price').value    = g.price;
+    document.getElementById('gf-category').value = g.cat || '';
+    document.getElementById('gf-desc').value     = g.desc || '';
+    document.getElementById('gf-imgurl').value   = (g.img && !g.img.startsWith('data:')) ? g.img : '';
+    if (g.img) {
+      currentImageData = g.img;
+      showImgPreview(g.img);
+    }
+  } else {
+    document.getElementById('game-modal-title').textContent = 'إضافة لعبة جديدة';
+    ['gf-title','gf-price','gf-category','gf-desc','gf-imgurl'].forEach(id => {
+      document.getElementById(id).value = '';
+    });
+  }
+  ['gf-title-err','gf-price-err'].forEach(id => document.getElementById(id).classList.remove('show'));
+  openModal('modal-game');
+}
+
+function closeGameModal() {
+  closeModal('modal-game');
+  editingGameId = null;
+  currentImageData = '';
+  resetImgPreview();
+}
+
+function handleImageUpload(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    currentImageData = ev.target.result;
+    showImgPreview(currentImageData);
+    document.getElementById('gf-imgurl').value = '';
+  };
+  reader.readAsDataURL(file);
+}
+
+function handleImageUrlInput(url) {
+  if (url.trim()) {
+    currentImageData = url.trim();
+    showImgPreview(url.trim());
+  } else {
+    resetImgPreview();
+  }
+}
+
+function showImgPreview(src) {
+  document.getElementById('img-upload-placeholder').style.display = 'none';
+  const img = document.getElementById('img-preview');
+  img.src = src;
+  img.style.display = 'block';
+}
+
+function resetImgPreview() {
+  document.getElementById('img-upload-placeholder').style.display = '';
+  document.getElementById('img-preview').style.display = 'none';
+  document.getElementById('img-preview').src = '';
+  document.getElementById('gf-imgfile').value = '';
+}
+
+function saveGame() {
+  const title = document.getElementById('gf-title').value.trim();
+  const price = parseFloat(document.getElementById('gf-price').value);
+  let ok = true;
+  if (!title) { document.getElementById('gf-title-err').classList.add('show'); ok = false; } else { document.getElementById('gf-title-err').classList.remove('show'); }
+  if (isNaN(price) || price < 0) { document.getElementById('gf-price-err').classList.add('show'); ok = false; } else { document.getElementById('gf-price-err').classList.remove('show'); }
+  if (!ok) return;
+
+  const imgSrc = currentImageData || document.getElementById('gf-imgurl').value.trim();
+
+  if (editingGameId) {
+    const g = games.find(x => x.id === editingGameId);
+    g.title = title;
+    g.price = price;
+    g.cat   = document.getElementById('gf-category').value.trim();
+    g.desc  = document.getElementById('gf-desc').value.trim();
+    g.img   = imgSrc;
+    toast('تم تعديل اللعبة بنجاح');
+  } else {
+    games.push({
+      id:    uid(),
+      title, price,
+      cat:   document.getElementById('gf-category').value.trim(),
+      desc:  document.getElementById('gf-desc').value.trim(),
+      img:   imgSrc,
+    });
+    toast('تمت إضافة اللعبة بنجاح');
+  }
+
+  save();
+  closeGameModal();
+  renderAdminGames();
+  renderHome();
+}
+
+// ═══════════════════════════════════════
+//  HELPERS
+// ═══════════════════════════════════════
+function fmtDate(iso) {
+  try {
+    const d = new Date(iso);
+    return d.getFullYear() + '/' + String(d.getMonth()+1).padStart(2,'0') + '/' + String(d.getDate()).padStart(2,'0');
+  } catch { return ''; }
+}
+
+function escHtml(s) {
+  return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ═══════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════
+window.addEventListener('DOMContentLoaded', () => {
+  renderHome();
+  if (!currentUser) {
+    showLoginStep('choose');
+    openModal('modal-login');
+  }
+});
+</script>
+</body>
+</html>
